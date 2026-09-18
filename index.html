@@ -1,23 +1,105 @@
-<!center; margin-top: 30px; font-size: 12px; color: #777;">
-        <p>© 2026 Relief for Commerce Traumatized Brains (RCTB)</p>
-        <p>Created & Owned by Yeasmin Khadiza</p>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RCTB - Interactive Portal</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #121212; color: #fff; margin: 0; padding: 0; text-align: center; }
+    nav { background: #1e1e1e; padding: 12px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+    nav button { background: #2a2a2a; color: #fff; border: 1px solid #444; padding: 10px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+    nav button.active, nav button:hover { background: #e91e63; border-color: #e91e63; }
+    .page-section { display: none; padding: 20px; max-width: 700px; margin: 0 auto; animation: fadeIn 0.4s ease-in-out; }
+    .page-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .card { background: #1e1e1e; padding: 20px; border-radius: 12px; margin: 15px 0; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+    .card h3 { color: #e91e63; margin-top: 0; }
+    .troll-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin-top: 15px; }
+    .troll-item { background: #2a2a2a; padding: 12px; border-left: 4px solid #e91e63; border-radius: 6px; text-align: left; }
+    input, textarea { width: 100%; padding: 10px; margin: 8px 0; background: #2a2a2a; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
+    .btn-action { background: #e91e63; color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; font-weight: bold; width: 100%; }
+    footer { margin-top: 40px; padding: 20px; font-size: 13px; color: #888; border-top: 1px solid #333; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <button class="nav-btn active" onclick="showTab('home', this)">🏠 হোম</button>
+    <button class="nav-btn" onclick="showTab('finance', this)">📚 কমার্স ও ফিন্যান্স</button>
+    <button class="nav-btn" onclick="showTab('trolls', this)">🤣 ৩০টি ট্রল</button>
+    <button class="nav-btn" onclick="showTab('relax', this)">🧘 রিলাক্সেশন</button>
+    <button class="nav-btn" onclick="showTab('contact', this)">📞 যোগাযোগ</button>
+  </nav>
+
+  <div id="home" class="page-section active">
+    <h1>🔥 RCTB - Commerce Revengers Hub 🔥</h1>
+    <p>উপরের মেনু থেকে পছন্দমতো সেকশনে ক্লিক করে ভেতরে প্রবেশ করুন!</p>
+    <div class="card">
+      <h3>🎵 Overdose Background Music</h3>
+      <audio controls style="width: 100%;"><source src="overdose.mp3" type="audio/mpeg"></audio>
     </div>
+  </div>
 
-    <script>
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-        }
+  <div id="finance" class="page-section">
+    <h2>📚 কমার্স ও ফিন্যান্স সেকশন</h2>
+    <div class="card">
+      <h3>🚀 GPA 5 Mission Motivation</h3>
+      <p>কমার্স মানেই ভবিষ্যৎ বিজনেস এম্পায়ার! হিসাববিজ্ঞান ও ফিন্যান্সের ভয় কাটিয়ে কীভাবে প্রস্তুতি নেবেন তার সঠিক গাইডলাইন।</p>
+    </div>
+    <div class="card">
+      <h3>💼 বিষয়ভিত্তিক টিপস</h3>
+      <ul>
+        <li><b>Accounting:</b> রেওয়ামিল ও খতিয়ান নিয়মিত প্র্যাকটিস করুন।</li>
+        <li><b>Finance:</b> অর্থের সময়মূল্যের সূত্রগুলো রিভিশন দিন।</li>
+      </ul>
+    </div>
+  </div>
 
-        function openTeaModal() {
-            document.getElementById('teaModal').style.display = 'flex';
-        }
+  <div id="trolls" class="page-section">
+    <h2>🤣 ৩০টি চ্যাপ্টার ভিত্তিক ট্রল</h2>
+    <div class="troll-grid">
+      <div class="troll-item"><b>১. হিসাববিজ্ঞান:</b> রেওয়ামিল মিললে মনে হয় নোবেল পেয়ে গেছি!</div>
+      <div class="troll-item"><b>২. ফিন্যান্স:</b> ৫ বছর পর ১০০ টাকার মূল্য কত? পকেটে ১০ টাকাই নেই!</div>
+      <div class="troll-item"><b>৩. জাবেদা:</b> ঘুম সর্বদাই ক্রেডিট!</div>
+      <div class="troll-item"><b>৪. ব্যাংক সমন্বয়:</b> ব্যাংকের ব্যালেন্স আর পকেটের ব্যালেন্স মেলে না।</div>
+      <div class="troll-item"><b>৫. অনাদায়ী পাওনা:</b> বন্ধুকে ধার দেওয়া টাকা!</div>
+    </div>
+  </div>
 
-        function closeTeaModal() {
-            document.getElementById('teaModal').style.display = 'none';
-        }
+  <div id="relax" class="page-section">
+    <h2>🧘 রিলাক্সেশন ও মাইন্ড রিফ্রেশমেন্ট</h2>
+    <div class="card" style="text-align:center;">
+      <h3>☕ জরুরি টি-ব্রেক</h3>
+      <p>পড়াশোনার মাঝে ১০ মিনিটের ব্রেক নিন।</p>
+      <button class="btn-action" onclick="alert('☕ ১০ মিনিটের টি-ব্রেক শুরু! একটু ঘুরে আসুন।')">টি-ব্রেক চালু করুন</button>
+    </div>
+  </div>
 
-        document.ondragstart = function() { return false; };
-        document.onselectstart = function() { return false; };
-    </script>
+  <div id="contact" class="page-section">
+    <h2>📞 যোগাযোগ (Contact Us)</h2>
+    <div class="card">
+      <h3>💬 আমাদের সাথে সরাসরি যোগাযোগ করুন</h3>
+      <form onsubmit="event.preventDefault(); alert('ধন্যবাদ! আপনার বার্তাটি সফলভাবে পাঠানো হয়েছে।');">
+        <input type="text" placeholder="আপনার নাম" required>
+        <input type="email" placeholder="আপনার ইমেইল" required>
+        <textarea placeholder="আপনার মেসেজ বা মতামত লিখুন..." rows="4" required></textarea>
+        <button type="submit" class="btn-action">মেসেজ পাঠান</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 Relief for Commerce Traumatized Brains (RCTB)</p>
+    <p>Created & Owned by <b>Yeasmin Khadiza</b>. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function showTab(tabId, btn) {
+      document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+  </script>
 </body>
 </html>
