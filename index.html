@@ -3,102 +3,409 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RCTB - Interactive Portal</title>
+  <title>আরসিটিবি (RCTB) - কমার্স রিভেঞ্জার্স পোর্টাল</title>
   <style>
-    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #121212; color: #fff; margin: 0; padding: 0; text-align: center; }
-    nav { background: #1e1e1e; padding: 12px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-    nav button { background: #2a2a2a; color: #fff; border: 1px solid #444; padding: 10px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-    nav button.active, nav button:hover { background: #e91e63; border-color: #e91e63; }
-    .page-section { display: none; padding: 20px; max-width: 700px; margin: 0 auto; animation: fadeIn 0.4s ease-in-out; }
-    .page-section.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .card { background: #1e1e1e; padding: 20px; border-radius: 12px; margin: 15px 0; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-    .card h3 { color: #e91e63; margin-top: 0; }
-    .troll-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin-top: 15px; }
-    .troll-item { background: #2a2a2a; padding: 12px; border-left: 4px solid #e91e63; border-radius: 6px; text-align: left; }
-    input, textarea { width: 100%; padding: 10px; margin: 8px 0; background: #2a2a2a; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; }
-    .btn-action { background: #e91e63; color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; font-weight: bold; width: 100%; }
-    footer { margin-top: 40px; padding: 20px; font-size: 13px; color: #888; border-top: 1px solid #333; text-align: center; }
+    :root {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #ffffff;
+      --primary-color: #e91e63;
+      --accent-color: #2a2a2a;
+      --header-bg: #1a0910;
+      --border-color: #333;
+    }
+
+    [data-theme="light"] {
+      --bg-color: #fff0f5;
+      --card-bg: #ffffff;
+      --text-color: #4a3e4d;
+      --primary-color: #d81b60;
+      --accent-color: #f8bbd0;
+      --header-bg: #9370db;
+      --border-color: #ddd;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    /* Header & Theme Switcher */
+    .header {
+      background-color: var(--header-bg);
+      color: #fff;
+      padding: 25px 15px;
+      position: relative;
+      border-bottom: 3px solid var(--primary-color);
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: var(--primary-color);
+      border: none;
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+    }
+
+    /* Navigation Bar */
+    nav {
+      background: var(--accent-color);
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    nav button {
+      background: var(--card-bg);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      padding: 10px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav button.active, nav button:hover {
+      background: var(--primary-color);
+      color: #fff;
+      border-color: var(--primary-color);
+    }
+
+    /* Main Container & Sections */
+    .container {
+      max-width: 850px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    .page-section {
+      display: none;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border-left: 5px solid var(--primary-color);
+      text-align: left;
+    }
+
+    .card h3, .card h2 {
+      color: var(--primary-color);
+      margin-top: 0;
+    }
+
+    .notice-badge {
+      background-color: #ff4757;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .cancelled {
+      text-decoration: line-through;
+      color: #ff4757;
+      font-weight: bold;
+    }
+
+    /* Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+    }
+
+    .troll-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .troll-item {
+      background: var(--accent-color);
+      padding: 14px;
+      border-left: 4px solid var(--primary-color);
+      border-radius: 8px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .sub-card {
+      background: var(--accent-color);
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    /* Form & Buttons */
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      background: var(--accent-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    .btn-action {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    #timer-display {
+      font-size: 36px;
+      color: var(--primary-color);
+      font-weight: bold;
+      margin: 15px 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 13px;
+      background-color: var(--card-bg);
+      margin-top: 40px;
+      border-top: 1px solid var(--border-color);
+    }
   </style>
 </head>
 <body>
 
+  <!-- Header Section -->
+  <div class="header">
+    <button class="theme-toggle" onclick="toggleTheme()">🌓 নাইট / লাইট মোড</button>
+    <h1 style="margin:0; font-size: 24px;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h1>
+    <h2 style="margin:5px 0 0 0; color: #ffb6c1;">আরসিটিবি (RCTB) বোর্ড</h2>
+    <p style="margin:5px 0 0 0; font-size: 13px;">Relief for Commerce Traumatized Brains (কমার্স শিক্ষার্থীদের মানসিক স্বাস্থ্য সুরক্ষা অনুবিভাগ)</p>
+  </div>
+
+  <!-- Navigation Menu -->
   <nav>
-    <button class="nav-btn active" onclick="showTab('home', this)">🏠 হোম</button>
-    <button class="nav-btn" onclick="showTab('finance', this)">📚 কমার্স ও ফিন্যান্স</button>
+    <button class="nav-btn active" onclick="showTab('home', this)">🏠 হোম ও বিজ্ঞপ্তি</button>
+    <button class="nav-btn" onclick="showTab('curriculum', this)">📚 কারিকুলাম ও টিপস</button>
     <button class="nav-btn" onclick="showTab('trolls', this)">🤣 ৩০টি ট্রল</button>
-    <button class="nav-btn" onclick="showTab('relax', this)">🧘 রিলাক্সেশন</button>
-    <button class="nav-btn" onclick="showTab('contact', this)">📞 যোগাযোগ</button>
+    <button class="nav-btn" onclick="showTab('relax', this)">☕ ১০ মি. ব্রেক টাইমার</button>
+    <button class="nav-btn" onclick="showTab('contact', this)">📞 হেল্পলাইন ও কন্টাক্ট</button>
   </nav>
 
-  <div id="home" class="page-section active">
-    <h1>🔥 RCTB - Commerce Revengers Hub 🔥</h1>
-    <p>উপরের মেনু থেকে পছন্দমতো সেকশনে ক্লিক করে ভেতরে প্রবেশ করুন!</p>
-    <div class="card">
-      <h3>🎵 Overdose Background Music</h3>
-      <audio controls style="width: 100%;"><source src="overdose.mp3" type="audio/mpeg"></audio>
+  <div class="container">
+
+    <!-- HOME SECTION -->
+    <div id="home" class="page-section active">
+      <div class="card">
+        <h3>🎵 চেয়ারম্যান মহোদয়ের প্রিয় গান (Background Music)</h3>
+        <p><strong>Natori - Overdose</strong></p>
+        <audio controls style="width: 100%;">
+          <source src="natori-overdose.mp3" type="audio/mpeg">
+          <source src="overdose.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+
+      <div class="card">
+        <span class="notice-badge">জরুরি প্রজ্ঞাপন</span>
+        <h2>বিশেষ বিজ্ঞপ্তি: এসএসসি থেকে ‘হিসাববিজ্ঞান’ বাতিলকরণ!</h2>
+        <p><strong>স্মারক নম্বর:</strong> শিম/আরসিটিবি/এসএসসি-হিসাব/২০২৬/১০৪</p>
+        <p><strong>তারিখ:</strong> ০১ আগস্ট, ২০২৬ খ্রিঃ</p>
+        <hr style="border-color: var(--border-color);">
+        <p>এতদ্বারা সকল শিক্ষাপ্রতিষ্ঠান ও কমার্স শিক্ষার্থীদের অবগতির জন্য জানানো যাচ্ছে যে, কমার্স শিক্ষার্থীদের মানসিক ট্রমা কাটাতে এসএসসি কারিকুলাম থেকে 'হিসাববিজ্ঞান' বিষয় সম্পূর্ণ বাতিল করা হলো!</p>
+        <p><em>বিশেষ নির্দেশ: রেওয়ামিল না মিললে কোনো শিক্ষক মানসিক খোঁচা দিতে পারবেন না।</em></p>
+      </div>
+
+      <div class="card">
+        <h3>🚀 GPA 5 Mission Motivation</h3>
+        <p>কমার্স মানেই ভবিষ্যৎ বিজনেস এম্পায়ার! হিসাববিজ্ঞান ও ফিন্যান্সের ভয় কাটিয়ে নিয়মিত প্র্যাকটিস করুন। সঠিকভাবে পড়ালেখা করলে সাফল্য নিশ্চিত।</p>
+      </div>
     </div>
+
+    <!-- CURRICULUM SECTION (HSC REMOVED) -->
+    <div id="curriculum" class="page-section">
+      <div class="card">
+        <h3>📚 এসএসসি (SSC) পাঠ্যপুস্তক ও কারিকুলাম</h3>
+        <div class="grid-2">
+          <div class="sub-card">
+            <h4>নবম-দশম শ্রেণি (SSC)</h4>
+            <p class="cancelled">❌ হিসাববিজ্ঞান (সম্পূর্ণ বাতিল)</p>
+            <p>✅ ফিন্যান্স ও ব্যাংকিং</p>
+            <p>✅ ব্যবসায় উদ্যোগ</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💼 বিষয়ভিত্তিক স্টাডি টিপস</h3>
+        <ul>
+          <li><b>Finance & Banking:</b> অর্থের সময়মূল্য ও সূত্রগুলো নিয়মিত রিভিশন দিন।</li>
+          <li><b>Business Entrepreneurship:</b> বিষয়ভিত্তিক মূল পয়েন্টগুলো অনুধাবন করে নোট তৈরি করুন।</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 30 TROLLS SECTION -->
+    <div id="trolls" class="page-section">
+      <div class="card">
+        <h2>🤣 ৩০টি কমার্স চ্যাপ্টার ট্রল</h2>
+        <div class="troll-grid">
+          <div class="troll-item"><b>১. হিসাববিজ্ঞান:</b> রেওয়ামিল মিলে গেলে মনে হয় পরীক্ষায় ১০০ তে ১০০ পেয়ে গেছি!</div>
+          <div class="troll-item"><b>২. ফিন্যান্স:</b> ৫ বছর পর ১০০ টাকার মূল্য কত? হিসাব করতে করতেই পরীক্ষার সময় শেষ!</div>
+          <div class="troll-item"><b>৩. জাবেদা:</b> যা আসে তা ডেবিট, যা যায় তা ক্রেডিট—পড়ার সময় ঘুম আসাটা ১০০% ডেবিট!</div>
+          <div class="troll-item"><b>৪. ব্যাংক সমন্বয়:</b> পাস বই আর নগদ বইয়ের মিল মেলাতে গিয়ে জীবনই গরমিল!</div>
+          <div class="troll-item"><b>৫. অনাদায়ী পাওনা:</b> বন্ধুকে পরীক্ষার আগে দেওয়া কলম কখনো ফেরত পাওয়া যায় না!</div>
+          <div class="troll-item"><b>৬. খতিয়ান:</b> টি-ছকের দুই পাশ সমান করতে করতে খাতার ৩টা পৃষ্ঠা শেষ!</div>
+          <div class="troll-item"><b>৭. রেওয়ামিল:</b> দুই পাশ না মিললে অনিশ্চিত হিসাব লিখে দিয়ে আসার যে শান্তি!</div>
+          <div class="troll-item"><b>৮. অবচয়:</b> দিন দিন পড়ার টেবিলের বইগুলোর ওপর ধুলোর অবচয় বেড়েই চলেছে।</div>
+          <div class="troll-item"><b>৯. শেয়ার মূলধন:</b> সমহার, প্রিমিয়াম আর বাট্টার চক্করে মাথার সব তার এলোমেলো!</div>
+          <div class="troll-item"><b>১০. অংশীদারি কারবার:</b> লাভ-লোকসান বণ্টন মেলাতে গিয়ে বন্ধুদের সাথে ঝগড়া!</div>
+          <div class="troll-item"><b>১১. একতরফা দাখিলা:</b> বৈষয়িক বিবরণী মিলানো আর লটারি জেতা একই কথা!</div>
+          <div class="troll-item"><b>১২. উৎপাদন ব্যয়:</b> প্রত্যক্ষ কাঁচামাল আর রূপান্তর ব্যয় হিসাব করতেই সময় শেষ!</div>
+          <div class="troll-item"><b>১৩. পারিবারিক বাজেট:</b> পারিবারিক তহবিলের হিসাব মেলাতে গিয়ে খরচের পাল্লাই ভারী!</div>
+          <div class="troll-item"><b>১৪. ঝুঁকি ও অনিশ্চয়তা:</b> পরীক্ষার আগের রাতে না পড়ে ঘুমাতে যাওয়া হলো সবচেয়ে বড় ঝুঁকি!</div>
+          <div class="troll-item"><b>১৫. মূলধনী প্রাক্কলন:</b> পে-ব্যাক সময় বের করতে গিয়ে জীবনের অর্ধেকের বেশি সময় পার!</div>
+          <div class="troll-item"><b>১৬. নামিক হিসাব:</b> সব খরচ ডেবিট, কিন্তু পকেটে খরচের কোনো মূলধনই নেই!</div>
+          <div class="troll-item"><b>১৭. ব্যবসায় উদ্যোগ:</b> সফল উদ্যোক্তা হওয়ার প্ল্যান থাকলেও এখন পাস করাই মূল টার্গেট!</div>
+          <div class="troll-item"><b>১৮. বাজারজাতকরণ:</b> স্যারের মিষ্টি কথায় ভুল চ্যাপ্টার রিভিশন দেওয়া!</div>
+          <div class="troll-item"><b>১৯. ব্যবস্থাপনা:</b> হেনরি ফেওলের ১৪টি নীতির একটাও পড়ার টেবিলে খাটে না!</div>
+          <div class="troll-item"><b>২০. অর্থায়নের উৎস:</b> ক্যানটিনের বিল শোধ করতে বন্ধুদের থেকে ধার নেওয়া!</div>
+          <div class="troll-item"><b>২১. বাণিজ্যিক ব্যাংক:</b> ব্যাংকিং বইয়ের সংজ্ঞা মুখস্থ, কিন্তু চেক লিখতে পারি না!</div>
+          <div class="troll-item"><b>২২. কেন্দ্রীয় ব্যাংক:</b> শেষ মুহূর্তের ঋণের শেষ আশ্রয়স্থল হলো আব্বুর পার্স!</div>
+          <div class="troll-item"><b>২৩. বিমা:</b> পরীক্ষার উত্তর না মিললে কোনো বিমা কোম্পানি ক্ষতিপূরণ দেবে না!</div>
+          <div class="troll-item"><b>২৪. ভাউচার:</b> ডেবিট ভাউচার আর ক্রেডিট ভাউচারের পার্থক্য বুঝতে বুঝতে খাতা জমা!</div>
+          <div class="troll-item"><b>২৫. বিশেষ জাবেদা:</b> ক্রয় জাবেদা আর বিক্রয় জাবেদায় ভুল এন্ট্রি দিয়ে বসা!</div>
+          <div class="troll-item"><b>২৬. দু-তরফা দাখিলা:</b> এক পক্ষ গ্রহীতা, অন্য পক্ষ দাতা—বন্ধুর থেকে নোট নেওয়া সেরা উদাহরণ!</div>
+          <div class="troll-item"><b>২৭. নগদান বই:</b> তিন ঘরা নগদান বইয়ের বাট্টার ঘর মেলাতে গিয়ে ৩ ঘণ্টা পার!</div>
+          <div class="troll-item"><b>২৮. কার্যপত্র:</b> ১০ ঘরের সমন্বয় কার্যপত্র আঁকতে গিয়ে খাতার মার্জিন পার!</div>
+          <div class="troll-item"><b>২৯. আর্থিক বিবরণী:</b> সম্পদ আর দায় সমান হওয়া হলো পৃথিবীর ৮ম আশ্চর্য!</div>
+          <div class="troll-item"><b>৩০. অনুপাত বিশ্লেষণ:</b> চলতি অনুপাত ২:১ হওয়া উচিত, কিন্তু পড়ার অনুপাত ০:১!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RELAXATION SECTION -->
+    <div id="relax" class="page-section">
+      <div class="card" style="text-align:center;">
+        <h3>☕ ১০ মিনিটের স্টাডি টি-ব্রেক টাইমার</h3>
+        <p>পড়াশোনার মাঝে ব্রেইন রিফ্রেশ করতে টাইমার চালুকরুন।</p>
+        <div id="timer-display">10:00</div>
+        <button class="btn-action" onclick="startTimer()">টি-ব্রেক কাউন্টডাউন শুরু করুন</button>
+      </div>
+    </div>
+
+    <!-- CONTACT & HELPLINE SECTION -->
+    <div id="contact" class="page-section">
+      <div class="card">
+        <h3>📞 জরুরি সেবা ও হেল্পলাইন</h3>
+        <div class="grid-2">
+          <div class="sub-card">
+            <h4>রেওয়ামিল অমিল হেল্পলাইন</h4>
+            <p style="font-size: 20px; font-weight: bold; color: var(--primary-color);">৭৭৭</p>
+          </div>
+          <div class="sub-card">
+            <h4>কমার্স ক্রাইসিস সেবা</h4>
+            <p style="font-size: 20px; font-weight: bold; color: var(--primary-color);">১০০</p>
+          </div>
+          <div class="sub-card">
+            <h4>সরকারি তথ্য ও সেবা</h4>
+            <p style="font-size: 20px; font-weight: bold; color: var(--primary-color);">৩৩৩</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💬 সরাসরি মেসেজ পাঠান</h3>
+        <form onsubmit="event.preventDefault(); alert('ধন্যবাদ! আপনার বার্তাটি সফলভাবে পাঠানো হয়েছে।');">
+          <input type="text" placeholder="আপনার নাম" required>
+          <input type="email" placeholder="আপনার ইমেইল" required>
+          <textarea placeholder="আপনার সমস্যা বা মতামত লিখুন..." rows="4" required></textarea>
+          <button type="submit" class="btn-action">মেসেজ পাঠান</button>
+        </form>
+      </div>
+    </div>
+
   </div>
 
-  <div id="finance" class="page-section">
-    <h2>📚 কমার্স ও ফিন্যান্স সেকশন</h2>
-    <div class="card">
-      <h3>🚀 GPA 5 Mission Motivation</h3>
-      <p>কমার্স মানেই ভবিষ্যৎ বিজনেস এম্পায়ার! হিসাববিজ্ঞান ও ফিন্যান্সের ভয় কাটিয়ে কীভাবে প্রস্তুতি নেবেন তার সঠিক গাইডলাইন।</p>
-    </div>
-    <div class="card">
-      <h3>💼 বিষয়ভিত্তিক টিপস</h3>
-      <ul>
-        <li><b>Accounting:</b> রেওয়ামিল ও খতিয়ান নিয়মিত প্র্যাকটিস করুন।</li>
-        <li><b>Finance:</b> অর্থের সময়মূল্যের সূত্রগুলো রিভিশন দিন।</li>
-      </ul>
-    </div>
-  </div>
-
-  <div id="trolls" class="page-section">
-    <h2>🤣 ৩০টি চ্যাপ্টার ভিত্তিক ট্রল</h2>
-    <div class="troll-grid">
-      <div class="troll-item"><b>১. হিসাববিজ্ঞান:</b> রেওয়ামিল মিললে মনে হয় নোবেল পেয়ে গেছি!</div>
-      <div class="troll-item"><b>২. ফিন্যান্স:</b> ৫ বছর পর ১০০ টাকার মূল্য কত? পকেটে ১০ টাকাই নেই!</div>
-      <div class="troll-item"><b>৩. জাবেদা:</b> ঘুম সর্বদাই ক্রেডিট!</div>
-      <div class="troll-item"><b>৪. ব্যাংক সমন্বয়:</b> ব্যাংকের ব্যালেন্স আর পকেটের ব্যালেন্স মেলে না।</div>
-      <div class="troll-item"><b>৫. অনাদায়ী পাওনা:</b> বন্ধুকে ধার দেওয়া টাকা!</div>
-    </div>
-  </div>
-
-  <div id="relax" class="page-section">
-    <h2>🧘 রিলাক্সেশন ও মাইন্ড রিফ্রেশমেন্ট</h2>
-    <div class="card" style="text-align:center;">
-      <h3>☕ জরুরি টি-ব্রেক</h3>
-      <p>পড়াশোনার মাঝে ১০ মিনিটের ব্রেক নিন।</p>
-      <button class="btn-action" onclick="alert('☕ ১০ মিনিটের টি-ব্রেক শুরু! একটু ঘুরে আসুন।')">টি-ব্রেক চালু করুন</button>
-    </div>
-  </div>
-
-  <div id="contact" class="page-section">
-    <h2>📞 যোগাযোগ (Contact Us)</h2>
-    <div class="card">
-      <h3>💬 আমাদের সাথে সরাসরি যোগাযোগ করুন</h3>
-      <form onsubmit="event.preventDefault(); alert('ধন্যবাদ! আপনার বার্তাটি সফলভাবে পাঠানো হয়েছে।');">
-        <input type="text" placeholder="আপনার নাম" required>
-        <input type="email" placeholder="আপনার ইমেইল" required>
-        <textarea placeholder="আপনার মেসেজ বা মতামত লিখুন..." rows="4" required></textarea>
-        <button type="submit" class="btn-action">মেসেজ পাঠান</button>
-      </form>
-    </div>
-  </div>
-
+  <!-- FOOTER SECTION -->
   <footer>
-    <p>© 2026 Relief for Commerce Traumatized Brains (RCTB)</p>
+    <p><strong>সতর্কীকরণ (Disclaimer):</strong> এটি একটি বিনোদনমূলক/প্যারোডি ওয়েবসাইট। এর সাথে প্রাতিষ্ঠানিকভাবে এনসিটিবি (NCTB) বা শিক্ষা মন্ত্রণালয়ের কোনো সম্পর্ক নেই।</p>
+    <p>© ২০২৬ Relief for Commerce Traumatized Brains (RCTB)</p>
     <p>Created & Owned by <b>Yeasmin Khadiza</b>. All rights reserved.</p>
   </footer>
 
   <script>
+    // Tab Switcher Function
     function showTab(tabId, btn) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       btn.classList.add('active');
+    }
+
+    // Theme Switcher Function
+    function toggleTheme() {
+      const body = document.body;
+      if (body.getAttribute('data-theme') === 'light') {
+        body.removeAttribute('data-theme');
+      } else {
+        body.setAttribute('data-theme', 'light');
+      }
+    }
+
+    // 10 Min Countdown Timer Logic
+    let timerInterval;
+    function startTimer() {
+      clearInterval(timerInterval);
+      let duration = 600;
+      const display = document.getElementById('timer-display');
+      timerInterval = setInterval(function () {
+        let minutes = parseInt(duration / 60, 10);
+        let seconds = parseInt(duration % 60, 10);
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        display.textContent = minutes + ":" + seconds;
+        if (--duration < 0) {
+          clearInterval(timerInterval);
+          alert("☕ টি-ব্রেক শেষ! আবার পড়ার টেবিলে ফিরে যান!");
+        }
+      }, 1000);
     }
   </script>
 </body>
