@@ -3,64 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>আরসিটিবি (RCTB) - কমার্স রিভেঞ্জার্স পোর্টাল</title>
+  <title>আরসিটিবি (RCTB) - রিলিফ ফর কমার্স ট্রমাটাইজড ব্রেইন</title>
   <style>
     :root {
-      --bg-color: #121212;
+      --bg: #121212;
       --card-bg: #1e1e1e;
-      --text-color: #ffffff;
-      --primary-color: #e91e63;
-      --accent-color: #2a2a2a;
+      --text: #ffffff;
+      --primary: #e91e63;
+      --accent: #2a2a2a;
       --header-bg: #1a0910;
-      --border-color: #333;
+      --border: #333333;
+      --card-shadow: rgba(0,0,0,0.4);
     }
 
     [data-theme="light"] {
-      --bg-color: #fff0f5;
+      --bg: #fff0f5;
       --card-bg: #ffffff;
-      --text-color: #4a3e4d;
-      --primary-color: #d81b60;
-      --accent-color: #f8bbd0;
+      --text: #4a3e4d;
+      --primary: #d81b60;
+      --accent: #f8bbd0;
       --header-bg: #9370db;
-      --border-color: #ddd;
+      --border: #e0b0d0;
+      --card-shadow: rgba(0,0,0,0.08);
+    }
+
+    [data-theme="glass"] {
+      --bg: linear-gradient(135deg, #1f1c2c, #928dab);
+      --card-bg: rgba(255, 255, 255, 0.15);
+      --text: #ffffff;
+      --primary: #ff6b81;
+      --accent: rgba(255, 255, 255, 0.2);
+      --header-bg: rgba(0, 0, 0, 0.4);
+      --border: rgba(255, 255, 255, 0.25);
+      --card-shadow: rgba(0,0,0,0.3);
     }
 
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
+      background: var(--bg);
+      color: var(--text);
       margin: 0;
       padding: 0;
       transition: all 0.3s ease;
       text-align: center;
     }
 
-    /* Header & Theme Switcher */
+    /* Header & Branding */
     .header {
-      background-color: var(--header-bg);
+      background: var(--header-bg);
       color: #fff;
       padding: 25px 15px;
       position: relative;
-      border-bottom: 3px solid var(--primary-color);
+      border-bottom: 3px solid var(--primary);
     }
 
-    .theme-toggle {
+    .brand-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+
+    .profile-img-placeholder {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      border: 2px solid white;
+    }
+
+    .theme-switcher {
       position: absolute;
       top: 15px;
       right: 15px;
-      background: var(--primary-color);
+      display: flex;
+      gap: 5px;
+    }
+
+    .theme-btn {
+      background: var(--primary);
       border: none;
-      padding: 8px 14px;
-      border-radius: 20px;
+      padding: 6px 12px;
+      border-radius: 15px;
       cursor: pointer;
+      font-size: 11px;
       font-weight: bold;
       color: white;
     }
 
-    /* Navigation Bar */
+    /* Navigation */
     nav {
-      background: var(--accent-color);
-      padding: 12px;
+      background: var(--accent);
+      padding: 10px;
       display: flex;
       justify-content: center;
       gap: 8px;
@@ -73,9 +112,9 @@
 
     nav button {
       background: var(--card-bg);
-      color: var(--text-color);
-      border: 1px solid var(--border-color);
-      padding: 10px 16px;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 9px 15px;
       border-radius: 20px;
       cursor: pointer;
       font-weight: bold;
@@ -83,14 +122,14 @@
     }
 
     nav button.active, nav button:hover {
-      background: var(--primary-color);
+      background: var(--primary);
       color: #fff;
-      border-color: var(--primary-color);
+      border-color: var(--primary);
     }
 
-    /* Main Container & Sections */
+    /* Container & Cards */
     .container {
-      max-width: 850px;
+      max-width: 900px;
       margin: 20px auto;
       padding: 0 15px;
     }
@@ -100,9 +139,7 @@
       animation: fadeIn 0.4s ease-in-out;
     }
 
-    .page-section.active {
-      display: block;
-    }
+    .page-section.active { display: block; }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -110,79 +147,105 @@
     }
 
     .card {
-      background-color: var(--card-bg);
-      padding: 20px;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      padding: 22px;
       margin-bottom: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      border-left: 5px solid var(--primary-color);
+      border-radius: 15px;
+      box-shadow: 0 6px 18px var(--card-shadow);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--primary);
       text-align: left;
     }
 
-    .card h3, .card h2 {
-      color: var(--primary-color);
-      margin-top: 0;
+    .card h2, .card h3 { color: var(--primary); margin-top: 0; }
+
+    .sub-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
     }
 
-    .notice-badge {
-      background-color: #ff4757;
-      color: white;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 12px;
+    .sub-tab-btn {
+      background: var(--accent);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 12px;
+      cursor: pointer;
       font-weight: bold;
     }
 
-    .cancelled {
-      text-decoration: line-through;
-      color: #ff4757;
-      font-weight: bold;
-    }
+    .sub-tab-btn.active { background: var(--primary); color: white; }
 
-    /* Grids */
     .grid-2 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 15px;
     }
 
     .troll-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
       gap: 12px;
     }
 
-    .troll-item {
-      background: var(--accent-color);
-      padding: 14px;
-      border-left: 4px solid var(--primary-color);
-      border-radius: 8px;
-      text-align: left;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .sub-card {
-      background: var(--accent-color);
+    .troll-card {
+      background: var(--accent);
       padding: 15px;
-      border-radius: 8px;
-      text-align: center;
+      border-radius: 10px;
+      border-left: 4px solid var(--primary);
     }
 
-    /* Form & Buttons */
-    input, textarea {
+    .like-btn-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .like-btn, .unlike-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 5px 12px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .react-counter {
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .qa-card {
+      background: var(--accent);
+      padding: 16px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      border-left: 4px solid #00d2d3;
+    }
+
+    .qa-q { font-weight: bold; color: var(--primary); margin-bottom: 6px; }
+    .qa-a { font-weight: bold; color: #10ac84; margin-bottom: 6px; }
+    .qa-e { font-size: 13px; line-height: 1.5; opacity: 0.9; }
+
+    input, textarea, select {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
-      background: var(--accent-color);
-      border: 1px solid var(--border-color);
-      color: var(--text-color);
-      border-radius: 6px;
+      background: var(--accent);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
       box-sizing: border-box;
     }
 
     .btn-action {
-      background: var(--primary-color);
+      background: var(--primary);
       color: white;
       border: none;
       padding: 12px 24px;
@@ -193,40 +256,119 @@
       margin-top: 10px;
     }
 
-    #timer-display {
-      font-size: 36px;
-      color: var(--primary-color);
+    /* Modal / Popups */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-box {
+      background: var(--card-bg);
+      border: 2px solid var(--primary);
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      color: var(--text);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    /* Quiz Option */
+    .quiz-option {
+      background: var(--accent);
+      border: 1px solid var(--border);
+      padding: 10px;
+      margin: 6px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
       font-weight: bold;
-      margin: 15px 0;
+      transition: 0.2s;
+    }
+
+    .quiz-option:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Breathing Circle Animation */
+    .breath-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--primary);
+      margin: 20px auto;
+      animation: breathe 4s infinite ease-in-out;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.4); }
     }
 
     footer {
       text-align: center;
-      padding: 20px;
+      padding: 25px;
       font-size: 13px;
-      background-color: var(--card-bg);
+      background: var(--card-bg);
       margin-top: 40px;
-      border-top: 1px solid var(--border-color);
+      border-top: 1px solid var(--border);
+    }
+
+    /* YouTube Embed Container */
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
   </style>
 </head>
 <body>
 
-  <!-- Header Section -->
+  <!-- Header -->
   <div class="header">
-    <button class="theme-toggle" onclick="toggleTheme()">🌓 নাইট / লাইট মোড</button>
-    <h1 style="margin:0; font-size: 24px;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h1>
-    <h2 style="margin:5px 0 0 0; color: #ffb6c1;">আরসিটিবি (RCTB) বোর্ড</h2>
-    <p style="margin:5px 0 0 0; font-size: 13px;">Relief for Commerce Traumatized Brains (কমার্স শিক্ষার্থীদের মানসিক স্বাস্থ্য সুরক্ষা অনুবিভাগ)</p>
+    <div class="theme-switcher">
+      <button class="theme-btn" onclick="setTheme('dark')">🌙 ডার্ক</button>
+      <button class="theme-btn" onclick="setTheme('light')">☀️ লাইট</button>
+      <button class="theme-btn" onclick="setTheme('glass')">✨ গ্লাস</button>
+    </div>
+    
+    <div class="brand-box">
+      <div class="profile-img-placeholder" title="Owner Profile">👩‍💼</div>
+      <div>
+        <h1 style="margin:0; font-size: 22px;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h1>
+        <h2 style="margin:4px 0; color: var(--primary);">আরসিটিবি (RCTB) বোর্ড</h2>
+      </div>
+    </div>
+    <p style="margin:0; font-size: 13px;">Relief for Commerce Traumatized Brains (রিলীফ ফর কমার্স ট্রমাটাইজড ব্রেইন)</p>
   </div>
 
-  <!-- Navigation Menu -->
+  <!-- Navigation -->
   <nav>
-    <button class="nav-btn active" onclick="showTab('home', this)">🏠 হোম ও বিজ্ঞপ্তি</button>
-    <button class="nav-btn" onclick="showTab('curriculum', this)">📚 কারিকুলাম ও টিপস</button>
+    <button class="nav-btn active" onclick="showTab('home', this)">🏠 হোম</button>
+    <button class="nav-btn" onclick="showTab('curriculum', this)">📚 কারিকুলাম</button>
+    <button class="nav-btn" onclick="showTab('study', this)">📖 মাস্টারক্লাস</button>
     <button class="nav-btn" onclick="showTab('trolls', this)">🤣 ৩০টি ট্রল</button>
-    <button class="nav-btn" onclick="showTab('relax', this)">☕ ১০ মি. ব্রেক টাইমার</button>
-    <button class="nav-btn" onclick="showTab('contact', this)">📞 হেল্পলাইন ও কন্টাক্ট</button>
+    <button class="nav-btn" onclick="showTab('quiz', this)">🎮 কুইজ গেম</button>
+    <button class="nav-btn" onclick="showTab('hub', this)">🔮 কমার্স হাব</button>
+    <button class="nav-btn" onclick="showTab('relax', this)">☕ ব্রেক টাইমার</button>
+    <button class="nav-btn" onclick="showTab('contact', this)">📞 যোগাযোগ</button>
   </nav>
 
   <div class="container">
@@ -234,38 +376,46 @@
     <!-- HOME SECTION -->
     <div id="home" class="page-section active">
       <div class="card">
-        <h3>🎵 চেয়ারম্যান মহোদয়ের প্রিয় গান (Background Music)</h3>
-        <p><strong>Natori - Overdose</strong></p>
-        <audio controls style="width: 100%;">
-          <source src="natori-overdose.mp3" type="audio/mpeg">
-          <source src="overdose.mp3" type="audio/mpeg">
-        </audio>
+        <h3>🎵 চেয়ারম্যান মহোদয়ের প্রিয় গান</h3>
+        <p><strong>なとり / Natori - Overdose</strong></p>
+        <div class="video-container">
+          <iframe src="https://www.youtube.com/embed/H08YWE4CIFQ" title="Natori - Overdose" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
       </div>
 
       <div class="card">
-        <span class="notice-badge">জরুরি প্রজ্ঞাপন</span>
+        <span style="background:#ff4757; color:white; padding:3px 8px; border-radius:4px; font-size:12px; font-weight:bold;">জরুরি প্রজ্ঞাপন</span>
         <h2>বিশেষ বিজ্ঞপ্তি: এসএসসি থেকে ‘হিসাববিজ্ঞান’ বাতিলকরণ!</h2>
         <p><strong>স্মারক নম্বর:</strong> শিম/আরসিটিবি/এসএসসি-হিসাব/২০২৬/১০৪</p>
-        <p><strong>তারিখ:</strong> ০১ আগস্ট, ২০২৬ খ্রিঃ</p>
-        <hr style="border-color: var(--border-color);">
-        <p>এতদ্বারা সকল শিক্ষাপ্রতিষ্ঠান ও কমার্স শিক্ষার্থীদের অবগতির জন্য জানানো যাচ্ছে যে, কমার্স শিক্ষার্থীদের মানসিক ট্রমা কাটাতে এসএসসি কারিকুলাম থেকে 'হিসাববিজ্ঞান' বিষয় সম্পূর্ণ বাতিল করা হলো!</p>
+        <p><strong>তারিখ:</strong> ৩১ আগস্ট, ২০২৬ খ্রিঃ</p>
+        <hr style="border-color: var(--border);">
+        <p>এতদ্বারা সকল কমার্স শিক্ষার্থীদের অবগতির জন্য জানানো যাচ্ছে যে, অতিরিক্ত মানসিক ট্রমা কাটাতে এসএসসি কারিকুলাম থেকে 'হিসাববিজ্ঞান' বিষয় আংশিক বাতিল ঘোষণা করা হলো!</p>
         <p><em>বিশেষ নির্দেশ: রেওয়ামিল না মিললে কোনো শিক্ষক মানসিক খোঁচা দিতে পারবেন না।</em></p>
       </div>
 
+      <!-- Dynamic Saved Notices Container -->
+      <div id="saved-notices-container"></div>
+
       <div class="card">
-        <h3>🚀 GPA 5 Mission Motivation</h3>
-        <p>কমার্স মানেই ভবিষ্যৎ বিজনেস এম্পায়ার! হিসাববিজ্ঞান ও ফিন্যান্সের ভয় কাটিয়ে নিয়মিত প্র্যাকটিস করুন। সঠিকভাবে পড়ালেখা করলে সাফল্য নিশ্চিত।</p>
+        <h3>🚀 ৫টি অনন্য কমার্স মোটিভেশনাল স্লোগান</h3>
+        <ol>
+          <li>ডেবিট-ক্রেডিট না মিললে জীবন থেমে থাকে না, অনিশ্চিত হিসাব লিখে এগিয়ে যাও! 🔥</li>
+          <li>আজকের বিনিয়োগ, আগামীকালের ফিন্যান্সিয়াল ফ্রিডম! 💼</li>
+          <li>ঝুঁকি যত বড়, কমার্স স্টুডেন্টের সাকসেস তত স্পেশাল! 🚀</li>
+          <li>হিসাববিজ্ঞান না মিললেও কমার্সের আইডিয়া দিয়ে বিশ্ব জয় সম্ভব! 🌍</li>
+          <li>আমরা হিসাবের গণ্ডিতে আটকে থাকি না, আমরা ভবিষ্যৎ বিজনেস তৈরি করি! 💪</li>
+        </ol>
       </div>
     </div>
 
-    <!-- CURRICULUM SECTION (HSC REMOVED) -->
+    <!-- CURRICULUM SECTION -->
     <div id="curriculum" class="page-section">
       <div class="card">
-        <h3>📚 এসএসসি (SSC) পাঠ্যপুস্তক ও কারিকুলাম</h3>
+        <h3>📚 এসএসসি (SSC) কমার্স কারিকুলাম</h3>
         <div class="grid-2">
-          <div class="sub-card">
+          <div style="background:var(--accent); padding:15px; border-radius:10px;">
             <h4>নবম-দশম শ্রেণি (SSC)</h4>
-            <p class="cancelled">❌ হিসাববিজ্ঞান (সম্পূর্ণ বাতিল)</p>
+            <p style="text-decoration:line-through; color:#ff4757; font-weight:bold;">❌ হিসাববিজ্ঞান (আংশিক/আপাতত বাতিল)</p>
             <p>✅ ফিন্যান্স ও ব্যাংকিং</p>
             <p>✅ ব্যবসায় উদ্যোগ</p>
           </div>
@@ -273,89 +423,241 @@
       </div>
 
       <div class="card">
-        <h3>💼 বিষয়ভিত্তিক স্টাডি টিপস</h3>
+        <h3>💼 বিষযভিত্তিক পরীক্ষার শর্ট টিপস</h3>
         <ul>
-          <li><b>Finance & Banking:</b> অর্থের সময়মূল্য ও সূত্রগুলো নিয়মিত রিভিশন দিন।</li>
-          <li><b>Business Entrepreneurship:</b> বিষয়ভিত্তিক মূল পয়েন্টগুলো অনুধাবন করে নোট তৈরি করুন।</li>
+          <li><b>Finance:</b> সুদের হার ও অর্থের সময়মূল্যের সূত্রগুলো বারবার প্র্যাকটিস করুন।</li>
+          <li><b>Entrepreneurship:</b> সফল উদ্যোক্তাদের বৈশিষ্ট্যগুলোর মূল পয়েন্ট মুখস্থ রাখুন।</li>
         </ul>
       </div>
     </div>
 
-    <!-- 30 TROLLS SECTION -->
+    <!-- STUDY SECTION -->
+    <div id="study" class="page-section">
+      <div class="card">
+        <h2>📖 কমার্স সমাধান ও কনসেপ্ট ক্লিয়ারেন্স</h2>
+        <p>যেসব প্রশ্ন ও অঙ্কে কমার্স স্টুডেন্টরা সবচেয়ে বেশি ভুল করে—বিশুদ্ধ সঠিক উত্তর ও ফানি ব্যাখ্যসহ সহজ সমাধান!</p>
+        
+        <div class="sub-tabs">
+          <button class="sub-tab-btn active" onclick="showStudyBook('sec-acc', this)">📗 হিসাববিজ্ঞান</button>
+          <button class="sub-tab-btn" onclick="showStudyBook('sec-fin', this)">📘 ফিন্যান্স ও ব্যাংকিং</button>
+          <button class="sub-tab-btn" onclick="showStudyBook('sec-ent', this)">📙 ব্যবসায় উদ্যোগ</button>
+        </div>
+
+        <!-- ACCOUNTING STUDY -->
+        <div id="sec-acc" class="study-book-content">
+          <div class="qa-card">
+            <div class="qa-q">❓ প্রশ্ন ১: ব্যাংক জমাতিরিক্তের সুদ (Bank Overdraft Interest) জাবেদায় ডেবিট না ক্রেডিট?</div>
+            <div class="qa-a">✅ সঠিক উত্তর: ডেবিট হবে। (সুদ খরচ হিসাব - ডেবিট)</div>
+            <div class="qa-e">💡 ফানি ব্যাখ্যা: অনেকে 'জমাতিরিক্ত' শব্দ দেখে মনে করে জমা টাকা বা আয়! কিন্তু ব্যাংকের থেকে এক্সট্রা টাকা নেওয়ার জন্য ব্যাংক যে সুদ ধার্য করে, সেটা ব্যবসায়ের জন্য ১০০% খরচ! আর খরচ বাড়লে সবসময় ডেবিট হয়! 💸</div>
+          </div>
+          <div class="qa-card">
+            <div class="qa-q">❓ প্রশ্ন ২: রেওয়ামিলে সমাপনী মজুদ পণ্য (Closing Stock) কেন বসে না?</div>
+            <div class="qa-a">✅ সঠিক উত্তর: কারণ সমাপনী মজুদ ইতোমধ্যে 'ক্রয়'-এর ভেতরে অন্তর্ভুক্ত থাকে।</div>
+            <div class="qa-e">💡 ফানি ব্যাখ্যা: একই পণ্য ক্রয়ের সময় একবার বসিয়েছেন, আবার সমাপনী হিসেবে বসালে বেচারা রেওয়ামিল দুইবার হিসাব গুনে ভারসাম্য হারিয়ে কাঁদবে! 😵</div>
+          </div>
+        </div>
+
+        <!-- FINANCE STUDY -->
+        <div id="sec-fin" class="study-book-content" style="display:none;">
+          <div class="qa-card">
+            <div class="qa-q">❓ প্রশ্ন ১: চক্রবৃদ্ধিকরণ (Compounding) আর বাট্টাকরণ (Discounting)-এর পার্থক্য কী?</div>
+            <div class="qa-a">✅ সঠিক উত্তর: ভবিষ্যৎ মূল্য বের করতে চক্রবৃদ্ধিকরণ, আর বর্তমান মূল্য বের করতে বাট্টাকরণ।</div>
+            <div class="qa-e">💡 ফানি ব্যাখ্যা: ভবিষ্যতে টাকা কত বাড়বে দেখতে গুণ (✖️) করুন = চক্রবৃদ্ধি। আর ভবিষ্যতের টাকার আজকের আসল মান কত কম দেখতে ভাগ (÷) করুন = বাট্টাকরণ! 🔮</div>
+          </div>
+          <div class="qa-card">
+            <div class="qa-q">❓ প্রশ্ন ২: তারল্য বনাম মুনাফা নীতি (Liquidity vs Profitability) কী?</div>
+            <div class="qa-a">✅ সঠিক উত্তর: হাতে নগদ টাকা রাখা এবং বিনিয়োগ করে মুনাফা করার মধ্যে ভারসাম্য বজায় রাখা।</div>
+            <div class="qa-e">💡 ফানি ব্যাখ্যা: সব টাকা ক্যাশে রাখলে লাভ ০, আবার সব টাকা ব্যাংকে আটকে রাখলে বিকালের চা-সিঙ্গারা খাওয়ার টাকাও থাকবে না! ☕</div>
+          </div>
+        </div>
+
+        <!-- ENTREPRENEURSHIP STUDY -->
+        <div id="sec-ent" class="study-book-content" style="display:none;">
+          <div class="qa-card">
+            <div class="qa-q">❓ প্রশ্ন ১: ঝুঁকি (Risk) ও অনিশ্চয়তার (Uncertainty) মধ্যে মূল পার্থক্য কী?</div>
+            <div class="qa-a">✅ সঠিক উত্তর: যা আর্থিক পরিমাপ করা যায় তা ঝুঁকি, যা করা যায় না তা অনিশ্চয়তা।</div>
+            <div class="qa-e">💡 ফানি ব্যাখ্যা: কাল বৃষ্টি হতে পারে = ঝুঁকি ☔; কিন্তু কাল পরীক্ষায় স্যার আউট অফ সিলেবাস প্রশ্ন করবে কিনা = অনিশ্চয়তা! 🤯</div>
+          </div>
+          <div class="qa-card">
+            <div class="qa-q">❓ প্রশ্ন ২: একমালিকানা কারবার কেন সবচেয়ে বেশি জনপ্রিয়?</div>
+            <div class="qa-a">✅ সঠিক উত্তর: সহজ গঠন, দ্রুত সিদ্ধান্ত এবং লাভ একাই ভোগ করার সুবিধা।</div>
+            <div class="qa-e">💡 ফানি ব্যাখ্যা: কোনো পার্টনারের সাথে ঝগড়া নাই, লাভের টাকা সম্পূর্ণ নিজের পকেটে! তবে লস হলেও একাই এক কোনায় বসে কাঁদতে হয়! 😂</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TROLLS SECTION -->
     <div id="trolls" class="page-section">
       <div class="card">
-        <h2>🤣 ৩০টি কমার্স চ্যাপ্টার ট্রল</h2>
-        <div class="troll-grid">
-          <div class="troll-item"><b>১. হিসাববিজ্ঞান:</b> রেওয়ামিল মিলে গেলে মনে হয় পরীক্ষায় ১০০ তে ১০০ পেয়ে গেছি!</div>
-          <div class="troll-item"><b>২. ফিন্যান্স:</b> ৫ বছর পর ১০০ টাকার মূল্য কত? হিসাব করতে করতেই পরীক্ষার সময় শেষ!</div>
-          <div class="troll-item"><b>৩. জাবেদা:</b> যা আসে তা ডেবিট, যা যায় তা ক্রেডিট—পড়ার সময় ঘুম আসাটা ১০০% ডেবিট!</div>
-          <div class="troll-item"><b>৪. ব্যাংক সমন্বয়:</b> পাস বই আর নগদ বইয়ের মিল মেলাতে গিয়ে জীবনই গরমিল!</div>
-          <div class="troll-item"><b>৫. অনাদায়ী পাওনা:</b> বন্ধুকে পরীক্ষার আগে দেওয়া কলম কখনো ফেরত পাওয়া যায় না!</div>
-          <div class="troll-item"><b>৬. খতিয়ান:</b> টি-ছকের দুই পাশ সমান করতে করতে খাতার ৩টা পৃষ্ঠা শেষ!</div>
-          <div class="troll-item"><b>৭. রেওয়ামিল:</b> দুই পাশ না মিললে অনিশ্চিত হিসাব লিখে দিয়ে আসার যে শান্তি!</div>
-          <div class="troll-item"><b>৮. অবচয়:</b> দিন দিন পড়ার টেবিলের বইগুলোর ওপর ধুলোর অবচয় বেড়েই চলেছে।</div>
-          <div class="troll-item"><b>৯. শেয়ার মূলধন:</b> সমহার, প্রিমিয়াম আর বাট্টার চক্করে মাথার সব তার এলোমেলো!</div>
-          <div class="troll-item"><b>১০. অংশীদারি কারবার:</b> লাভ-লোকসান বণ্টন মেলাতে গিয়ে বন্ধুদের সাথে ঝগড়া!</div>
-          <div class="troll-item"><b>১১. একতরফা দাখিলা:</b> বৈষয়িক বিবরণী মিলানো আর লটারি জেতা একই কথা!</div>
-          <div class="troll-item"><b>১২. উৎপাদন ব্যয়:</b> প্রত্যক্ষ কাঁচামাল আর রূপান্তর ব্যয় হিসাব করতেই সময় শেষ!</div>
-          <div class="troll-item"><b>১৩. পারিবারিক বাজেট:</b> পারিবারিক তহবিলের হিসাব মেলাতে গিয়ে খরচের পাল্লাই ভারী!</div>
-          <div class="troll-item"><b>১৪. ঝুঁকি ও অনিশ্চয়তা:</b> পরীক্ষার আগের রাতে না পড়ে ঘুমাতে যাওয়া হলো সবচেয়ে বড় ঝুঁকি!</div>
-          <div class="troll-item"><b>১৫. মূলধনী প্রাক্কলন:</b> পে-ব্যাক সময় বের করতে গিয়ে জীবনের অর্ধেকের বেশি সময় পার!</div>
-          <div class="troll-item"><b>১৬. নামিক হিসাব:</b> সব খরচ ডেবিট, কিন্তু পকেটে খরচের কোনো মূলধনই নেই!</div>
-          <div class="troll-item"><b>১৭. ব্যবসায় উদ্যোগ:</b> সফল উদ্যোক্তা হওয়ার প্ল্যান থাকলেও এখন পাস করাই মূল টার্গেট!</div>
-          <div class="troll-item"><b>১৮. বাজারজাতকরণ:</b> স্যারের মিষ্টি কথায় ভুল চ্যাপ্টার রিভিশন দেওয়া!</div>
-          <div class="troll-item"><b>১৯. ব্যবস্থাপনা:</b> হেনরি ফেওলের ১৪টি নীতির একটাও পড়ার টেবিলে খাটে না!</div>
-          <div class="troll-item"><b>২০. অর্থায়নের উৎস:</b> ক্যানটিনের বিল শোধ করতে বন্ধুদের থেকে ধার নেওয়া!</div>
-          <div class="troll-item"><b>২১. বাণিজ্যিক ব্যাংক:</b> ব্যাংকিং বইয়ের সংজ্ঞা মুখস্থ, কিন্তু চেক লিখতে পারি না!</div>
-          <div class="troll-item"><b>২২. কেন্দ্রীয় ব্যাংক:</b> শেষ মুহূর্তের ঋণের শেষ আশ্রয়স্থল হলো আব্বুর পার্স!</div>
-          <div class="troll-item"><b>২৩. বিমা:</b> পরীক্ষার উত্তর না মিললে কোনো বিমা কোম্পানি ক্ষতিপূরণ দেবে না!</div>
-          <div class="troll-item"><b>২৪. ভাউচার:</b> ডেবিট ভাউচার আর ক্রেডিট ভাউচারের পার্থক্য বুঝতে বুঝতে খাতা জমা!</div>
-          <div class="troll-item"><b>২৫. বিশেষ জাবেদা:</b> ক্রয় জাবেদা আর বিক্রয় জাবেদায় ভুল এন্ট্রি দিয়ে বসা!</div>
-          <div class="troll-item"><b>২৬. দু-তরফা দাখিলা:</b> এক পক্ষ গ্রহীতা, অন্য পক্ষ দাতা—বন্ধুর থেকে নোট নেওয়া সেরা উদাহরণ!</div>
-          <div class="troll-item"><b>২৭. নগদান বই:</b> তিন ঘরা নগদান বইয়ের বাট্টার ঘর মেলাতে গিয়ে ৩ ঘণ্টা পার!</div>
-          <div class="troll-item"><b>২৮. কার্যপত্র:</b> ১০ ঘরের সমন্বয় কার্যপত্র আঁকতে গিয়ে খাতার মার্জিন পার!</div>
-          <div class="troll-item"><b>২৯. আর্থিক বিবরণী:</b> সম্পদ আর দায় সমান হওয়া হলো পৃথিবীর ৮ম আশ্চর্য!</div>
-          <div class="troll-item"><b>৩০. অনুপাত বিশ্লেষণ:</b> চলতি অনুপাত ২:১ হওয়া উচিত, কিন্তু পড়ার অনুপাত ০:১!</div>
+        <h2>🤣 ৩০টি কমার্স ট্রল (বিষয়ভিত্তিক)</h2>
+        <div class="sub-tabs">
+          <button class="sub-tab-btn active" onclick="showTrollBook('t-acc', this)">📗 হিসাববিজ্ঞান (১০)</button>
+          <button class="sub-tab-btn" onclick="showTrollBook('t-fin', this)">📘 ফিন্যান্স (১০)</button>
+          <button class="sub-tab-btn" onclick="showTrollBook('t-ent', this)">📙 ব্যবসায় উদ্যোগ (১০)</button>
         </div>
+
+        <!-- ACCOUNTING TROLLS -->
+        <div id="t-acc" class="troll-book-content">
+          <div class="troll-grid">
+            <div class="troll-card"><b>১.</b> রেওয়ামিল মিলে গেলে মনে হয় নোবেল পেয়ে গেছি! <div class="like-btn-group"><button class="like-btn" onclick="react('acc1', true)">👍</button><button class="unlike-btn" onclick="react('acc1', false)">👎</button><span class="react-counter" id="react-count-acc1"></span></div></div>
+            <div class="troll-card"><b>২.</b> জাবেদা না মিললে জীবনের মোড় ক্রেডিট হয়ে যায়! <div class="like-btn-group"><button class="like-btn" onclick="react('acc2', true)">👍</button><button class="unlike-btn" onclick="react('acc2', false)">👎</button><span class="react-counter" id="react-count-acc2"></span></div></div>
+            <div class="troll-card"><b>৩.</b> খতিয়ানের টি-ছক টানতে টানতে খাতা শেষ! <div class="like-btn-group"><button class="like-btn" onclick="react('acc3', true)">👍</button><button class="unlike-btn" onclick="react('acc3', false)">👎</button><span class="react-counter" id="react-count-acc3"></span></div></div>
+            <div class="troll-card"><b>৪.</b> অনিশ্চিত হিসাব বসিয়ে আসার যে পরম শান্তি! <div class="like-btn-group"><button class="like-btn" onclick="react('acc4', true)">👍</button><button class="unlike-btn" onclick="react('acc4', false)">👎</button><span class="react-counter" id="react-count-acc4"></span></div></div>
+            <div class="troll-card"><b>৫.</b> অবচয় আর আমার ব্রেইনের ক্ষয় একই হারে বাড়ছে। <div class="like-btn-group"><button class="like-btn" onclick="react('acc5', true)">👍</button><button class="unlike-btn" onclick="react('acc5', false)">👎</button><span class="react-counter" id="react-count-acc5"></span></div></div>
+            <div class="troll-card"><b>৬.</b> ব্যাংকের পাস বই আর নিজের নগদ বই চিরশত্রু! <div class="like-btn-group"><button class="like-btn" onclick="react('acc6', true)">👍</button><button class="unlike-btn" onclick="react('acc6', false)">👎</button><span class="react-counter" id="react-count-acc6"></span></div></div>
+            <div class="troll-card"><b>৭.</b> রেওয়ামিল না মেলা হলো কমার্সের জাতীয় ট্র্যাজেডি। <div class="like-btn-group"><button class="like-btn" onclick="react('acc7', true)">👍</button><button class="unlike-btn" onclick="react('acc7', false)">👎</button><span class="react-counter" id="react-count-acc7"></span></div></div>
+            <div class="troll-card"><b>৮.</b> তিন ঘরা নগদান বইয়ের বাট্টার ঘর মেলাতে ৩ ঘণ্টা পার! <div class="like-btn-group"><button class="like-btn" onclick="react('acc8', true)">👍</button><button class="unlike-btn" onclick="react('acc8', false)">👎</button><span class="react-counter" id="react-count-acc8"></span></div></div>
+            <div class="troll-card"><b>৯.</b> ১০ ঘরের সমন্বয় কার্যপত্র আঁকতে খাতার মার্জিন হাওয়া! <div class="like-btn-group"><button class="like-btn" onclick="react('acc9', true)">👍</button><button class="unlike-btn" onclick="react('acc9', false)">👎</button><span class="react-counter" id="react-count-acc9"></span></div></div>
+            <div class="troll-card"><b>১০.</b> সম্পদ ও দায় সমান হওয়া মানে পৃথিবীর ৮ম আশ্চর্য! <div class="like-btn-group"><button class="like-btn" onclick="react('acc10', true)">👍</button><button class="unlike-btn" onclick="react('acc10', false)">👎</button><span class="react-counter" id="react-count-acc10"></span></div></div>
+          </div>
+        </div>
+
+        <!-- FINANCE TROLLS -->
+        <div id="t-fin" class="troll-book-content" style="display:none;">
+          <div class="troll-grid">
+            <div class="troll-card"><b>১.</b> ৫ বছর পর ১০০ টাকার মান কত? হিসাব করতেই পরীক্ষার সময় শেষ! <div class="like-btn-group"><button class="like-btn" onclick="react('fin1', true)">👍</button><button class="unlike-btn" onclick="react('fin1', false)">👎</button><span class="react-counter" id="react-count-fin1"></span></div></div>
+            <div class="troll-card"><b>২.</b> পে-ব্যাক সময় বের করতে করতে আমার নিজের জীবনই পার! <div class="like-btn-group"><button class="like-btn" onclick="react('fin2', true)">👍</button><button class="unlike-btn" onclick="react('fin2', false)">👎</button><span class="react-counter" id="react-count-fin2"></span></div></div>
+            <div class="troll-card"><b>৩.</b> ঝুকি বেশি নিলে নাকি লাভ বেশি, ক্যানটিনের ধারের ঝুঁকি কে নেবে? <div class="like-btn-group"><button class="like-btn" onclick="react('fin3', true)">👍</button><button class="unlike-btn" onclick="react('fin3', false)">👎</button><span class="react-counter" id="react-count-fin3"></span></div></div>
+            <div class="troll-card"><b>৪.</b> তারল্য বজায় রাখতে গিয়ে পকেটে ১০ টাকাই থাকে না! <div class="like-btn-group"><button class="like-btn" onclick="react('fin4', true)">👍</button><button class="unlike-btn" onclick="react('fin4', false)">👎</button><span class="react-counter" id="react-count-fin4"></span></div></div>
+            <div class="troll-card"><b>৫.</b> সুদের আসল চক্রবৃদ্ধি রূপ দেখে চোখ কপালে! <div class="like-btn-group"><button class="like-btn" onclick="react('fin5', true)">👍</button><button class="unlike-btn" onclick="react('fin5', false)">👎</button><span class="react-counter" id="react-count-fin5"></span></div></div>
+            <div class="troll-card"><b>৬.</b> ব্যাংকিং বইয়ের সংজ্ঞা মুখস্থ কিন্তু চেক লিখতে জানি না! <div class="like-btn-group"><button class="like-btn" onclick="react('fin6', true)">👍</button><button class="unlike-btn" onclick="react('fin6', false)">👎</button><span class="react-counter" id="react-count-fin6"></span></div></div>
+            <div class="troll-card"><b>৭.</b> শেয়ার বাজারের বাট্টা আর প্রিমিয়ামের গোলকধাঁধা! <div class="like-btn-group"><button class="like-btn" onclick="react('fin7', true)">👍</button><button class="unlike-btn" onclick="react('fin7', false)">👎</button><span class="react-counter" id="react-count-fin7"></span></div></div>
+            <div class="troll-card"><b>৮.</b> মূলধনী বাজেটিং করতে গিয়ে পেন্সিলের শিস ভাঙা নিশ্চিত! <div class="like-btn-group"><button class="like-btn" onclick="react('fin8', true)">👍</button><button class="unlike-btn" onclick="react('fin8', false)">👎</button><span class="react-counter" id="react-count-fin8"></span></div></div>
+            <div class="troll-card"><b>৯.</b> বাণিজ্যিক ব্যাংকের কাজ পড়তে পড়তে নিজের ব্রেইন ফাকা! <div class="like-btn-group"><button class="like-btn" onclick="react('fin9', true)">👍</button><button class="unlike-btn" onclick="react('fin9', false)">👎</button><span class="react-counter" id="react-count-fin9"></span></div></div>
+            <div class="troll-card"><b>১০.</b> চলতি অনুপাত ২:১ হওয়া উচিত, আমার পড়ার অনুপাত ০:১! <div class="like-btn-group"><button class="like-btn" onclick="react('fin10', true)">👍</button><button class="unlike-btn" onclick="react('fin10', false)">👎</button><span class="react-counter" id="react-count-fin10"></span></div></div>
+          </div>
+        </div>
+
+        <!-- ENTREPRENEURSHIP TROLLS -->
+        <div id="t-ent" class="troll-book-content" style="display:none;">
+          <div class="troll-grid">
+            <div class="troll-card"><b>১.</b> ১ কোটি টাকার স্টার্টআপ প্ল্যান আছে, কিন্তু পকেটে ২০ টাকা নেই! <div class="like-btn-group"><button class="like-btn" onclick="react('ent1', true)">👍</button><button class="unlike-btn" onclick="react('ent1', false)">👎</button><span class="react-counter" id="react-count-ent1"></span></div></div>
+            <div class="troll-card"><b>২.</b> হেনরি ফেওলের ১৪ নীতির একটাও আমার পড়ার টেবিলে খাটে না! <div class="like-btn-group"><button class="like-btn" onclick="react('ent2', true)">👍</button><button class="unlike-btn" onclick="react('ent2', false)">👎</button><span class="react-counter" id="react-count-ent2"></span></div></div>
+            <div class="troll-card"><b>৩.</b> সফল উদ্যোক্তা হতে এসেছি, এখন পাস করাই মূল টার্গেট! <div class="like-btn-group"><button class="like-btn" onclick="react('ent3', true)">👍</button><button class="unlike-btn" onclick="react('ent3', false)">👎</button><span class="react-counter" id="react-count-ent3"></span></div></div>
+            <div class="troll-card"><b>৪.</b> বিজ্ঞাপনের মিষ্টি কথায় ভুল চ্যাপ্টার পড়া শেষ! <div class="like-btn-group"><button class="like-btn" onclick="react('ent4', true)">👍</button><button class="unlike-btn" onclick="react('ent4', false)">👎</button><span class="react-counter" id="react-count-ent4"></span></div></div>
+            <div class="troll-card"><b>৫.</b> ব্যবসায় পরিকল্পনা বানাতে গিয়ে বন্ধুদের সাথে বিতর্ক! <div class="like-btn-group"><button class="like-btn" onclick="react('ent5', true)">👍</button><button class="unlike-btn" onclick="react('ent5', false)">👎</button><span class="react-counter" id="react-count-ent5"></span></div></div>
+            <div class="troll-card"><b>৬.</b> মার্কেটিং শিখতে এসে ফেসবুকের মিম স্ক্রোল করাই কাজ! <div class="like-btn-group"><button class="like-btn" onclick="react('ent6', true)">👍</button><button class="unlike-btn" onclick="react('ent6', false)">👎</button><span class="react-counter" id="react-count-ent6"></span></div></div>
+            <div class="troll-card"><b>৭.</b> বিমা কোম্পানির চুক্তি পড়তে পড়তে আমার ঘুম কভার! <div class="like-btn-group"><button class="like-btn" onclick="react('ent7', true)">👍</button><button class="unlike-btn" onclick="react('ent7', false)">👎</button><span class="react-counter" id="react-count-ent7"></span></div></div>
+            <div class="troll-card"><b>৮.</b> কুটির শিল্প শিখতে গিয়ে খাতার পাতায় আঁকাআঁকি! <div class="like-btn-group"><button class="like-btn" onclick="react('ent8', true)">👍</button><button class="unlike-btn" onclick="react('ent8', false)">👎</button><span class="react-counter" id="react-count-ent8"></span></div></div>
+            <div class="troll-card"><b>৯.</b> ব্যবসায় পরিবেশ বুঝতে গিয়ে এলাকার মোড়ের দোকানের হিসাব নিখুঁত! <div class="like-btn-group"><button class="like-btn" onclick="react('ent9', true)">👍</button><button class="unlike-btn" onclick="react('ent9', false)">👎</button><span class="react-counter" id="react-count-ent9"></span></div></div>
+            <div class="troll-card"><b>১০.</b> ঝুঁকির সামনে বুক চিতিয়ে দাঁড়ানোর নামই কমার্স! <div class="like-btn-group"><button class="like-btn" onclick="react('ent10', true)">👍</button><button class="unlike-btn" onclick="react('ent10', false)">👎</button><span class="react-counter" id="react-count-ent10"></span></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- QUIZ GAME SECTION -->
+    <div id="quiz" class="page-section">
+      <div class="card">
+        <h2>🎮 কমার্স ট্রমা কুইজ গেম</h2>
+        <p>সঠিক উত্তর বেছে নিয়ে আপনার কমার্স ব্রেইনের পাওয়ার যাচাই করুন!</p>
+        
+        <div id="quiz-container">
+          <div class="qa-card" style="border-left-color:var(--primary);">
+            <div class="qa-q">১. পরীক্ষার হলে রেওয়ামিল না মিললে একজন খাঁটি কমার্স স্টুডেন্টের প্রথম পদক্ষেপ কী?</div>
+            <div class="quiz-option" onclick="checkQuiz(1, true)">A) 'অনিশ্চিত হিসাব' বসিয়ে বুক ফুলিয়ে বের হওয়া 🏆</div>
+            <div class="quiz-option" onclick="checkQuiz(1, false)">B) পরীক্ষার খাতা কামড়ে ধরে রাখা 😭</div>
+            <div class="quiz-option" onclick="checkQuiz(1, false)">C) পাশের বন্ধুকে ঘুষ দেওয়া 💸</div>
+          </div>
+
+          <div class="qa-card" style="border-left-color:var(--primary);">
+            <div class="qa-q">২. পকেটে থাকা ১০০ টাকার ভবিষ্যৎ মূল্য ১ বছর পর কত হওয়া উচিত (ক্যানটিন নীতি অনুযায়ী)?</div>
+            <div class="quiz-option" onclick="checkQuiz(2, false)">A) ১৫০ টাকা (ব্যাংক সুদসহ) 🏦</div>
+            <div class="quiz-option" onclick="checkQuiz(2, true)">B) ০ টাকা (কারণ চটপটি ও সিঙ্গারা খেয়ে ফেলা হয়েছে) ☕</div>
+            <div class="quiz-option" onclick="checkQuiz(2, false)">C) ৫০০ টাকা 🚀</div>
+          </div>
+
+          <div class="qa-card" style="border-left-color:var(--primary);">
+            <div class="qa-q">৩. ব্যবসায় উদ্যোগ অনুযায়ী কমার্সে ঝুঁকি নেওয়ার সবচেয়ে বড় উদাহরণ কোনটি?</div>
+            <div class="quiz-option" onclick="checkQuiz(3, true)">A) পরীক্ষার আগের রাতে না পড়ে ৯ ঘণ্টা ঘুমানো 😴</div>
+            <div class="quiz-option" onclick="checkQuiz(3, false)">B) নতুন ডায়েরি কেনা 📖</div>
+            <div class="quiz-option" onclick="checkQuiz(3, false)">C) নতুন একটি কলম কেনা 🖊️</div>
+          </div>
+        </div>
+
+        <div id="quiz-score" style="margin-top:15px; font-weight:bold; font-size:18px; color:var(--primary);"></div>
+      </div>
+    </div>
+
+    <!-- HUB SECTION (ENTERTAINMENT & TOOLS) -->
+    <div id="hub" class="page-section">
+      <div class="card">
+        <h3>🔮 কমার্স ফান প্রেডিকশন (Commerce Fun Prediction)</h3>
+        <p>বাটনে চাপ দিয়ে জানুন আজকের কমার্স ফানি টিপস ও প্রেডিকশন!</p>
+        <button class="btn-action" onclick="tellFortune()">✨ আজকের কমার্স ফানি টিপস দেখুন</button>
+      </div>
+
+      <div class="card">
+        <h3>🧮 প্র্যাঙ্ক কমার্স ক্যালকুলেটর</h3>
+        <input type="number" id="calcInput" placeholder="আপনার আনুমানিক মার্কস লিখুন...">
+        <button class="btn-action" onclick="runPrankCalc()">রেওয়ামিল মেলার চান্স হিসাব করুন</button>
+        <p id="calcResult" style="font-weight:bold; color:var(--primary); margin-top:10px;"></p>
+      </div>
+
+      <div class="card">
+        <h3>🖊️ অনাদায়ী কলম ট্র্যাকার</h3>
+        <input type="text" id="friendName" placeholder="বন্ধুর নাম...">
+        <button class="btn-action" onclick="trackPen()">কলমের ভাগ্য জানুন</button>
+        <p id="penResult" style="font-weight:bold; margin-top:10px;"></p>
+      </div>
+
+      <div class="card">
+        <h3>📖 কমার্স ফানি অভিধান (Commerce Dictionary)</h3>
+        <ul>
+          <li><b>অনাদায়ী পাওনা:</b> বন্ধুকে দেওয়া ধার বা কলম, যা ফেরত পাওয়ার সম্ভাবনা ০%!</li>
+          <li><b>অবচয়:</b> কঠিন সিলেবাস দেখে ব্রেইনের যে ক্ষয় হয়।</li>
+          <li><b>অনিশ্চিত হিসাব:</b> অঙ্ক না মিললে খাতা জমা দেওয়ার একমাত্র ভরসা।</li>
+          <li><b>অর্থের সময়মূল্য:</b> বন্ধুদের দেওয়া আজকের ১০ টাকার মান ৫ বছর পর ০ টাকা!</li>
+          <li><b>উদ্যোক্তা:</b> পরীক্ষার আগের রাতে সিলেবাস শেষ করার দুঃসাহসিক পরিকল্পনাকারী।</li>
+        </ul>
       </div>
     </div>
 
     <!-- RELAXATION SECTION -->
     <div id="relax" class="page-section">
       <div class="card" style="text-align:center;">
-        <h3>☕ ১০ মিনিটের স্টাডি টি-ব্রেক টাইমার</h3>
-        <p>পড়াশোনার মাঝে ব্রেইন রিফ্রেশ করতে টাইমার চালুকরুন।</p>
-        <div id="timer-display">10:00</div>
-        <button class="btn-action" onclick="startTimer()">টি-ব্রেক কাউন্টডাউন শুরু করুন</button>
+        <h3>☕ স্টাডি ব্রেক কাউন্টডাউন টাইমার</h3>
+        <div style="margin-bottom: 15px;">
+          <button class="sub-tab-btn" onclick="setTimer(120)">২ মিনিট</button>
+          <button class="sub-tab-btn" onclick="setTimer(300)">৫ মিনিট</button>
+          <button class="sub-tab-btn" onclick="setTimer(600)">১০ মিনিট</button>
+        </div>
+        <div id="timer-display" style="font-size:38px; color:var(--primary); font-weight:bold;">10:00</div>
+        <button class="btn-action" onclick="startTimer()">ব্রেক কাউন্টডাউন শুরু করুন</button>
+        
+        <hr style="margin:25px 0; border-color:var(--border);">
+        <h4>🧘 বক্স ব্রিদিং গাইড (Inhale & Exhale)</h4>
+        <p>সার্কেলটি বড় হওয়ার সময় শ্বাস নিন, ছোট হওয়ার সময় শ্বাস ছাড়ুন।</p>
+        <div class="breath-circle"></div>
       </div>
     </div>
 
-    <!-- CONTACT & HELPLINE SECTION -->
+    <!-- CONTACT & ADMIN SECTION -->
     <div id="contact" class="page-section">
       <div class="card">
-        <h3>📞 জরুরি সেবা ও হেল্পলাইন</h3>
-        <div class="grid-2">
-          <div class="sub-card">
-            <h4>রেওয়ামিল অমিল হেল্পলাইন</h4>
-            <p style="font-size: 20px; font-weight: bold; color: var(--primary-color);">৭৭৭</p>
-          </div>
-          <div class="sub-card">
-            <h4>কমার্স ক্রাইসিস সেবা</h4>
-            <p style="font-size: 20px; font-weight: bold; color: var(--primary-color);">১০০</p>
-          </div>
-          <div class="sub-card">
-            <h4>সরকারি তথ্য ও সেবা</h4>
-            <p style="font-size: 20px; font-weight: bold; color: var(--primary-color);">৩৩৩</p>
-          </div>
+        <h3>➕ অ্যাডমিন নোটিশ ও আপডেট বোর্ড (Admin Only)</h3>
+        <p>শুধুমাত্র অ্যাডমিন পাসওয়ার্ড ব্যবহার করে নতুন নোটিশ বা ছবি যোগ করতে পারবেন। (মেমোরিতে স্থায়ী থাকবে)</p>
+        <button class="btn-action" onclick="openAdminModal()">➕ নতুন নোটিশ যোগ করুন</button>
+      </div>
+
+      <div class="card">
+        <h3>📞 জরুরি হেল্পলাইন (Fake Helpline)</h3>
+        <div style="background:var(--accent); padding:15px; border-radius:10px; text-align:center;">
+          <h4>আরসিটিবি কমার্স ট্রমা জরুরি নম্বর</h4>
+          <p style="font-size: 28px; font-weight: bold; color: var(--primary); margin:5px 0;">০০০০</p>
+          <p style="font-size:12px;">(রেওয়ামিল না মিললে বিনামূল্যে কল করুন)</p>
         </div>
       </div>
 
       <div class="card">
         <h3>💬 সরাসরি মেসেজ পাঠান</h3>
-        <form onsubmit="event.preventDefault(); alert('ধন্যবাদ! আপনার বার্তাটি সফলভাবে পাঠানো হয়েছে।');">
+        <form onsubmit="event.preventDefault(); showModal('ধন্যবাদ! আপনার মেসেজটি সফলভাবে ইয়াসমিন রাত্রি খাদিজা মহোদয়ের কাছে পাঠানো হয়েছে।');">
           <input type="text" placeholder="আপনার নাম" required>
           <input type="email" placeholder="আপনার ইমেইল" required>
-          <textarea placeholder="আপনার সমস্যা বা মতামত লিখুন..." rows="4" required></textarea>
+          <textarea placeholder="আপনার মেসেজ লিখুন..." rows="4" required></textarea>
           <button type="submit" class="btn-action">মেসেজ পাঠান</button>
         </form>
       </div>
@@ -363,15 +665,44 @@
 
   </div>
 
-  <!-- FOOTER SECTION -->
+  <!-- Custom Pop-up Modal -->
+  <div id="customModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3 id="modalTitle">📢 বিজ্ঞপ্তি</h3>
+      <p id="modalBody">বার্তা এখানে আসবে...</p>
+      <button class="btn-action" onclick="closeModal()">ঠিক আছে</button>
+    </div>
+  </div>
+
+  <!-- Admin Password Modal -->
+  <div id="adminModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>🔐 অ্যাডমিন অ্যাক্সেস</h3>
+      <p>নতুন নোটিশ পোস্ট করতে পাসওয়ার্ড দিন (Default: 1234):</p>
+      <input type="password" id="adminPass" placeholder="পাসওয়ার্ড লিখুন...">
+      <button class="btn-action" onclick="verifyAdmin()">লগইন করুন</button>
+      <button class="btn-action" style="background:#555; margin-top:5px;" onclick="closeAdminModal()">বাতিল</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
   <footer>
-    <p><strong>সতর্কীকরণ (Disclaimer):</strong> এটি একটি বিনোদনমূলক/প্যারোডি ওয়েবসাইট। এর সাথে প্রাতিষ্ঠানিকভাবে এনসিটিবি (NCTB) বা শিক্ষা মন্ত্রণালয়ের কোনো সম্পর্ক নেই।</p>
+    <p><strong>সতর্কীকরণ (Disclaimer):</strong> এটি একটি প্যারোডি/বিনোদনমূলক ওয়েবসাইট। প্রাতিষ্ঠানিকভাবে কোনো শিক্ষা বোর্ডের সাথে সম্পর্ক নেই।</p>
     <p>© ২০২৬ Relief for Commerce Traumatized Brains (RCTB)</p>
-    <p>Created & Owned by <b>Yeasmin Khadiza</b>. All rights reserved.</p>
+    <p>Created & Owned by <b>Yeasmin Ratri Khadiza</b>. All rights reserved.</p>
   </footer>
 
   <script>
-    // Tab Switcher Function
+    // LocalStorage Initializations
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('rctb_theme');
+      if (savedTheme) setTheme(savedTheme);
+      
+      loadSavedNotices();
+      loadReactions();
+    });
+
+    // Tab Navigation
     function showTab(tabId, btn) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -379,33 +710,182 @@
       btn.classList.add('active');
     }
 
-    // Theme Switcher Function
-    function toggleTheme() {
-      const body = document.body;
-      if (body.getAttribute('data-theme') === 'light') {
-        body.removeAttribute('data-theme');
+    // Sub-tab Switchers
+    function showStudyBook(id, btn) {
+      document.querySelectorAll('.study-book-content').forEach(c => c.style.display = 'none');
+      document.querySelectorAll('#study .sub-tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).style.display = 'block';
+      btn.classList.add('active');
+    }
+
+    function showTrollBook(id, btn) {
+      document.querySelectorAll('.troll-book-content').forEach(c => c.style.display = 'none');
+      document.querySelectorAll('#trolls .sub-tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).style.display = 'block';
+      btn.classList.add('active');
+    }
+
+    // Theme Switcher with LocalStorage
+    function setTheme(theme) {
+      if (theme === 'dark') document.body.removeAttribute('data-theme');
+      else document.body.setAttribute('data-theme', theme);
+      localStorage.setItem('rctb_theme', theme);
+    }
+
+    // Custom Popup Modal
+    function showModal(msg, title = "📢 আরসিটিবি বার্তা") {
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalBody').innerText = msg;
+      document.getElementById('customModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('customModal').style.display = 'none';
+    }
+
+    // Reaction System with LocalStorage
+    function react(trollId, isLike) {
+      let reactions = JSON.parse(localStorage.getItem('rctb_reactions') || '{}');
+      if (!reactions[trollId]) reactions[trollId] = { likes: 0, unlikes: 0 };
+      
+      if (isLike) {
+        reactions[trollId].likes++;
+        showModal(`ধন্যবাদ! আপনার লাইক সংরক্ষিত হলো! 👍 (মোট লাইক: ${reactions[trollId].likes})`);
       } else {
-        body.setAttribute('data-theme', 'light');
+        reactions[trollId].unlikes++;
+        showModal(`গভীর আফসোস! আপনার দুঃখ আমরা অনুভব করছি। 💔 (মোট আনলাইক: ${reactions[trollId].unlikes})`);
+      }
+      localStorage.setItem('rctb_reactions', JSON.stringify(reactions));
+      updateReactionDisplay(trollId);
+    }
+
+    function loadReactions() {
+      let reactions = JSON.parse(localStorage.getItem('rctb_reactions') || '{}');
+      Object.keys(reactions).forEach(trollId => {
+        updateReactionDisplay(trollId);
+      });
+    }
+
+    function updateReactionDisplay(trollId) {
+      let reactions = JSON.parse(localStorage.getItem('rctb_reactions') || '{}');
+      const el = document.getElementById('react-count-' + trollId);
+      if (el && reactions[trollId]) {
+        el.innerText = `👍 ${reactions[trollId].likes || 0} | 👎 ${reactions[trollId].unlikes || 0}`;
       }
     }
 
-    // 10 Min Countdown Timer Logic
+    // Quiz Game Logic
+    let score = 0;
+    let answered = {};
+    function checkQuiz(qNum, isCorrect) {
+      if (answered[qNum]) {
+        showModal("আপনি ইতিমধ্যে এই প্রশ্নের উত্তর দিয়েছেন!");
+        return;
+      }
+      answered[qNum] = true;
+      if (isCorrect) {
+        score += 10;
+        showModal("সঠিক উত্তর! আপনি একজন খাঁটি কমার্স জিনিয়াস! 🎉 (+১০ পয়েন্ট)");
+      } else {
+        showModal("ভুল উত্তর! আপনার ব্রেইনের অবচয় ঘটে গেল! 😅 (০ পয়েন্ট)");
+      }
+      document.getElementById('quiz-score').innerText = `আপনার বর্তমান স্কোরের হিসাব: ${score} পয়েন্ট`;
+    }
+
+    // Commerce Fun Prediction Logic
+    function tellFortune() {
+      const fortunes = [
+        "হিসাববিজ্ঞান: আজ আপনার রেওয়ামিল মিলবে না, তবে 'অনিশ্চিত হিসাব' বসিয়ে দিলে জিপিএ ৫ নিশ্চিত! 🔮",
+        "ফিন্যান্স: আজকের ১০০ টাকার মান ৫ বছর পর ০ টাকা! দ্রুত ক্যানটিনে চটপটি খেয়ে ফেলুন! ☕",
+        "উদ্যোক্তা: আজ আপনার মাথায় ১ কোটি টাকার বিজনেস আইডিয়া আসবে, কিন্তু বন্ধু বলবে—আগে হোমওয়ার্ক কর! 😂"
+      ];
+      const rand = fortunes[Math.floor(Math.random() * fortunes.length)];
+      showModal(rand, "🔮 আজকের কমার্স ফান প্রেডিকশন");
+    }
+
+    // Prank Calculator
+    function runPrankCalc() {
+      const val = document.getElementById('calcInput').value;
+      if (!val) { alert("অনুগ্রহ করে কোনো নম্বর লিখুন!"); return; }
+      document.getElementById('calcResult').innerText = `আপনার রেওয়ামিল মেলার চান্স ০.০০০১%! তবে প্র্যাঙ্ক বোনাস হিসেবে জিপিএ ৫ নিশ্চিত! 🎉`;
+    }
+
+    // Pen Tracker
+    function trackPen() {
+      const name = document.getElementById('friendName').value;
+      if (!name) { alert("বন্ধুর নাম লিখুন!"); return; }
+      document.getElementById('penResult').innerText = `বিজ্ঞপ্তি: ${name}-কে দেওয়া কলমটি স্থায়ীভাবে 'অনাদায়ী পাওনা' হিসেবে গণ্য হলো! ফেরত পাওয়ার সম্ভাবনা ০%! 🖊️`;
+    }
+
+    // Timer Logic
     let timerInterval;
+    let duration = 600;
+
+    function setTimer(sec) {
+      duration = sec;
+      let min = parseInt(duration / 60, 10);
+      let s = parseInt(duration % 60, 10);
+      document.getElementById('timer-display').innerText = (min < 10 ? "0"+min : min) + ":" + (s < 10 ? "0"+s : s);
+    }
+
     function startTimer() {
       clearInterval(timerInterval);
-      let duration = 600;
       const display = document.getElementById('timer-display');
       timerInterval = setInterval(function () {
-        let minutes = parseInt(duration / 60, 10);
-        let seconds = parseInt(duration % 60, 10);
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-        display.textContent = minutes + ":" + seconds;
+        let min = parseInt(duration / 60, 10);
+        let s = parseInt(duration % 60, 10);
+        display.textContent = (min < 10 ? "0"+min : min) + ":" + (s < 10 ? "0"+s : s);
         if (--duration < 0) {
           clearInterval(timerInterval);
-          alert("☕ টি-ব্রেক শেষ! আবার পড়ার টেবিলে ফিরে যান!");
+          showModal("☕ টি-ব্রেক শেষ! আবার পড়ার টেবিলে ফিরে যান!");
         }
       }, 1000);
+    }
+
+    // Admin & LocalStorage Notice Management
+    function openAdminModal() { document.getElementById('adminModal').style.display = 'flex'; }
+    function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
+    
+    function verifyAdmin() {
+      const pass = document.getElementById('adminPass').value;
+      if (pass === '1234') {
+        closeAdminModal();
+        addNewNoticePrompt();
+      } else {
+        alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
+      }
+    }
+
+    function addNewNoticePrompt() {
+      const title = prompt("নোটিশের শিরোনাম লিখুন:");
+      if (!title) return;
+      const body = prompt("নোটিশের বিস্তারিত বিবরণ লিখুন:");
+      if (!body) return;
+      const img = prompt("ছবি যুক্ত করতে চাইলে Image URL দিন (না থাকলে ফাঁকা রাখুন):");
+
+      const newNotice = { title, body, img, date: new Date().toLocaleDateString('bn-BD') };
+      let notices = JSON.parse(localStorage.getItem('rctb_notices') || '[]');
+      notices.unshift(newNotice);
+      localStorage.setItem('rctb_notices', JSON.stringify(notices));
+
+      showModal("✅ নতুন নোটিশ সফলভাবে যুক্ত ও স্থায়ীভাবে সেভ হয়েছে!", "অ্যাডমিন আপডেট");
+      loadSavedNotices();
+    }
+
+    function loadSavedNotices() {
+      let notices = JSON.parse(localStorage.getItem('rctb_notices') || '[]');
+      const container = document.getElementById('saved-notices-container');
+      container.innerHTML = '';
+      notices.forEach((n) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<span style="background:#2ed573; color:white; padding:3px 8px; border-radius:4px; font-size:12px; font-weight:bold;">অ্যাডমিন পোস্ট</span>
+          <h3>${n.title}</h3>
+          <p>${n.body}</p>
+          ${n.img ? `<img src="${n.img}" style="max-width:100%; border-radius:8px; margin-top:10px;">` : ''}
+          <p style="font-size:11px; color:var(--primary); margin-top:8px;">প্রকাশের তারিখ: ${n.date}</p>`;
+        container.appendChild(card);
+      });
     }
   </script>
 </body>
