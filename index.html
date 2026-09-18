@@ -65,16 +65,13 @@
       margin-bottom: 10px;
     }
 
-    .profile-img-placeholder {
-      width: 60px;
-      height: 60px;
+    .site-logo-img {
+      width: 65px;
+      height: 65px;
       border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #ffffff;
       background: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      border: 2px solid white;
     }
 
     .theme-switcher {
@@ -321,7 +318,6 @@
       border-top: 1px solid var(--border);
     }
 
-    /* YouTube Embed Container */
     .video-container {
       position: relative;
       padding-bottom: 56.25%;
@@ -350,7 +346,8 @@
     </div>
     
     <div class="brand-box">
-      <div class="profile-img-placeholder" title="Owner Profile">👩‍💼</div>
+      <!-- Dynamic Logo Image -->
+      <img id="myLogo" class="site-logo-img" src="https://via.placeholder.com/65?text=RCTB" alt="RCTB Logo">
       <div>
         <h1 style="margin:0; font-size: 22px;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার</h1>
         <h2 style="margin:4px 0; color: var(--primary);">আরসিটিবি (RCTB) বোর্ড</h2>
@@ -393,7 +390,6 @@
         <p><em>বিশেষ নির্দেশ: রেওয়ামিল না মিললে কোনো শিক্ষক মানসিক খোঁচা দিতে পারবেন না।</em></p>
       </div>
 
-      <!-- Dynamic Saved Notices Container -->
       <div id="saved-notices-container"></div>
 
       <div class="card">
@@ -443,7 +439,6 @@
           <button class="sub-tab-btn" onclick="showStudyBook('sec-ent', this)">📙 ব্যবসায় উদ্যোগ</button>
         </div>
 
-        <!-- ACCOUNTING STUDY -->
         <div id="sec-acc" class="study-book-content">
           <div class="qa-card">
             <div class="qa-q">❓ প্রশ্ন ১: ব্যাংক জমাতিরিক্তের সুদ (Bank Overdraft Interest) জাবেদায় ডেবিট না ক্রেডিট?</div>
@@ -457,7 +452,6 @@
           </div>
         </div>
 
-        <!-- FINANCE STUDY -->
         <div id="sec-fin" class="study-book-content" style="display:none;">
           <div class="qa-card">
             <div class="qa-q">❓ প্রশ্ন ১: চক্রবৃদ্ধিকরণ (Compounding) আর বাট্টাকরণ (Discounting)-এর পার্থক্য কী?</div>
@@ -471,7 +465,6 @@
           </div>
         </div>
 
-        <!-- ENTREPRENEURSHIP STUDY -->
         <div id="sec-ent" class="study-book-content" style="display:none;">
           <div class="qa-card">
             <div class="qa-q">❓ প্রশ্ন ১: ঝুঁকি (Risk) ও অনিশ্চয়তার (Uncertainty) মধ্যে মূল পার্থক্য কী?</div>
@@ -498,7 +491,6 @@
           <button class="sub-tab-btn" onclick="showTrollBook('t-ent', this)">📙 ব্যবসায় উদ্যোগ (১০)</button>
         </div>
 
-        <!-- ACCOUNTING TROLLS -->
         <div id="t-acc" class="troll-book-content">
           <div class="troll-grid">
             <div class="troll-card"><b>১.</b> রেওয়ামিল মিলে গেলে মনে হয় নোবেল পেয়ে গেছি! <div class="like-btn-group"><button class="like-btn" onclick="react('acc1', true)">👍</button><button class="unlike-btn" onclick="react('acc1', false)">👎</button><span class="react-counter" id="react-count-acc1"></span></div></div>
@@ -514,7 +506,6 @@
           </div>
         </div>
 
-        <!-- FINANCE TROLLS -->
         <div id="t-fin" class="troll-book-content" style="display:none;">
           <div class="troll-grid">
             <div class="troll-card"><b>১.</b> ৫ বছর পর ১০০ টাকার মান কত? হিসাব করতেই পরীক্ষার সময় শেষ! <div class="like-btn-group"><button class="like-btn" onclick="react('fin1', true)">👍</button><button class="unlike-btn" onclick="react('fin1', false)">👎</button><span class="react-counter" id="react-count-fin1"></span></div></div>
@@ -530,7 +521,6 @@
           </div>
         </div>
 
-        <!-- ENTREPRENEURSHIP TROLLS -->
         <div id="t-ent" class="troll-book-content" style="display:none;">
           <div class="troll-grid">
             <div class="troll-card"><b>১.</b> ১ কোটি টাকার স্টার্টআপ প্ল্যান আছে, কিন্তু পকেটে ২০ টাকা নেই! <div class="like-btn-group"><button class="like-btn" onclick="react('ent1', true)">👍</button><button class="unlike-btn" onclick="react('ent1', false)">👎</button><span class="react-counter" id="react-count-ent1"></span></div></div>
@@ -582,7 +572,7 @@
       </div>
     </div>
 
-    <!-- HUB SECTION (ENTERTAINMENT & TOOLS) -->
+    <!-- HUB SECTION -->
     <div id="hub" class="page-section">
       <div class="card">
         <h3>🔮 কমার্স ফান প্রেডিকশন (Commerce Fun Prediction)</h3>
@@ -639,8 +629,8 @@
     <div id="contact" class="page-section">
       <div class="card">
         <h3>➕ অ্যাডমিন নোটিশ ও আপডেট বোর্ড (Admin Only)</h3>
-        <p>শুধুমাত্র অ্যাডমিন পাসওয়ার্ড ব্যবহার করে নতুন নোটিশ বা ছবি যোগ করতে পারবেন। (মেমোরিতে স্থায়ী থাকবে)</p>
-        <button class="btn-action" onclick="openAdminModal()">➕ নতুন নোটিশ যোগ করুন</button>
+        <p>শুধুমাত্র অ্যাডমিন পাসওয়ার্ড ব্যবহার করে নতুন নোটিশ যোগ করতে বা লোগো আপডেট করতে পারবেন।</p>
+        <button class="btn-action" onclick="openAdminModal()">🔐 অ্যাডমিন প্যানেলে লগইন করুন</button>
       </div>
 
       <div class="card">
@@ -674,14 +664,30 @@
     </div>
   </div>
 
-  <!-- Admin Password Modal -->
+  <!-- Admin Password & Control Modal -->
   <div id="adminModal" class="modal-overlay">
     <div class="modal-box">
       <h3>🔐 অ্যাডমিন অ্যাক্সেস</h3>
-      <p>নতুন নোটিশ পোস্ট করতে পাসওয়ার্ড দিন (Default: 1234):</p>
-      <input type="password" id="adminPass" placeholder="পাসওয়ার্ড লিখুন...">
-      <button class="btn-action" onclick="verifyAdmin()">লগইন করুন</button>
-      <button class="btn-action" style="background:#555; margin-top:5px;" onclick="closeAdminModal()">বাতিল</button>
+      <div id="adminLoginArea">
+        <p>অ্যাডমিন প্যানেলে প্রবেশের গোপন পাসওয়ার্ড দিন:</p>
+        <input type="password" id="adminPass" placeholder="পাসওয়ার্ড লিখুন...">
+        <button class="btn-action" onclick="verifyAdmin()">লগইন করুন</button>
+        <button class="btn-action" style="background:#555; margin-top:5px;" onclick="closeAdminModal()">বাতিল</button>
+      </div>
+
+      <!-- Logged In Admin Actions -->
+      <div id="adminActionArea" style="display:none; text-align:left;">
+        <h4 style="color:var(--primary); margin-top:0;">স্বাগতম অ্যাডমিন!</h4>
+        <hr style="border-color:var(--border);">
+        <p style="margin-bottom:4px; font-size:13px;"><b>১. নতুন নোটিশ পোস্ট করুন:</b></p>
+        <button class="btn-action" style="margin-top:0;" onclick="addNewNoticePrompt()">➕ নতুন নোটিশ পোস্ট</button>
+        
+        <hr style="border-color:var(--border); margin:15px 0;">
+        <p style="margin-bottom:4px; font-size:13px;"><b>২. ওয়েবসাইটের লোগো পরিবর্তন করুন:</b></p>
+        <input type="text" id="logoUrlInput" placeholder="লোগোর Direct Image URL লিংক দিন...">
+        <button class="btn-action" style="margin-top:0; background:#00d2d3; color:#000;" onclick="updateLogoFromAdmin()">🖼️ লোগো আপডেট করুন</button>
+        <button class="btn-action" style="background:#555; margin-top:15px;" onclick="closeAdminModal()">বন্ধ করুন</button>
+      </div>
     </div>
   </div>
 
@@ -698,6 +704,11 @@
       const savedTheme = localStorage.getItem('rctb_theme');
       if (savedTheme) setTheme(savedTheme);
       
+      const savedLogo = localStorage.getItem('rctb_logo_url');
+      if (savedLogo) {
+        document.getElementById('myLogo').src = savedLogo;
+      }
+
       loadSavedNotices();
       loadReactions();
     });
@@ -743,7 +754,7 @@
       document.getElementById('customModal').style.display = 'none';
     }
 
-    // Reaction System with LocalStorage
+    // Reaction System
     function react(trollId, isLike) {
       let reactions = JSON.parse(localStorage.getItem('rctb_reactions') || '{}');
       if (!reactions[trollId]) reactions[trollId] = { likes: 0, unlikes: 0 };
@@ -842,18 +853,37 @@
       }, 1000);
     }
 
-    // Admin & LocalStorage Notice Management
-    function openAdminModal() { document.getElementById('adminModal').style.display = 'flex'; }
-    function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
+    // Admin Access Management
+    function openAdminModal() { 
+      document.getElementById('adminLoginArea').style.display = 'block';
+      document.getElementById('adminActionArea').style.display = 'none';
+      document.getElementById('adminPass').value = '';
+      document.getElementById('adminModal').style.display = 'flex'; 
+    }
+    
+    function closeAdminModal() { 
+      document.getElementById('adminModal').style.display = 'none'; 
+    }
     
     function verifyAdmin() {
       const pass = document.getElementById('adminPass').value;
-      if (pass === '1234') {
-        closeAdminModal();
-        addNewNoticePrompt();
+      if (pass === '1234') { // Default admin pass is 1234
+        document.getElementById('adminLoginArea').style.display = 'none';
+        document.getElementById('adminActionArea').style.display = 'block';
       } else {
         alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
       }
+    }
+
+    function updateLogoFromAdmin() {
+      const url = document.getElementById('logoUrlInput').value;
+      if (!url || url.trim() === '') {
+        alert("অনুগ্রহ করে একটি ইমেজের সঠিক URL লিংক দিন!");
+        return;
+      }
+      document.getElementById('myLogo').src = url;
+      localStorage.setItem('rctb_logo_url', url);
+      alert("✅ ওয়েবসাইটের লোগো সফলভাবে আপডেট ও স্থায়ীভাবে সেভ হয়েছে!");
     }
 
     function addNewNoticePrompt() {
@@ -868,7 +898,7 @@
       notices.unshift(newNotice);
       localStorage.setItem('rctb_notices', JSON.stringify(notices));
 
-      showModal("✅ নতুন নোটিশ সফলভাবে যুক্ত ও স্থায়ীভাবে সেভ হয়েছে!", "অ্যাডমিন আপডেট");
+      alert("✅ নতুন নোটিশ সফলভাবে পোস্ট হয়েছে!");
       loadSavedNotices();
     }
 
