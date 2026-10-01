@@ -1,882 +1,5308 @@
-"use strict";
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f5b8d5">
+<meta name="description" content="RCTB — Relief for Commerce Traumatized Brains">
+<title>RCTB — Relief for Commerce Traumatized Brains</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --bg:#fff7fb;
+  --bg2:#f6efff;
+  --card:rgba(255,255,255,.76);
+  --solid:#fff;
+  --text:#302536;
+  --muted:#786d80;
+  --primary:#e37eac;
+  --secondary:#9c82df;
+  --accent:#ff6f9e;
+  --green:#65c99b;
+  --yellow:#ffd36b;
+  --red:#ef6d78;
+  --border:rgba(102,72,115,.15);
+  --shadow:0 18px 50px rgba(97,66,112,.13);
+  --nav:rgba(255,255,255,.86);
+}
+
+html[data-theme="dark"]{
+  --bg:#141119;
+  --bg2:#21192b;
+  --card:rgba(40,31,50,.84);
+  --solid:#292033;
+  --text:#f9f0fc;
+  --muted:#bcaec5;
+  --primary:#e58bb7;
+  --secondary:#a18ae3;
+  --accent:#ff82ab;
+  --green:#65d5a3;
+  --yellow:#ffdc78;
+  --red:#f27682;
+  --border:rgba(255,255,255,.1);
+  --shadow:0 20px 55px rgba(0,0,0,.34);
+  --nav:rgba(30,23,39,.9);
+}
+
+html[data-theme="neon"]{
+  --bg:#080a14;
+  --bg2:#10172b;
+  --card:rgba(13,21,42,.62);
+  --solid:#10182d;
+  --text:#e9ffff;
+  --muted:#a8becb;
+  --primary:#ff65c7;
+  --secondary:#6f8cff;
+  --accent:#5ffff0;
+  --green:#60ffae;
+  --yellow:#ffe96c;
+  --red:#ff6688;
+  --border:rgba(95,255,240,.2);
+  --shadow:0 0 50px rgba(99,107,255,.2);
+  --nav:rgba(8,12,26,.86);
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  overflow-x:hidden;
+  color:var(--text);
+  font-family:"Noto Sans Bengali","Baloo 2",sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(255,161,205,.22),transparent 28%),
+    radial-gradient(circle at 90% 20%,rgba(163,137,245,.2),transparent 28%),
+    linear-gradient(135deg,var(--bg),var(--bg2));
+  background-attachment:fixed;
+  transition:.3s;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.07;
+  background-image:radial-gradient(circle,var(--primary) 1px,transparent 1px);
+  background-size:27px 27px;
+  z-index:-2;
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+::selection{
+  color:#fff;
+  background:var(--primary);
+}
+
+.container{
+  width:min(1180px,92%);
+  margin:auto;
+}
+
+.glass{
+  background:var(--card);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+
+#particles{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:-1;
+}
+
+.particle{
+  position:absolute;
+  opacity:.12;
+  animation:floatUp linear infinite;
+}
+
+@keyframes floatUp{
+  from{
+    transform:translateY(110vh) rotate(0deg);
+  }
+  to{
+    transform:translateY(-15vh) rotate(360deg);
+  }
+}
 
 /* =========================
-   THEME
+   NAVIGATION
 ========================= */
 
-const themeBtn = document.getElementById("themeBtn");
-
-function setTheme(theme){
-
-document.body.classList.remove("dark","neon");
-
-if(theme === "dark"){
-document.body.classList.add("dark");
+.navbar{
+  position:fixed;
+  z-index:1000;
+  top:10px;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(1190px,95%);
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:9px;
+  border-radius:22px;
+  background:var(--nav);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(20px);
 }
 
-if(theme === "neon"){
-document.body.classList.add("neon");
+.logo{
+  width:45px;
+  height:45px;
+  flex:0 0 45px;
+  display:grid;
+  place-items:center;
+  border-radius:15px;
+  color:#fff;
+  font-weight:900;
+  font-size:14px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  box-shadow:0 8px 25px rgba(220,111,161,.3);
+  cursor:pointer;
+  user-select:none;
 }
 
-localStorage.setItem("rctb-theme",theme);
-
-if(themeBtn){
-themeBtn.textContent =
-theme === "light" ? "🌙" :
-theme === "dark" ? "💎" : "☀️";
+.nav-scroll{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  flex:1;
 }
 
+.nav-scroll::-webkit-scrollbar{
+  display:none;
 }
 
-const savedTheme =
-localStorage.getItem("rctb-theme") || "light";
-
-setTheme(savedTheme);
-
-if(themeBtn){
-
-themeBtn.addEventListener("click",()=>{
-
-const current =
-localStorage.getItem("rctb-theme") || "light";
-
-const next =
-current === "light"
-? "dark"
-: current === "dark"
-? "neon"
-: "light";
-
-setTheme(next);
-
-});
-
+.nav-link{
+  border:0;
+  background:transparent;
+  color:var(--text);
+  border-radius:12px;
+  padding:9px 11px;
+  white-space:nowrap;
+  font-size:12px;
+  font-weight:800;
+  transition:.2s;
 }
 
+.nav-link:hover,
+.nav-link.active{
+  color:#fff;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+}
+
+.theme-btn{
+  flex:0 0 40px;
+  width:40px;
+  height:40px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  color:var(--text);
+  background:var(--solid);
+}
 
 /* =========================
-   NOTICES
+   GENERAL
 ========================= */
 
-const defaultNotices = [
-{
-title:"⚠ Official Warning",
-text:"রেওয়ামিল প্রথম চেষ্টায় মিলে গেলে সন্দেহ করুন—কোথাও বড় ভুল হয়েছে!"
-},
-{
-title:"☕ Emergency Tea Notice",
-text:"Commerce brain overheating detected. Immediate tea break recommended."
-},
-{
-title:"📢 Finance Department",
-text:"আজকের mental liquidity অত্যন্ত কম। নতুন অংক শুরু করা নিষেধ।"
-}
-];
-
-function getNotices(){
-
-try{
-return JSON.parse(
-localStorage.getItem("rctb-notices")
-) || defaultNotices;
-}catch{
-return defaultNotices;
+main{
+  padding-top:82px;
 }
 
+section{
+  padding:70px 0;
+  scroll-margin-top:95px;
 }
 
-function saveNotices(data){
-
-localStorage.setItem(
-"rctb-notices",
-JSON.stringify(data)
-);
-
+.section-head{
+  margin-bottom:28px;
 }
 
-function renderNotices(){
-
-const list =
-document.getElementById("noticeList");
-
-if(!list)return;
-
-list.innerHTML="";
-
-getNotices().forEach((notice,index)=>{
-
-const div=document.createElement("div");
-
-div.className="notice";
-
-const h=document.createElement("h3");
-h.textContent=notice.title;
-
-const p=document.createElement("p");
-p.textContent=notice.text;
-
-div.append(h,p);
-
-list.appendChild(div);
-
-});
-
+.section-kicker{
+  color:var(--secondary);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:1px;
+  text-transform:uppercase;
 }
 
-renderNotices();
+.section-head h2{
+  margin-top:5px;
+  font-family:"Baloo 2","Noto Sans Bengali",sans-serif;
+  font-size:clamp(35px,5vw,55px);
+  line-height:1;
+}
 
+.section-head p{
+  margin-top:8px;
+  color:var(--muted);
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 13px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:var(--card);
+  color:var(--secondary);
+  font-size:12px;
+  font-weight:900;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  border:0;
+  border-radius:14px;
+  padding:11px 16px;
+  font-weight:800;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+}
+
+.btn-primary{
+  color:#fff;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  box-shadow:0 10px 25px rgba(141,105,200,.2);
+}
+
+.btn-soft{
+  color:var(--text);
+  background:var(--solid);
+  border:1px solid var(--border);
+}
+
+.btn-danger{
+  color:#fff;
+  background:var(--red);
+}
+
+.field{
+  width:100%;
+  padding:11px 13px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  outline:none;
+  color:var(--text);
+  background:var(--solid);
+}
+
+.field:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(227,126,172,.12);
+}
+
+textarea.field{
+  min-height:90px;
+  resize:vertical;
+}
+
+.form{
+  display:grid;
+  gap:10px;
+}
+
+.tool-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+}
+
+.tool-row .field{
+  flex:1;
+  min-width:130px;
+}
+
+.result{
+  margin-top:13px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:rgba(227,126,172,.08);
+  line-height:1.7;
+}
+
+.reveal{
+  opacity:0;
+  transform:translateY(20px);
+  transition:.65s ease;
+}
+
+.reveal.visible{
+  opacity:1;
+  transform:none;
+}
 
 /* =========================
-   ADMIN
+   HERO
 ========================= */
 
-function openAdmin(){
-
-const modal=document.getElementById("adminModal");
-
-if(modal){
-modal.classList.add("show");
+.hero{
+  min-height:calc(100vh - 82px);
+  display:flex;
+  align-items:center;
 }
 
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:30px;
+  align-items:center;
 }
 
-function closeAdmin(){
-
-const modal=document.getElementById("adminModal");
-
-if(modal){
-modal.classList.remove("show");
+.hero h1{
+  margin:17px 0;
+  font-family:"Baloo 2","Noto Sans Bengali",sans-serif;
+  font-size:clamp(54px,8vw,94px);
+  line-height:.85;
+  letter-spacing:-2px;
 }
 
+.hero h1 span{
+  color:transparent;
+  background:linear-gradient(120deg,var(--primary),var(--secondary),var(--accent));
+  -webkit-background-clip:text;
+  background-clip:text;
 }
 
-window.openAdmin=openAdmin;
-window.closeAdmin=closeAdmin;
-
-
-/*
-IMPORTANT:
-Static GitHub Pages cannot keep a password
-truly secret.
-
-This value is only a demo authentication layer.
-Real security requires a backend.
-*/
-
-const ADMIN_HASH =
-"f1e6b6c7f4f8e8d0c3b7b0a8e9f6a2c1";
-
-async function hashText(text){
-
-const data =
-new TextEncoder().encode(text);
-
-const hash =
-await crypto.subtle.digest(
-"SHA-256",
-data
-);
-
-return [...new Uint8Array(hash)]
-.map(b=>b.toString(16).padStart(2,"0"))
-.join("");
-
+.hero-sub{
+  max-width:680px;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.8;
 }
 
-async function loginAdmin(){
-
-const input =
-document.getElementById("adminPassword");
-
-const message =
-document.getElementById("loginMessage");
-
-const loginBox =
-document.getElementById("loginBox");
-
-const panel =
-document.getElementById("adminPanel");
-
-if(!input)return;
-
-const hash =
-await hashText(input.value);
-
-/*
-Replace ADMIN_HASH with the SHA-256
-hash generated from your own password.
-*/
-
-if(hash === ADMIN_HASH){
-
-loginBox.hidden=true;
-panel.hidden=false;
-
-}else{
-
-message.textContent=
-"❌ Wrong password.";
-
-input.value="";
-
+.hero-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:24px;
 }
 
+.notice-strip{
+  margin-top:20px;
+  padding:12px 15px;
+  border:1px solid rgba(255,111,158,.2);
+  border-radius:15px;
+  background:rgba(255,111,158,.08);
+  font-size:13px;
+  line-height:1.6;
 }
 
-window.loginAdmin=loginAdmin;
+.hero-card{
+  min-height:390px;
+  padding:30px;
+  border-radius:34px;
+  position:relative;
+  overflow:hidden;
+}
 
+.hero-card::after{
+  content:"";
+  position:absolute;
+  width:200px;
+  height:200px;
+  right:-70px;
+  top:-70px;
+  border-radius:50%;
+  background:var(--primary);
+  opacity:.13;
+}
+
+.mascot{
+  width:165px;
+  height:165px;
+  margin:10px auto 22px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  font-size:82px;
+  background:linear-gradient(135deg,#ffe1ed,#e8ddff);
+  box-shadow:inset 0 0 0 8px #ffffff88,0 20px 50px rgba(130,95,140,.14);
+  animation:mascotFloat 3.5s ease-in-out infinite;
+}
+
+@keyframes mascotFloat{
+  0%,100%{transform:translateY(0) rotate(-2deg)}
+  50%{transform:translateY(-10px) rotate(2deg)}
+}
+
+.hero-card h3{
+  text-align:center;
+  font-size:25px;
+}
+
+.hero-card p{
+  margin-top:5px;
+  color:var(--muted);
+  text-align:center;
+}
 
 /* =========================
-   ADD NOTICE
+   NOTICE
 ========================= */
 
-function addNotice(){
-
-const title =
-document.getElementById("noticeTitle");
-
-const text =
-document.getElementById("noticeText");
-
-if(!title?.value || !text?.value){
-
-alert("Title and notice required.");
-
-return;
-
+.notice-layout{
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:20px;
 }
 
-const notices=getNotices();
-
-notices.unshift({
-title:title.value,
-text:text.value
-});
-
-saveNotices(notices);
-
-title.value="";
-text.value="";
-
-renderNotices();
-
-alert("Notice published!");
-
+.notice-list{
+  display:grid;
+  gap:12px;
 }
 
-window.addNotice=addNotice;
-
-
-function clearNotices(){
-
-if(confirm("Delete all custom notices?")){
-
-localStorage.removeItem("rctb-notices");
-
-renderNotices();
-
+.notice{
+  padding:18px;
+  border-radius:20px;
 }
 
+.notice-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
 }
 
-window.clearNotices=clearNotices;
+.notice-title{
+  font-size:18px;
+  font-weight:900;
+}
 
+.notice-date{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.notice-body{
+  margin-top:7px;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.notice-actions{
+  display:flex;
+  gap:7px;
+  margin-top:10px;
+}
+
+.notice-admin{
+  height:max-content;
+  padding:22px;
+  border-radius:22px;
+}
+
+.notice-admin p{
+  margin:7px 0 15px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+}
 
 /* =========================
-   TROLL DATA
+   SONGS
 ========================= */
 
-const accounting=[
+.song-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
 
-"পরীক্ষার হলে প্রথম চেষ্টাতেই রেওয়ামিল মিলে গেলে খুশি হবেন না—বুঝবেন কোথাও বিরাট গোলমাল হয়েছে!",
+.song-card{
+  padding:21px;
+  border-radius:24px;
+}
 
-"২ + ২ = ৪ জানি, তাও পরীক্ষার হলে ৩ বার calculator দিয়ে নিশ্চিত হতে হয়!",
+.song-cover{
+  aspect-ratio:16/9;
+  display:grid;
+  place-items:center;
+  margin-bottom:15px;
+  border-radius:18px;
+  font-size:45px;
+  background:linear-gradient(135deg,rgba(227,126,172,.2),rgba(156,130,223,.2));
+}
 
-"দুনিয়ার সব কোম্পানির Debit-Credit মিলালাম, নিজের পকেটের balance কোনোদিন মিলল না!",
+.song-card h3{
+  font-size:20px;
+}
 
-"বন্ধুর পেছনে নাস্তায় উড়ানো টাকা Accounting-এর ভাষায় Bad Debt!",
+.song-card p{
+  min-height:48px;
+  margin:5px 0 13px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+}
 
-"জীবনের ভুলগুলোকেও যদি ভুল সংশোধন জাবেদা দিয়ে ঠিক করা যেত!",
-
-"Balance Sheet-এর দুই পাশ এক করার যুদ্ধের কাছে অন্য সব যুদ্ধ পানসে!",
-
-"পরীক্ষার আগের রাতে brain-এর depreciation এত বেশি হয় যে শেষে book value zero!",
-
-"Cash Book-এ টাকা আসার কথা, বাস্তবে পকেট থেকে টাকা শুধু Credit পাশ দিয়েই বের হয়!",
-
-"এক পাশ ১০০০ টাকা বেশি—এই ১০০০ টাকার খোঁজে পরীক্ষার আধা ঘণ্টা শেষ!",
-
-"সারাদিন নিজেকে Asset মনে হয়, result-এর দিন বুঝি আসলে Liability!"
-];
-
-
-const finance=[
-
-"আজকের ১ টাকা ভবিষ্যতের ১ টাকার চেয়ে দামি—তাই টাকা আসামাত্র খরচ!",
-
-"Risk বেশি তো লাভ বেশি—বন্ধুকে ধার দিলাম, এখন বন্ধুকেই খুঁজে পাই না!",
-
-"আমার wallet-এর liquidity পানির চেয়েও পাতলা!",
-
-"Capital Budgeting-এর NPV কষে দেখলাম—life-এর answer সবসময় negative!",
-
-"ব্যাংকের সুদের হার জানা সহজ, Commerce পড়ার mental cost-এর formula নেই!",
-
-"সব ডিম এক ঝুড়িতে না রেখে ৫ বন্ধুর কাছ থেকে ১০ টাকা করে ধার—portfolio diversification!",
-
-"মাসের শুরুতে budget, দুপুরের পর deficit budget!",
-
-"ভুল নম্বরে টাকা পাঠানোর কষ্ট আর অংকে n-এর মান ভুল—দুই-ই trauma!",
-
-"Commerce নেওয়া ছিল high-risk project, payback period যেন অনন্ত!",
-
-"DPS-এ টাকা দ্বিগুণ হতে বছর লাগে, পরীক্ষায় zero পেতে ০.১ সেকেন্ড!"
-];
-
-
-const business=[
-
-"Business-এ loss হলে ভাগ্য খারাপ, profit হলে My Creativity!",
-
-"ধৈর্য, সাহস, risk নেওয়ার ক্ষমতা—পরীক্ষার হলে থাকলে সবাই mastermind নকলবাজ ভাববে!",
-
-"চাকরি না পেলে ডাবের দোকান/ঝালমুড়ির stall—Business বইতে template ready!",
-
-"একমালিকানা ব্যবসা সেরা—loss হলে partner-কে দোষ দেওয়ার সুযোগ নেই!",
-
-"Shareholders কোম্পানির মালিক, কিন্তু zero পেলে আসল মালিক আম্মু-আব্বু!",
-
-"আকর্ষণীয় বিজ্ঞাপনে product বিক্রি হয়; Commerce পড়লে দীর্ঘশ্বাস বিক্রি হয়!",
-
-"Business plan বানাতে Elon Musk, result হাতে পেয়ে ভিনগ্রহের প্রাণী!",
-
-"Business risk-এর insurance আছে; Commerce trauma-এর insurance নেই!",
-
-"কুটির শিল্পে পাটি/নকশিকাঁথা, Commerce পড়ায় নিজের মাথার চুল টানা!",
-
-"Trade license পাওয়া সহজ, সৃজনশীল প্রশ্নের গ ও ঘ-এর perfect answer কঠিন!"
-];
-
+.song-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
 
 /* =========================
-   RENDER TROLLS
+   TOOLS / RELAX
 ========================= */
 
-function renderTrolls(data,containerId,searchId){
-
-const container=
-document.getElementById(containerId);
-
-if(!container)return;
-
-function render(filter=""){
-
-container.innerHTML="";
-
-data
-.filter(x=>
-x.toLowerCase()
-.includes(filter.toLowerCase())
-)
-.forEach((text,index)=>{
-
-const card=
-document.createElement("article");
-
-card.className="troll-card";
-
-const number=
-document.createElement("span");
-
-number.className="badge";
-
-number.textContent=
-"TRAUMA FILE #"+String(index+1).padStart(2,"0");
-
-const p=
-document.createElement("p");
-
-p.textContent=text;
-
-const row=
-document.createElement("div");
-
-row.className="like-row";
-
-const like=
-document.createElement("button");
-
-like.textContent="👍 Like 0";
-
-const dislike=
-document.createElement("button");
-
-dislike.textContent="👎 0";
-
-let likes=
-Number(
-localStorage.getItem("like-"+containerId+"-"+index)
-)||0;
-
-let dislikes=
-Number(
-localStorage.getItem("dislike-"+containerId+"-"+index)
-)||0;
-
-like.textContent="👍 Like "+likes;
-dislike.textContent="👎 "+dislikes;
-
-like.onclick=()=>{
-likes++;
-localStorage.setItem(
-"like-"+containerId+"-"+index,
-likes
-);
-like.textContent="👍 Like "+likes;
-};
-
-dislike.onclick=()=>{
-dislikes++;
-localStorage.setItem(
-"dislike-"+containerId+"-"+index,
-dislikes
-);
-dislike.textContent="👎 "+dislikes;
-};
-
-row.append(like,dislike);
-
-card.append(number,p,row);
-
-container.appendChild(card);
-
-});
-
+.tool-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
 }
 
-render();
-
-const search=
-document.getElementById(searchId);
-
-if(search){
-
-search.addEventListener(
-"input",
-()=>render(search.value)
-);
-
+.tool{
+  padding:24px;
+  border-radius:25px;
 }
 
+.tool h3{
+  margin-bottom:7px;
+  font-size:23px;
 }
 
-renderTrolls(
-accounting,
-"accountingCards",
-"accountingSearch"
-);
+.tool > p{
+  margin-bottom:15px;
+  color:var(--muted);
+  line-height:1.65;
+}
 
-renderTrolls(
-finance,
-"financeCards",
-"financeSearch"
-);
+.big-number{
+  font-size:55px;
+  font-weight:900;
+  line-height:1;
+  color:var(--primary);
+}
 
-renderTrolls(
-business,
-"businessCards",
-"businessSearch"
-);
+.progress{
+  height:13px;
+  margin:12px 0;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(120,100,130,.12);
+}
 
+.progress-bar{
+  width:72%;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,var(--green),var(--yellow),var(--red));
+  transition:.4s;
+}
+
+.breath-circle{
+  width:205px;
+  height:205px;
+  margin:17px auto;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  border-radius:50%;
+  border:7px solid rgba(255,255,255,.45);
+  background:radial-gradient(circle,rgba(255,255,255,.9),rgba(227,126,172,.3));
+  box-shadow:0 0 45px rgba(227,126,172,.22);
+  transition:transform 4s ease-in-out;
+}
+
+.breath-circle.inhale{
+  transform:scale(1.18);
+}
+
+.breath-circle.exhale{
+  transform:scale(.82);
+}
+
+/* =========================
+   TROLLS
+========================= */
+
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:19px;
+}
+
+.search{
+  flex:1;
+  min-width:230px;
+}
+
+.troll-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+
+.troll{
+  padding:20px;
+  border-radius:22px;
+  position:relative;
+  overflow:hidden;
+}
+
+.troll::after{
+  content:"CANCELLED";
+  position:absolute;
+  right:-32px;
+  top:20px;
+  padding:4px 38px;
+  border:1px solid var(--red);
+  color:var(--red);
+  opacity:.22;
+  font-size:9px;
+  font-weight:900;
+  transform:rotate(25deg);
+}
+
+.troll-number{
+  color:var(--primary);
+  font-size:11px;
+  font-weight:900;
+}
+
+.troll-text{
+  padding-right:12px;
+  margin:7px 0 15px;
+  line-height:1.8;
+}
+
+.vote-row{
+  display:flex;
+  gap:7px;
+}
+
+.vote-btn{
+  padding:7px 11px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  color:var(--text);
+  background:var(--solid);
+}
+
+.no-results{
+  grid-column:1/-1;
+  padding:35px;
+  text-align:center;
+  color:var(--muted);
+}
+
+/* =========================
+   CHAT BOT
+========================= */
+
+.chat{
+  height:560px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  border-radius:26px;
+}
+
+.chat-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:17px 20px;
+  border-bottom:1px solid var(--border);
+}
+
+.online{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  color:var(--green);
+  font-size:11px;
+}
+
+.online i{
+  width:7px;
+  height:7px;
+  display:block;
+  border-radius:50%;
+  background:var(--green);
+}
+
+.chat-messages{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:20px;
+  overflow-y:auto;
+}
+
+.msg{
+  max-width:80%;
+  padding:11px 14px;
+  border-radius:17px;
+  line-height:1.65;
+  font-size:14px;
+}
+
+.msg.bot{
+  align-self:flex-start;
+  border:1px solid var(--border);
+  border-bottom-left-radius:5px;
+  background:var(--solid);
+}
+
+.msg.user{
+  align-self:flex-end;
+  color:#fff;
+  border-bottom-right-radius:5px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+}
+
+.typing{
+  display:flex;
+  gap:4px;
+}
+
+.typing span{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--muted);
+  animation:typeDot .8s infinite;
+}
+
+.typing span:nth-child(2){
+  animation-delay:.12s;
+}
+
+.typing span:nth-child(3){
+  animation-delay:.24s;
+}
+
+@keyframes typeDot{
+  0%,100%{
+    opacity:.25;
+    transform:translateY(0);
+  }
+  50%{
+    opacity:1;
+    transform:translateY(-3px);
+  }
+}
+
+.chat-input{
+  display:flex;
+  gap:8px;
+  padding:12px;
+  border-top:1px solid var(--border);
+}
 
 /* =========================
    QUIZ
 ========================= */
 
-const quiz=
-document.getElementById("quizForm");
-
-if(quiz){
-
-quiz.addEventListener(
-"submit",
-function(e){
-
-e.preventDefault();
-
-const answers=["b","a","c"];
-
-let score=0;
-
-answers.forEach((answer,index)=>{
-
-const selected=
-document.querySelector(
-`input[name="q${index}"]:checked`
-);
-
-if(selected?.value===answer){
-score++;
+.quiz-box{
+  padding:27px;
+  border-radius:27px;
 }
 
-});
-
-const result=
-document.getElementById("quizResult");
-
-const messages=[
-
-"আপনি Commerce-এ নতুন। Tea break recommended.",
-
-"মোটামুটি বেঁচে আছেন। Suspense A/C আপনার পাশে আছে।",
-
-"Perfect! আপনাকে RCTB-এর honorary accountant করা হলো।"
-
-];
-
-result.textContent=
-`Score: ${score}/3 — ${messages[score]}`;
-
-}
-);
-
+.quiz-progress{
+  margin-bottom:8px;
+  color:var(--muted);
+  font-size:12px;
 }
 
-
-/* =========================
-   CALCULATOR
-========================= */
-
-const calc=
-document.getElementById("calcForm");
-
-if(calc){
-
-calc.addEventListener(
-"submit",
-function(e){
-
-e.preventDefault();
-
-const debit=
-Number(
-document.getElementById("calcDebit").value
-);
-
-const credit=
-Number(
-document.getElementById("calcCredit").value
-);
-
-const difference=
-Math.abs(debit-credit);
-
-const result=
-document.getElementById("calcResult");
-
-if(debit===credit){
-
-result.textContent=
-"🚨 ERROR: হিসাব এত সুন্দরভাবে মিলেছে যে সন্দেহ হচ্ছে।";
-
-}else{
-
-result.textContent=
-`Difference: ${difference.toFixed(2)}
-— চিন্তা নেই! Suspense A/C magically activated.`;
-
+.quiz-question{
+  margin-bottom:18px;
+  font-size:22px;
+  font-weight:900;
+  line-height:1.5;
 }
 
+.options{
+  display:grid;
+  gap:9px;
 }
 
-);
-
+.option{
+  width:100%;
+  padding:13px 15px;
+  text-align:left;
+  color:var(--text);
+  background:var(--solid);
+  border:1px solid var(--border);
+  border-radius:14px;
+  transition:.2s;
 }
 
-
-const magic=
-document.getElementById("magicBalance");
-
-if(magic){
-
-magic.onclick=()=>{
-
-const result=
-document.getElementById("calcResult");
-
-result.textContent=
-"✨ চিন্তা নেই! Brain automatically added 'Suspense A/C'. দুই পাশ এখন unofficially মিলেছে!";
-
-};
-
+.option:hover{
+  border-color:var(--primary);
+  transform:translateX(3px);
 }
 
-
-/* =========================
-   STAMP
-========================= */
-
-const stamp=
-document.getElementById("stampBtn");
-
-if(stamp){
-
-stamp.onclick=()=>{
-
-const element=
-document.getElementById("stamp");
-
-element.hidden=false;
-
-};
-
+.option.correct{
+  border-color:var(--green);
+  background:rgba(101,201,155,.15);
 }
 
+.option.wrong{
+  border-color:var(--red);
+  background:rgba(239,109,120,.12);
+}
+
+.leaderboard{
+  margin-top:20px;
+  padding:20px;
+  border-radius:21px;
+}
+
+.leader-item{
+  display:flex;
+  justify-content:space-between;
+  padding:9px 0;
+  border-bottom:1px solid var(--border);
+}
 
 /* =========================
    CERTIFICATE
 ========================= */
 
-const cert=
-document.getElementById("certForm");
-
-if(cert){
-
-cert.addEventListener(
-"submit",
-function(e){
-
-e.preventDefault();
-
-document.getElementById("certName")
-.textContent=
-document.getElementById("certNameInput").value;
-
-document.getElementById("certSchool")
-.textContent=
-document.getElementById("certSchool").value;
-
-document.getElementById("certYear")
-.textContent=
-document.getElementById("certYear").value;
-
-document.getElementById("certificate")
-.hidden=false;
-
+.certificate{
+  position:relative;
+  margin-top:17px;
+  padding:30px;
+  text-align:center;
+  overflow:hidden;
+  border:2px dashed var(--primary);
+  border-radius:25px;
+  background:linear-gradient(135deg,rgba(255,255,255,.55),rgba(227,126,172,.08));
 }
 
-);
-
+.certificate::before{
+  content:"PRANK • FICTIONAL";
+  position:absolute;
+  top:18px;
+  right:-40px;
+  padding:4px 43px;
+  border:2px solid var(--red);
+  color:var(--red);
+  font-size:9px;
+  font-weight:900;
+  transform:rotate(30deg);
 }
 
+.cert-logo{
+  color:var(--secondary);
+  font-size:13px;
+  font-weight:900;
+}
+
+.certificate h3{
+  margin:14px 0;
+  font-size:34px;
+}
+
+.cert-name{
+  color:var(--primary);
+  font-size:28px;
+  font-weight:900;
+}
+
+.cert-small{
+  color:var(--muted);
+}
+
+.slip{
+  margin-top:17px;
+  padding:21px;
+  border:1px dashed var(--primary);
+  border-radius:20px;
+  background:var(--solid);
+}
+
+.slip-header{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding-bottom:12px;
+  border-bottom:1px dashed var(--border);
+}
+
+.slip-row{
+  display:flex;
+  justify-content:space-between;
+  padding:9px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.fake-stamp{
+  display:inline-block;
+  padding:4px 9px;
+  color:var(--red);
+  border:2px solid var(--red);
+  font-size:10px;
+  font-weight:900;
+  transform:rotate(-4deg);
+}
 
 /* =========================
-   TIMER
+   TIMERS
 ========================= */
 
-let timerInterval=null;
-let seconds=0;
-
-function startTimer(minutes){
-
-clearInterval(timerInterval);
-
-seconds=minutes*60;
-
-updateTimer();
-
-timerInterval=
-setInterval(()=>{
-
-seconds--;
-
-updateTimer();
-
-if(seconds<=0){
-
-clearInterval(timerInterval);
-
-alert(
-"☕ Tea Break Finished!\nএখন আবার Commerce trauma শুরু করুন।"
-);
-
+.timer{
+  text-align:center;
 }
 
-},1000);
-
+.timer-display{
+  margin:14px 0;
+  font-family:"Baloo 2",sans-serif;
+  font-size:clamp(55px,9vw,88px);
+  font-weight:900;
+  line-height:1;
+  color:transparent;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  -webkit-background-clip:text;
+  background-clip:text;
 }
 
-function updateTimer(){
-
-const display=
-document.getElementById("timerDisplay");
-
-if(!display)return;
-
-const min=
-Math.floor(seconds/60)
-.toString()
-.padStart(2,"0");
-
-const sec=
-(seconds%60)
-.toString()
-.padStart(2,"0");
-
-display.textContent=
-`${min}:${sec}`;
-
+.countdown-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
 }
 
-document
-.querySelectorAll(".timerBtn")
-.forEach(btn=>{
-
-btn.addEventListener(
-"click",
-()=>startTimer(
-Number(btn.dataset.min)
-)
-);
-
-});
-
-
-const stop=
-document.getElementById("stopTimer");
-
-if(stop){
-
-stop.onclick=()=>{
-
-clearInterval(timerInterval);
-
-seconds=0;
-
-updateTimer();
-
-};
-
+.count-box{
+  padding:16px 7px;
+  border-radius:17px;
+  text-align:center;
 }
 
-
-/* =========================
-   BREATHING
-========================= */
-
-const breathText=
-document.getElementById("breathText");
-
-if(breathText){
-
-const steps=[
-"Inhale",
-"Hold",
-"Exhale",
-"Hold"
-];
-
-let i=0;
-
-setInterval(()=>{
-
-breathText.textContent=
-steps[i];
-
-i=(i+1)%steps.length;
-
-},4000);
-
+.count-box strong{
+  display:block;
+  color:var(--primary);
+  font-size:29px;
 }
 
+.count-box span{
+  color:var(--muted);
+  font-size:10px;
+}
 
 /* =========================
    CONTACT
 ========================= */
 
-const contact=
-document.getElementById("contactForm");
-
-if(contact){
-
-contact.addEventListener(
-"submit",
-function(e){
-
-e.preventDefault();
-
-alert(
-"📨 Message received!\n\nRCTB fictional help desk thanks you."
-);
-
-contact.reset();
-
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
 }
 
-);
-
+.contact-card{
+  padding:25px;
+  border-radius:25px;
 }
 
-
-const helpline=
-document.getElementById("helpline");
-
-if(helpline){
-
-helpline.onclick=()=>{
-
-alert(
-"☎ 0000\n\nDial tone detected...\n\n'আপনার Commerce trauma আমাদের কাছে গুরুত্বপূর্ণ।'"
-);
-
-};
-
+.hotline{
+  margin:10px 0;
+  color:var(--red);
+  font-size:62px;
+  line-height:1;
+  font-weight:900;
 }
 
+.disclaimer{
+  margin-top:20px;
+  padding:14px 16px;
+  color:var(--muted);
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:rgba(255,255,255,.1);
+  font-size:12px;
+  line-height:1.7;
+}
 
 /* =========================
-   COPY PROTECTION
+   MODAL
 ========================= */
 
-document.addEventListener(
-"contextmenu",
-e=>e.preventDefault()
-);
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  display:none;
+  place-items:center;
+  padding:20px;
+  background:rgba(10,7,15,.64);
+  backdrop-filter:blur(8px);
+}
 
-document.addEventListener(
-"selectstart",
-e=>e.preventDefault()
-);
+.modal.show{
+  display:grid;
+}
 
+.modal-card{
+  width:min(500px,100%);
+  padding:27px;
+  border-radius:27px;
+  position:relative;
+}
+
+.close{
+  position:absolute;
+  right:14px;
+  top:14px;
+  width:34px;
+  height:34px;
+  border:0;
+  border-radius:10px;
+  color:var(--text);
+  background:var(--solid);
+}
+
+#loginMessage{
+  display:none;
+}
 
 /* =========================
    TOAST
 ========================= */
 
+#toastBox{
+  position:fixed;
+  right:17px;
+  bottom:17px;
+  z-index:5000;
+  display:grid;
+  gap:8px;
+  width:min(370px,calc(100% - 34px));
+}
+
+.toast{
+  padding:12px 15px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:var(--solid);
+  box-shadow:var(--shadow);
+  font-size:13px;
+  animation:toastIn .25s ease;
+}
+
+@keyframes toastIn{
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+  padding:35px 0 55px;
+  color:var(--muted);
+  text-align:center;
+  border-top:1px solid var(--border);
+  font-size:13px;
+  line-height:1.8;
+}
+
+footer strong{
+  color:var(--text);
+}
+
+/* =========================
+   PRINT
+========================= */
+
+@media print{
+  body *{
+    visibility:hidden !important;
+  }
+
+  #printArea,
+  #printArea *{
+    visibility:visible !important;
+  }
+
+  #printArea{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+  }
+
+  .certificate{
+    border:3px solid #222;
+    box-shadow:none;
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+  .hero-grid,
+  .notice-layout,
+  .contact-grid{
+    grid-template-columns:1fr;
+  }
+
+  .song-grid{
+    grid-template-columns:1fr;
+  }
+
+  .tool-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:700px){
+  main{
+    padding-top:75px;
+  }
+
+  section{
+    padding:50px 0;
+  }
+
+  .hero{
+    min-height:auto;
+    padding-top:40px;
+  }
+
+  .hero h1{
+    font-size:58px;
+  }
+
+  .hero-sub{
+    font-size:16px;
+  }
+
+  .troll-grid{
+    grid-template-columns:1fr;
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .countdown-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .chat{
+    height:510px;
+  }
+}
+
+@media(max-width:480px){
+  .navbar{
+    width:97%;
+    top:5px;
+  }
+
+  .logo{
+    width:41px;
+    height:41px;
+    flex-basis:41px;
+    font-size:12px;
+  }
+
+  .theme-btn{
+    width:38px;
+    height:38px;
+    flex-basis:38px;
+  }
+
+  .hero h1{
+    font-size:51px;
+  }
+
+  .hero-card{
+    padding:22px;
+  }
+
+  .mascot{
+    width:135px;
+    height:135px;
+    font-size:68px;
+  }
+
+  .tool{
+    padding:19px;
+  }
+
+  .certificate{
+    padding:22px 12px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="particles"></div>
+
+<!-- =======================================================
+     NAVIGATION
+======================================================= -->
+
+<nav class="navbar">
+
+  <div class="logo"
+       id="secretLogo"
+       title="RCTB Admin">
+    RCTB
+  </div>
+
+  <div class="nav-scroll">
+
+    <button class="nav-link active" data-target="home">Home</button>
+    <button class="nav-link" data-target="notices">Notice</button>
+    <button class="nav-link" data-target="songs">Songs</button>
+    <button class="nav-link" data-target="relax">Relax</button>
+    <button class="nav-link" data-target="accounting">Accounting</button>
+    <button class="nav-link" data-target="finance">Finance</button>
+    <button class="nav-link" data-target="business">Business</button>
+    <button class="nav-link" data-target="bot">AI Bot</button>
+    <button class="nav-link" data-target="quiz">Quiz</button>
+    <button class="nav-link" data-target="calculator">GPA-5</button>
+    <button class="nav-link" data-target="timers">Timers</button>
+    <button class="nav-link" data-target="contact">Contact</button>
+
+  </div>
+
+  <button class="theme-btn"
+          id="themeBtn"
+          title="Change theme">
+    🌙
+  </button>
+
+</nav>
+
+<main>
+
+<!-- =======================================================
+     HOME
+======================================================= -->
+
+<section id="home" class="hero">
+
+  <div class="container">
+
+    <div class="hero-grid">
+
+      <div class="reveal">
+
+        <div class="badge">
+          📚 UNOFFICIAL • COMMERCE SURVIVAL ZONE
+        </div>
+
+        <h1>
+          Welcome to<br>
+          <span>RCTB</span>
+        </h1>
+
+        <p class="hero-sub">
+          <strong>Relief for Commerce Traumatized Brains</strong> —
+          যেখানে Debit, Credit, Reconciliation আর Balance Sheet
+          মিলে গিয়ে commerce students-এর শান্তির সর্বনাশ করে।
+        </p>
+
+        <div class="hero-buttons">
+
+          <a href="#relax"
+             class="btn btn-primary">
+            🧘 Trauma কমাও
+          </a>
+
+          <a href="#accounting"
+             class="btn btn-soft">
+            💀 Troll দেখো
+          </a>
+
+          <button class="btn btn-soft"
+                  id="panicBtn">
+            🚨 Emergency Chill
+          </button>
+
+        </div>
+
+        <div class="notice-strip">
+          📢 <strong>Disclaimer:</strong>
+          RCTB কোনো official education board/NCTB website নয়।
+          এটি সম্পূর্ণ fictional prank/fun project।
+        </div>
+
+      </div>
+
+      <div class="hero-card glass reveal">
+
+        <div class="mascot">
+          🧾
+        </div>
+
+        <h3>
+          Balance Sheet সাহেব
+        </h3>
+
+        <p>
+          “আমার দুই পাশ মিলে না। আপনার জীবন কীভাবে মিলবে?”
+        </p>
+
+        <div class="notice-strip">
+          💔 Current Status:
+          <strong id="heroStress">
+            Commerce Trauma: 72%
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =======================================================
+     NOTICE BOARD
+======================================================= -->
+
+<section id="notices">
+
+  <div class="container">
+
+    <div class="section-head reveal">
+
+      <div class="section-kicker">
+        01 • NOTICE BOARD
+      </div>
+
+      <h2>
+        📢 Notice Board
+      </h2>
+
+      <p>
+        Viewer শুধু notice পড়তে পারবে।
+        Add/Delete করার জন্য admin mode প্রয়োজন।
+      </p>
+
+    </div>
+
+    <div class="notice-layout">
+
+      <div id="noticeList"
+           class="notice-list">
+      </div>
+
+      <div class="notice-admin glass reveal">
+
+        <h3>
+          🔐 Admin Access
+        </h3>
+
+        <p>
+          RCTB logo-তে click করে secret admin panel খুলুন।
+        </p>
+
+        <button class="btn btn-primary"
+                id="openAdmin">
+          Open Admin
+        </button>
+
+        <div id="adminStatus"
+             style="margin-top:10px;color:var(--muted);font-size:12px;">
+          Viewer mode
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =======================================================
+     SONGS
+======================================================= -->
+
+<section id="songs">
+
+  <div class="container">
+
+    <div class="section-head reveal">
+
+      <div class="section-kicker">
+        02 • CHAIRMAN'S PLAYLIST
+      </div>
+
+      <h2>
+        🎧 Chairman’s Favorite Songs
+      </h2>
+
+      <p>
+        Commerce পড়ার মাঝে brain restart করার জন্য।
+      </p>
+
+    </div>
+
+    <div class="song-grid">
+
+      <article class="song-card glass reveal">
+
+        <div class="song-cover">
+          🎧
+        </div>
+
+        <h3>
+          Natori — Overdose
+        </h3>
+
+        <p>
+          When debit-credit starts feeling personal.
+        </p>
+
+        <div class="song-actions">
+
+          <a class="btn btn-primary"
+             target="_blank"
+             rel="noopener"
+             href="https://youtu.be/H08YWE4CIFQ?si=AP_rstUtX5UKo5ST">
+            ▶ YouTube
+          </a>
+
+          <button class="btn btn-soft"
+                  onclick="playMelody()">
+            ♪ Preview
+          </button>
+
+        </div>
+
+      </article>
+
+      <article class="song-card glass reveal">
+
+        <div class="song-cover">
+          🧟
+        </div>
+
+        <h3>
+          Undead — YOASOBI
+        </h3>
+
+        <p>
+          Exactly how students feel after a 3-hour accounting exam.
+        </p>
+
+        <div class="song-actions">
+
+          <a class="btn btn-primary"
+             target="_blank"
+             rel="noopener"
+             href="https://youtu.be/Jj1_mfUzjOs?si=uSWXW4n_iGN5zuUk">
+            ▶ YouTube
+          </a>
+
+          <button class="btn btn-soft"
+                  onclick="playMelody()">
+            ♪ Preview
+          </button>
+
+        </div>
+
+      </article>
+
+      <article class="song-card glass reveal">
+
+        <div class="song-cover">
+          🌙
+        </div>
+
+        <h3>
+          Relaxation Track
+        </h3>
+
+        <p>
+          আপনার যদি পড়াশোনা করতে করতে ভালো না লাগে বা মাথা হ্যাং হয়ে যায়, তাহলে এই গানটি শুনুন।
+        </p>
+
+        <div class="song-actions">
+
+          <a class="btn btn-primary"
+             target="_blank"
+             rel="noopener"
+             href="https://youtu.be/HcjW2k1IrTM?si=CeCEfc4ghiNON8j3">
+            ▶ YouTube
+          </a>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =======================================================
+     RELAXATION
+======================================================= -->
+
+<section id="relax">
+
+  <div class="container">
+
+    <div class="section-head reveal">
+
+      <div class="section-kicker">
+        03 • RELAXATION HUB
+      </div>
+
+      <h2>
+        🧘 Brain Maintenance Department
+      </h2>
+
+      <p>
+        একটু pause নিন। Ledger পালাবে না।
+      </p>
+
+    </div>
+
+    <div class="tool-grid">
+
+      <div class="tool glass reveal">
+
+        <h3>
+          🫁 Box Breathing
+        </h3>
+
+        <p>
+          4 sec inhale → 4 sec hold →
+          4 sec exhale → 4 sec hold।
+        </p>
+
+        <div class="breath-circle"
+             id="breathCircle">
+
+          <div>
+            <strong id="breathText">
+              Ready?
+            </strong>
+
+            <br>
+
+            <small id="breathCount">
+              4 • 4 • 4 • 4
+            </small>
+          </div>
+
+        </div>
+
+        <div class="tool-row">
+
+          <button class="btn btn-primary"
+                  id="breathStart">
+            Start
+          </button>
+
+          <button class="btn btn-soft"
+                  id="breathStop">
+            Stop
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="tool glass reveal">
+
+        <h3>
+          📊 Commerce Trauma Meter
+        </h3>
+
+        <p>
+          আপনার fictional trauma level adjust করুন।
+        </p>
+
+        <div class="big-number"
+             id="stressValue">
+          72%
+        </div>
+
+        <div class="progress">
+          <div class="progress-bar"
+               id="stressBar">
+          </div>
+        </div>
+
+        <input class="field"
+               id="stressRange"
+               type="range"
+               min="0"
+               max="100"
+               value="72">
+
+        <div class="result"
+             id="stressMessage">
+          “রেওয়ামিল একবারও মেলেনি। পানি খান।”
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =======================================================
+     ACCOUNTING TROLLS
+======================================================= -->
+
+<section id="accounting">
+
+  <div class="container">
+
+    <div class="section-head reveal">
+
+      <div class="section-kicker">
+        04 • ACCOUNTING
+      </div>
+
+      <h2>
+        📒 Accounting Trolls
+      </h2>
+
+      <p>
+        Debit বনাম Credit — eternal rivalry.
+      </p>
+
+    </div>
+
+    <div class="toolbar">
+
+      <input class="field search"
+             data-search="accounting"
+             placeholder="🔎 Accounting troll খুঁজুন...">
+
+      <button class="btn btn-soft"
+              onclick="shuffleTrolls('accounting')">
+        🔀 Shuffle
+      </button>
+
+    </div>
+
+    <div class="troll-grid"
+         id="accountingGrid">
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =======================================================
+     FINANCE
+======================================================= -->
+
+<section id="finance">
+
+  <div class="container">
+
+    <div class="section-head reveal">
+
+      <div class="section-kicker">
+        05 • FINANCE & BANKING
+      </div>
+
+      <h2>
+        🏦 Finance Trauma Department
+      </h2>
+
+      <p>
+        Risk, return, liquidity — আর pocket balance zero।
+      </p>
+
+    </div>
+
+    <div class="toolbar">
+
+      <input class="field search"
+             data-search="finance"
+             placeholder="🔎 Finance troll খুঁজুন...">
+
+      <button class="btn btn-soft"
+              onclick="shuffleTrolls('finance')">
+        🔀 Shuffle
+      </button>
+
+    </div>
+
+    <div class="troll-grid"
+         id="financeGrid">
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =======================================================
+     BUSINESS
+======================================================= -->
+
+<section id="business">
+
+  <div class="container">
+
+    <div class="section-head reveal">
+
+      <div class="section-kicker">
+        06 • BUSINESS ENTREPRENEURSHIP
+      </div>
+
+      <h2>
+        💼 Business Troll Factory
+      </h2>
+
+      <p>
+        Entrepreneurship-এর ROI: 100% হাসি, 0% marks guarantee.
+      </p>
+
+    </div>
+
+    <div class="toolbar">
+
+      <input class="field search"
+             data-search="business"
+             placeholder="🔎 Business troll খুঁজুন...">
+
+      <button class="btn btn-soft"
+              onclick="shuffleTrolls('business')">
+        🔀 Shuffle
+      </button>
+
+    </div>
+
+    <div class="troll-grid"
+         id="businessGrid">
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =======================================================
+     AI BOT
+======================================================= -->
+
+<section id="bot">
+
+  <div class="container">
+
+    <div class="section-head reveal">
+
+      <div class="section-kicker">
+        07 • FAKE AI DEPARTMENT
+      </div>
+
+      <h2>
+        🤖 Commerce Trauma Bot
+      </h2>
+
+      <p>
+        এটি real mental-health service নয়।
+        শুধু harmless commerce-study jokes-এর জন্য।
+      </p>
+
+    </div>
+
+    <div class="chat glass reveal">
+
+      <div class="chat-header">
+
+        <div>
+          <strong>
+            RCTB-Bot v1.0
+          </strong>
+
+          <br>
+
+          <span class="online">
+            <i></i>
+            Ledger Online
+          </span>
+        </div>
+
+        <button class="btn btn-soft"
+                id="clearChat">
+          Clear
+        </button>
+
+      </div>
+
+      <div class="chat-messages"
+           id="chatMessages">
+
+        <div class="msg bot">
+          আসসালামু আলাইকুম। আপনার commerce problem লিখুন। 😭
+          <br>
+          <small>
+            যেমন: “ব্যালেন্স শিট মিলছে না”
+          </small>
+        </div>
+
+      </div>
+
+      <form class="chat-input"
+            id="chatForm">
+
+        <input class="field"
+               id="chatInput"
+               autocomplete="off"
+               placeholder="আপনার commerce problem লিখুন...">
+
+        <button class="btn btn-primary"
+                type="submit">
+          Send
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =======================================================
+     QUIZ
+======================================================= -->
+
+<section id="quiz">
+
+  <div class="container">
+
+    <div class="section-head reveal">
+
+      <div class="section-kicker">
+        08 • COMMERCE TRAUMA QUIZ
+      </div>
+
+      <h2>
+        🧠 Quiz Arena
+      </h2>
+
+      <p>
+        জ্ঞান আছে নাকি শুধু calculator আছে—দেখা যাক।
+      </p>
+
+    </div>
+
+    <div class="quiz-box glass reveal"
+         id="quizBox">
+    </div>
+
+    <div class="leaderboard glass">
+
+      <h3>
+        🏆 Local Leaderboard
+      </h3>
+
+      <p style="color:var(--muted);font-size:12px;margin:5px 0 12px;">
+        Score শুধু আপনার browser-এ LocalStorage-এ থাকে।
+      </p>
+
+      <div id="leaderboard">
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =======================================================
+     GPA / BANK
+======================================================= -->
+
+<section id="calculator">
+
+  <div class="container">
+
+    <div class="section-head reveal">
+
+      <div class="section-kicker">
+        09 • PRANK GENERATORS
+      </div>
+
+      <h2>
+        🎓 GPA-5 & Fake Bank
+      </h2>
+
+      <p>
+        সবকিছু fictional। কোনো official document নয়।
+      </p>
+
+    </div>
+
+    <div class="tool-grid">
+
+      <div class="tool glass reveal">
+
+        <h3>
+          🎓 Fake GPA-5 Certificate
+        </h3>
+
+        <p>
+          নাম, institution ও year দিন।
+        </p>
+
+        <div class="form">
+
+          <input class="field"
+                 id="certName"
+                 placeholder="Student Name">
+
+          <input class="field"
+                 id="certSchool"
+                 placeholder="School / Institution">
+
+          <input class="field"
+                 id="certYear"
+                 value="2027"
+                 placeholder="Year">
+
+          <button class="btn btn-primary"
+                  id="generateCert">
+            Generate Certificate
+          </button>
+
+        </div>
+
+        <div id="printArea">
+        </div>
+
+      </div>
+
+      <div class="tool glass reveal">
+
+        <h3>
+          🏦 Fake Bank Balance Slip
+        </h3>
+
+        <p>
+          এটি fictional prank receipt।
+        </p>
+
+        <div class="form">
+
+          <input class="field"
+                 id="slipName"
+                 placeholder="Your Name">
+
+          <input class="field"
+                 id="slipAmount"
+                 type="number"
+                 min="0"
+                 placeholder="Amount">
+
+          <button class="btn btn-primary"
+                  id="generateSlip">
+            Generate Slip
+          </button>
+
+        </div>
+
+        <div id="slipArea">
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =======================================================
+     TIMERS / TOOLS
+======================================================= -->
+
+<section id="timers">
+
+  <div class="container">
+
+    <div class="section-head reveal">
+
+      <div class="section-kicker">
+        10 • BREAK ROOM
+      </div>
+
+      <h2>
+        🍵 Timer & Random Tools
+      </h2>
+
+      <p>
+        Tea break scientifically justified by absolutely no one.
+      </p>
+
+    </div>
+
+    <div class="tool-grid">
+
+      <div class="tool glass reveal timer">
+
+        <h3>
+          🍵 Tea Break Timer
+        </h3>
+
+        <p>
+          পাঁচ মিনিটের emergency academic vacation।
+        </p>
+
+        <div class="timer-display"
+             id="teaDisplay">
+          05:00
+        </div>
+
+        <div class="tool-row"
+             style="justify-content:center;">
+
+          <button class="btn btn-primary"
+                  id="teaStart">
+            Start
+          </button>
+
+          <button class="btn btn-soft"
+                  id="teaReset">
+            Reset
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="tool glass reveal">
+
+        <h3>
+          💀 Death of Logic Countdown
+        </h3>
+
+        <p>
+          কোনো real exam date নয়।
+          নিজের demo target set করুন।
+        </p>
+
+        <input class="field"
+               id="targetDate"
+               type="datetime-local">
+
+        <div class="countdown-grid"
+             style="margin-top:14px;">
+
+          <div class="count-box glass">
+            <strong id="cdDays">00</strong>
+            <span>Days</span>
+          </div>
+
+          <div class="count-box glass">
+            <strong id="cdHours">00</strong>
+            <span>Hours</span>
+          </div>
+
+          <div class="count-box glass">
+            <strong id="cdMinutes">00</strong>
+            <span>Minutes</span>
+          </div>
+
+          <div class="count-box glass">
+            <strong id="cdSeconds">00</strong>
+            <span>Seconds</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="tool glass reveal">
+
+        <h3>
+          ✨ Magical Reconciliation
+        </h3>
+
+        <p>
+          যেকোনো দুই amount দিন।
+          RCTB algorithm magically balance করবে।
+        </p>
+
+        <div class="tool-row">
+
+          <input class="field"
+                 id="amountA"
+                 type="number"
+                 placeholder="Debit">
+
+          <input class="field"
+                 id="amountB"
+                 type="number"
+                 placeholder="Credit">
+
+          <button class="btn btn-primary"
+                  id="reconcileBtn">
+            Reconcile
+          </button>
+
+        </div>
+
+        <div class="result"
+             id="reconcileResult">
+        </div>
+
+      </div>
+
+      <div class="tool glass reveal">
+
+        <h3>
+          🖊️ Lost Pen Tracker
+        </h3>
+
+        <p>
+          বন্ধুর কাছে pen হারিয়েছে? তদন্ত শুরু করুন।
+        </p>
+
+        <div class="tool-row">
+
+          <input class="field"
+                 id="friendName"
+                 placeholder="Friend name">
+
+          <input class="field"
+                 id="penBrand"
+                 placeholder="Pen brand">
+
+          <button class="btn btn-primary"
+                  id="penTrackBtn">
+            Track
+          </button>
+
+        </div>
+
+        <div class="result"
+             id="penResult">
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =======================================================
+     CONTACT
+======================================================= -->
+
+<section id="contact">
+
+  <div class="container">
+
+    <div class="section-head reveal">
+
+      <div class="section-kicker">
+        11 • ADMINISTRATION
+      </div>
+
+      <h2>
+        📞 Contact RCTB
+      </h2>
+
+      <p>
+        Office আছে। Hotline আছে। কিন্তু আসলে কিছুই নেই।
+      </p>
+
+    </div>
+
+    <div class="contact-grid">
+
+      <div class="contact-card glass reveal">
+
+        <h3>
+          ☎️ Fake Emergency Hotline
+        </h3>
+
+        <div class="hotline">
+          000
+        </div>
+
+        <p style="color:var(--muted);line-height:1.7;">
+          কল করলে imaginary operator বলবে:
+          “আপনার ledger আমাদের jurisdiction-এর বাইরে।”
+        </p>
+
+        <button class="btn btn-danger"
+                id="hotlineBtn"
+                style="margin-top:15px;">
+          📞 Call 000
+        </button>
+
+      </div>
+
+      <div class="contact-card glass reveal">
+
+        <h3>
+          🏛️ RCTB Administration
+        </h3>
+
+        <div style="margin-top:15px;line-height:1.9;">
+
+          <strong>
+            Founder / Owner
+          </strong>
+
+          <br>
+
+          ইয়াসমিন রাত্রি খাদিজা
+
+          <br><br>
+
+          <strong>
+            Chairman’s Respected Opponent
+          </strong>
+
+          <br>
+
+          শাফকাত ইসলাম
+
+        </div>
+
+        <div class="disclaimer">
+          ⚠️ RCTB একটি fictional prank/fun project।
+          এটি NCTB, কোনো education board, bank,
+          government agency বা official institution-এর
+          affiliated website নয়।
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+<!-- =======================================================
+     FOOTER
+======================================================= -->
+
+<footer>
+
+  <div class="container">
+
+    <strong>
+      RCTB — Relief for Commerce Traumatized Brains
+    </strong>
+
+    <br>
+
+    Commerce students-এর জন্য
+    unofficial survival department.
+
+    <br><br>
+
+    © <span id="year"></span> RCTB
+    • Fictional • Unofficial • Prank Project
+
+  </div>
+
+</footer>
+
+<!-- =======================================================
+     ADMIN MODAL
+======================================================= -->
+
+<div class="modal"
+     id="adminModal">
+
+  <div class="modal-card glass">
+
+    <button class="close"
+            data-close="adminModal">
+      ×
+    </button>
+
+    <h2>
+      🔐 Secret Admin Panel
+    </h2>
+
+    <p style="color:var(--muted);margin:7px 0 17px;">
+      Password required.
+    </p>
+
+    <div id="loginBox">
+
+      <input class="field"
+             id="adminPassword"
+             type="password"
+             autocomplete="off"
+             placeholder="Admin password">
+
+      <button class="btn btn-primary"
+              id="loginAdmin"
+              style="margin-top:10px;">
+        Unlock
+      </button>
+
+      <div id="loginMessage"
+           class="result">
+      </div>
+
+    </div>
+
+    <div id="adminPanel"
+         style="display:none;">
+
+      <div class="badge">
+        ADMIN UNLOCKED
+      </div>
+
+      <h3 style="margin-top:14px;">
+        ➕ Add Notice
+      </h3>
+
+      <div class="form"
+           style="margin-top:10px;">
+
+        <input class="field"
+               id="noticeTitle"
+               placeholder="Notice title">
+
+        <textarea class="field"
+                  id="noticeBody"
+                  placeholder="Notice details"></textarea>
+
+        <button class="btn btn-primary"
+                id="addNotice">
+          Add Notice
+        </button>
+
+        <button class="btn btn-soft"
+                id="adminLogout">
+          Lock Admin
+        </button>
+
+      </div>
+
+      <div class="disclaimer">
+        Front-end admin gate only.
+        Browser-side passwords are not real security.
+        Real authentication requires a backend.
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =======================================================
+     TOAST
+======================================================= -->
+
+<div id="toastBox"></div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   RCTB APPLICATION
+========================================================= */
+
+const ADMIN_PASSWORD = "738744";
+const STORAGE_KEY = "RCTB_MASTER_STATE_V2";
+
+/* =========================================================
+   DEFAULT STATE
+========================================================= */
+
+const defaultState = {
+  theme:"light",
+
+  notices:[
+    {
+      id:"notice-1",
+      title:"RCTB Officially Unofficial",
+      body:"স্বাগতম। এখানে marks কমবে না, কিন্তু commerce jokes-এর কারণে dignity কমতে পারে।",
+      date:new Date().toLocaleDateString("bn-BD")
+    },
+    {
+      id:"notice-2",
+      title:"Balance Sheet Emergency",
+      body:"যদি দুই পাশ না মেলে, calculator বন্ধ করুন। পানি খান। তারপর আবার চেষ্টা করুন।",
+      date:new Date().toLocaleDateString("bn-BD")
+    },
+    {
+      id:"notice-3",
+      title:"Important Disclaimer",
+      body:"RCTB কোনো official board, NCTB, bank বা government institution নয়। এটি fictional prank website.",
+      date:new Date().toLocaleDateString("bn-BD")
+    }
+  ],
+
+  votes:{},
+
+  leaderboard:[],
+
+  highScore:0
+};
+
+function deepCopy(obj){
+  return JSON.parse(JSON.stringify(obj));
+}
+
+function loadState(){
+
+  try{
+
+    const raw=localStorage.getItem(STORAGE_KEY);
+
+    if(!raw){
+      return deepCopy(defaultState);
+    }
+
+    const parsed=JSON.parse(raw);
+
+    return {
+      ...deepCopy(defaultState),
+      ...parsed,
+      notices:Array.isArray(parsed.notices)
+        ? parsed.notices
+        : deepCopy(defaultState.notices),
+
+      votes:parsed.votes || {},
+
+      leaderboard:Array.isArray(parsed.leaderboard)
+        ? parsed.leaderboard
+        : []
+    };
+
+  }catch(error){
+
+    console.warn("State error:",error);
+
+    return deepCopy(defaultState);
+  }
+}
+
+let state=loadState();
+
+function saveState(){
+
+  try{
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(state)
+    );
+  }catch(error){
+    console.warn("LocalStorage unavailable:",error);
+  }
+}
+
+/* =========================================================
+   SANITIZATION
+========================================================= */
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function safeText(value,maxLength=700){
+
+  return escapeHTML(
+    String(value ?? "")
+      .trim()
+      .slice(0,maxLength)
+  );
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
 function toast(message){
 
-const box=
-document.createElement("div");
+  const box=document.getElementById("toastBox");
 
-box.textContent=message;
+  const item=document.createElement("div");
 
-box.style.position="fixed";
-box.style.right="20px";
-box.style.bottom="20px";
-box.style.zIndex="9999";
-box.style.padding="15px 20px";
-box.style.borderRadius="15px";
-box.style.background="#222";
-box.style.color="#fff";
-box.style.boxShadow="0 10px 30px #0004";
+  item.className="toast";
+  item.textContent=message;
 
-document.body.appendChild(box);
+  box.appendChild(item);
 
-setTimeout(
-()=>box.remove(),
-3000
-);
+  setTimeout(()=>{
+    item.style.opacity="0";
+    item.style.transform="translateY(8px)";
+    item.style.transition=".25s";
+  },2400);
+
+  setTimeout(()=>{
+    item.remove();
+  },2900);
+}
+
+/* =========================================================
+   AUDIO
+========================================================= */
+
+let audioContext=null;
+let soundEnabled=true;
+
+function audio(){
+
+  if(!audioContext){
+
+    const AudioCtx=
+      window.AudioContext ||
+      window.webkitAudioContext;
+
+    if(!AudioCtx){
+      return null;
+    }
+
+    audioContext=new AudioCtx();
+  }
+
+  if(audioContext.state==="suspended"){
+    audioContext.resume().catch(()=>{});
+  }
+
+  return audioContext;
+}
+
+function beep(
+  frequency=440,
+  duration=.08,
+  type="sine",
+  volume=.025
+){
+
+  if(!soundEnabled){
+    return;
+  }
+
+  const ctx=audio();
+
+  if(!ctx){
+    return;
+  }
+
+  const oscillator=ctx.createOscillator();
+  const gain=ctx.createGain();
+
+  oscillator.type=type;
+  oscillator.frequency.value=frequency;
+
+  gain.gain.setValueAtTime(
+    volume,
+    ctx.currentTime
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    .0001,
+    ctx.currentTime+duration
+  );
+
+  oscillator.connect(gain);
+  gain.connect(ctx.destination);
+
+  oscillator.start();
+
+  oscillator.stop(
+    ctx.currentTime+duration
+  );
+}
+
+function clickSound(){
+  beep(650,.045,"sine",.02);
+}
+
+function successSound(){
+
+  beep(523,.08,"sine",.025);
+
+  setTimeout(()=>{
+    beep(659,.08,"sine",.025);
+  },100);
+
+  setTimeout(()=>{
+    beep(784,.13,"sine",.025);
+  },200);
+}
+
+function errorSound(){
+  beep(170,.12,"sawtooth",.02);
+
+  setTimeout(()=>{
+    beep(120,.14,"sawtooth",.018);
+  },120);
+}
+
+function playMelody(){
+
+  beep(392,.12,"sine",.02);
+
+  setTimeout(()=>{
+    beep(523,.12,"sine",.02);
+  },140);
+
+  setTimeout(()=>{
+    beep(659,.15,"sine",.02);
+  },280);
+
+  setTimeout(()=>{
+    beep(784,.18,"sine",.02);
+  },440);
+}
+
+/* click sounds */
+
+document.addEventListener("click",(event)=>{
+
+  const element=
+    event.target.closest(
+      "button,.btn,.nav-link"
+    );
+
+  if(element){
+    clickSound();
+  }
+});
+
+/* =========================================================
+   PARTICLES
+========================================================= */
+
+(function(){
+
+  const container=
+    document.getElementById("particles");
+
+  const symbols=[
+    "৳",
+    "%",
+    "D",
+    "C",
+    "+",
+    "−",
+    "✓",
+    "📒",
+    "🧾"
+  ];
+
+  for(let i=0;i<34;i++){
+
+    const particle=
+      document.createElement("span");
+
+    particle.className="particle";
+
+    particle.textContent=
+      symbols[
+        Math.floor(
+          Math.random()*symbols.length
+        )
+      ];
+
+    particle.style.left=
+      Math.random()*100+"%";
+
+    particle.style.fontSize=
+      (12+Math.random()*18)+"px";
+
+    particle.style.animationDuration=
+      (14+Math.random()*22)+"s";
+
+    particle.style.animationDelay=
+      (-Math.random()*30)+"s";
+
+    container.appendChild(particle);
+  }
+
+})();
+
+/* =========================================================
+   THEME
+========================================================= */
+
+function applyTheme(){
+
+  if(state.theme==="light"){
+
+    document.documentElement.removeAttribute(
+      "data-theme"
+    );
+
+  }else{
+
+    document.documentElement.dataset.theme=
+      state.theme;
+  }
+
+  const button=
+    document.getElementById("themeBtn");
+
+  if(state.theme==="light"){
+    button.textContent="🌙";
+  }
+
+  if(state.theme==="dark"){
+    button.textContent="⚡";
+  }
+
+  if(state.theme==="neon"){
+    button.textContent="☀️";
+  }
+}
+
+document
+  .getElementById("themeBtn")
+  .addEventListener("click",()=>{
+
+    if(state.theme==="light"){
+      state.theme="dark";
+    }else if(state.theme==="dark"){
+      state.theme="neon";
+    }else{
+      state.theme="light";
+    }
+
+    saveState();
+    applyTheme();
+
+    toast("Theme changed ✨");
+  });
+
+applyTheme();
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+document
+  .querySelectorAll(".nav-link")
+  .forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+      const target=
+        document.getElementById(
+          button.dataset.target
+        );
+
+      if(target){
+        target.scrollIntoView({
+          behavior:"smooth"
+        });
+      }
+
+    });
+
+  });
+
+/* =========================================================
+   ACTIVE NAV
+========================================================= */
+
+const navSections=[
+  "home",
+  "notices",
+  "songs",
+  "relax",
+  "accounting",
+  "finance",
+  "business",
+  "bot",
+  "quiz",
+  "calculator",
+  "timers",
+  "contact"
+];
+
+const navObserver=
+  new IntersectionObserver(
+    entries=>{
+
+      entries.forEach(entry=>{
+
+        if(!entry.isIntersecting){
+          return;
+        }
+
+        document
+          .querySelectorAll(".nav-link")
+          .forEach(btn=>{
+
+            btn.classList.toggle(
+              "active",
+              btn.dataset.target===entry.target.id
+            );
+
+          });
+
+      });
+
+    },
+    {
+      rootMargin:"-25% 0px -60% 0px"
+    }
+  );
+
+navSections.forEach(id=>{
+
+  const section=document.getElementById(id);
+
+  if(section){
+    navObserver.observe(section);
+  }
+
+});
+
+/* =========================================================
+   REVEAL ANIMATION
+========================================================= */
+
+const revealObserver=
+  new IntersectionObserver(
+    entries=>{
+
+      entries.forEach(entry=>{
+
+        if(entry.isIntersecting){
+
+          entry.target.classList.add(
+            "visible"
+          );
+
+          revealObserver.unobserve(
+            entry.target
+          );
+        }
+
+      });
+
+    },
+    {
+      threshold:.08
+    }
+  );
+
+document
+  .querySelectorAll(".reveal")
+  .forEach(element=>{
+    revealObserver.observe(element);
+  });
+
+/* =========================================================
+   NOTICE BOARD
+========================================================= */
+
+let adminUnlocked=false;
+
+function renderNotices(){
+
+  const list=
+    document.getElementById("noticeList");
+
+  list.innerHTML="";
+
+  if(state.notices.length===0){
+
+    list.innerHTML=`
+      <div class="notice glass">
+        কোনো notice নেই।
+      </div>
+    `;
+
+    return;
+  }
+
+  state.notices.forEach(notice=>{
+
+    const item=
+      document.createElement("article");
+
+    item.className="notice glass";
+
+    item.innerHTML=`
+
+      <div class="notice-top">
+
+        <div class="notice-title">
+          ${safeText(notice.title,120)}
+        </div>
+
+        <div class="notice-date">
+          ${safeText(notice.date,50)}
+        </div>
+
+      </div>
+
+      <div class="notice-body">
+        ${safeText(notice.body,1000)}
+      </div>
+
+      ${
+        adminUnlocked
+        ?
+        `
+        <div class="notice-actions">
+
+          <button
+            class="btn btn-danger"
+            data-delete-notice="${escapeHTML(notice.id)}">
+            Delete
+          </button>
+
+        </div>
+        `
+        :
+        ""
+      }
+
+    `;
+
+    list.appendChild(item);
+
+  });
 
 }
 
-window.toast=toast;
+document
+  .getElementById("noticeList")
+  .addEventListener("click",event=>{
+
+    const button=
+      event.target.closest(
+        "[data-delete-notice]"
+      );
+
+    if(!button){
+      return;
+    }
+
+    if(!adminUnlocked){
+      toast("Admin access required.");
+      return;
+    }
+
+    const id=
+      button.dataset.deleteNotice;
+
+    state.notices=
+      state.notices.filter(
+        notice=>notice.id!==id
+      );
+
+    saveState();
+    renderNotices();
+
+    toast("Notice deleted 🗑️");
+  });
+
+/* =========================================================
+   ADMIN MODAL
+========================================================= */
+
+const adminModal=
+  document.getElementById("adminModal");
+
+function openAdmin(){
+
+  adminModal.classList.add("show");
+
+  document
+    .getElementById("adminPassword")
+    .focus();
+}
+
+function closeModal(id){
+
+  document
+    .getElementById(id)
+    .classList.remove("show");
+}
+
+document
+  .getElementById("secretLogo")
+  .addEventListener("click",openAdmin);
+
+document
+  .getElementById("openAdmin")
+  .addEventListener("click",openAdmin);
+
+document
+  .querySelectorAll("[data-close]")
+  .forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+      closeModal(
+        button.dataset.close
+      );
+
+    });
+
+  });
+
+adminModal.addEventListener("click",event=>{
+
+  if(event.target===adminModal){
+    adminModal.classList.remove("show");
+  }
+
+});
+
+function showLoginMessage(
+  message,
+  good=false
+){
+
+  const element=
+    document.getElementById(
+      "loginMessage"
+    );
+
+  element.style.display="block";
+  element.textContent=message;
+
+  element.style.borderColor=
+    good
+    ? "var(--green)"
+    : "var(--red)";
+}
+
+function setAdminUI(){
+
+  document.getElementById(
+    "loginBox"
+  ).style.display=
+    adminUnlocked
+    ? "none"
+    : "block";
+
+  document.getElementById(
+    "adminPanel"
+  ).style.display=
+    adminUnlocked
+    ? "block"
+    : "none";
+
+  document.getElementById(
+    "adminStatus"
+  ).textContent=
+    adminUnlocked
+    ? "🔓 Admin unlocked"
+    : "Viewer mode";
+
+  renderNotices();
+}
+
+document
+  .getElementById("loginAdmin")
+  .addEventListener("click",()=>{
+
+    const password=
+      document.getElementById(
+        "adminPassword"
+      ).value;
+
+    if(password===ADMIN_PASSWORD){
+
+      adminUnlocked=true;
+
+      document.getElementById(
+        "adminPassword"
+      ).value="";
+
+      showLoginMessage(
+        "Admin unlocked.",
+        true
+      );
+
+      setAdminUI();
+
+      successSound();
+
+      toast("Welcome, Admin 🔓");
+
+    }else{
+
+      errorSound();
+
+      showLoginMessage(
+        "❌ Wrong password. Ledger refuses to cooperate."
+      );
+
+    }
+
+  });
+
+document
+  .getElementById("adminPassword")
+  .addEventListener("keydown",event=>{
+
+    if(event.key==="Enter"){
+      document
+        .getElementById("loginAdmin")
+        .click();
+    }
+
+  });
+
+document
+  .getElementById("addNotice")
+  .addEventListener("click",()=>{
+
+    if(!adminUnlocked){
+      toast("Admin access required.");
+      return;
+    }
+
+    const title=
+      document
+        .getElementById("noticeTitle")
+        .value
+        .trim();
+
+    const body=
+      document
+        .getElementById("noticeBody")
+        .value
+        .trim();
+
+    if(!title || !body){
+
+      toast("Title এবং notice দুটোই দিন.");
+      return;
+    }
+
+    state.notices.unshift({
+
+      id:
+        "notice-"+Date.now()+"-"+Math.random()
+          .toString(36)
+          .slice(2,7),
+
+      title:title.slice(0,120),
+
+      body:body.slice(0,1000),
+
+      date:new Date().toLocaleDateString("bn-BD")
+
+    });
+
+    saveState();
+
+    document
+      .getElementById("noticeTitle")
+      .value="";
+
+    document
+      .getElementById("noticeBody")
+      .value="";
+
+    renderNotices();
+
+    successSound();
+
+    toast("Notice added 📢");
+
+  });
+
+document
+  .getElementById("adminLogout")
+  .addEventListener("click",()=>{
+
+    adminUnlocked=false;
+
+    setAdminUI();
+
+    toast("Admin locked 🔒");
+
+  });
+
+setAdminUI();
+
+/* =========================================================
+   TROLL DATA
+========================================================= */
+
+const trolls={
+
+  accounting:[
+
+    "পরীক্ষার হলে প্রথম চেষ্টাতেই রেওয়ামিল মিলে যাওয়া মানে খুশি হওয়া যাবে না, বুঝতে হবে কোথাও না কোথাও বিরাট কোনো গোলমাল হইছে!",
+
+    "২ + ২ = ৪—এইটা মনে মনে জানি, তাও পরীক্ষার হলে কনফিডেন্সের অভাবে ৩ বার ক্যালকুলেটরে চেপে নিশ্চিত হতে হয়!",
+
+    "দুনিয়ার সব কোম্পানির ডেবিট-ক্রেডিট মিলাইলাম, কিন্তু নিজের পকেটের ব্যালেন্স কোনোদিন মিলল না!",
+
+    "বন্ধুদের পেছনে বিকেলের নাস্তায় যে টাকা উড়াইছি, ওগুলো অ্যাকাউন্টসের ভাষায় 'ব্যাড ডেটস' (অনাদায়ী পাওনা)—ফেরত পাওয়ার কোনো আশাই নাই!",
+
+    "জাবেদা করার সময় মনে হয়—আহা! জীবনের ভুলগুলোকেও যদি একটা 'ভুল সংশোধন জাবেদা' দিয়ে ঠিক করে ফেলা যেত!",
+
+    "জীবনে যত কঠিন কাজই করি না কেন, ব্যালেন্স শিটের দুই পাশ এক করার যুদ্ধের কাছে তা একদম পানসে!",
+
+    "পরীক্ষার আগের রাতে ব্রেইনের শক্তি যে হারে ডেপ্রিসিয়েশন হয়, পরীক্ষা শেষে মেমরির বুক ভ্যালু জিরো হয়ে যায়!",
+
+    "ক্যাশ বইয়ের ডেবিট পাশে টাকা আসার কথা, কিন্তু বাস্তব জীবনে পকেট থেকে টাকা শুধু ক্রেডিট পাশ দিয়েই বের হতে থাকে!",
+
+    "এক পাশ ১০০০ টাকা বেশি দেখাচ্ছে—এই ১০০০ টাকার খোঁজে পুরো ৩ ঘণ্টার পরীক্ষার আধা ঘণ্টা এমনিই হাওয়া!",
+
+    "সারাদিন নিজেকে কোম্পানির মূল্যবান 'অ্যাসেট' মনে করি, আর রেজাল্টের দিন হাতে খাতা পেলে বুঝি আমি আসলে 'লাইবিলিটি'!"
+
+  ],
+
+  finance:[
+
+    "ফিন্যান্সে শিখলাম \"আজকের ১ টাকা ভবিষ্যতের ১ টাকার চেয়ে দামি\", তাই পকেটে টাকা আসামাত্রই তা খরচ করে ফেলি!",
+
+    "\"ঝুঁকি বেশি তো লাভ বেশি\"—এই থিওরি বিশ্বাস করে ফ্রেন্ডকে ধার দিছিলাম, এখন মূলধন তো দূরের কথা, ফ্রেন্ডকেই আর খুঁজে পাওয়া যায় না!",
+
+    "আমার মানিব্যাগের তারল্য পানির চেয়েও পাতলা—টাকা পকেটে ঢোকার আগেই বাষ্প হয়ে যায়!",
+
+    "ক্যাপিটাল বাজেটিংয়ের সব অংক করে লাইফের নেট প্রেজেন্ট ভ্যালু কষে দেখলাম, উত্তর সবসময় নেতিবাচকই আসে!",
+
+    "ব্যাংকের ঋণের সুদের হার জানা সহজ, কিন্তু কমার্স পড়ার মানসিক ব্যয় হিসাব করা পৃথিবীর কোনো ফিন্যান্স সূত্র দিয়ে সম্ভব না!",
+
+    "\"সব ডিম এক ঝুড়িতে রাখতে নাই\"—এই রুল মেনে ক্লাসের ৫ জন ফ্রেন্ডের কাছ থেকে আলাদা আলাদা ১০ টাকা করে ধারের পোর্টফোলিও বানাই!",
+
+    "মাসের শুরুতে পকেটে যে বাজেট নিয়ে বের হই, দুপুর গড়াতেই তা বিশাল ঘাটতি বাজেটে (Deficit Budget) রূপ নেয়!",
+
+    "বিকাশ বা নগদে ভুল নম্বরে টাকা পাঠালে যে কষ্ট হয়, ফিন্যান্সের অংকে 'n' এর মান ভুল লিখলে তার চেয়ে বেশি ট্রমা কাজ করে!",
+
+    "কমার্স নিয়ে পড়াশোনা করার সিদ্ধান্তটি ছিল জীবনের সবচেয়ে হাই-রিস্ক প্রজেক্ট, যার পে-ব্যাক পিরিয়ড অনন্তকাল!",
+
+    "ব্যাংকের ডিপিএস-এ টাকা দ্বিগুণ হতে ১০ বছর লাগে, কিন্তু পরীক্ষার খাতায় জিরো পেতে মাত্র ০.১ সেকেন্ড সময় লাগে!"
+
+  ],
+
+  business:[
+
+    "ব্যবসা হলো এমন এক চমৎকার জিনিস, যেখানে লস হলে ভাগ্য খারাপ আর লাভ হলে সেটা 'মাই ক্রিয়েটিভিটি'!",
+
+    "ধৈর্য, সাহস ও ঝুঁকি নেওয়ার ক্ষমতা—এই ৩টি গুণ থাকলে আপনি সফল উদ্যোক্তা, আর পরীক্ষার হলে এগুলো থাকলে আপনি নির্ঘাত মাস্টারমাইন্ড নকলবাজ!",
+
+    "চাকরি না পেলে প্যারা নেওয়ার কিছু নাই, ডাবের দোকান বা ঝালমুড়ির স্টল দেওয়ার অফিশিয়াল ফরম্যাট ব্যবসায় উদ্যোগ বইয়েই রেডি করা আছে!",
+
+    "একমালিকানা ব্যবসা হলো সেরা—কারণ ব্যবসায় লস হলে ঝগড়া করার জন্য অন্য কোনো পার্টনারকে দোষ দেওয়ার সুযোগ থাকে না!",
+
+    "শেয়ারহোল্ডাররা কোম্পানির আসল মালিক, কিন্তু পরীক্ষার খাতায় জিরো পেলে আসল মালিক হবেন আপনার আম্মু-আব্বু!",
+
+    "আকর্ষণীয় বিজ্ঞাপন দিলে পণ্য বিক্রি হয়, আর কমার্স নিয়ে পড়াশোনা করলে জীবনে শুধু দীর্ঘশ্বাস আর স্মৃতি বিক্রি হয়!",
+
+    "বিজনেস প্ল্যান বানানোর সময় নিজেকে পরবর্তী ইলন মাস্ক মনে হয়, আর রেজাল্ট হাতে পাওয়ার পর মনে হয় ভিনগ্রহের প্রাণী!",
+
+    "ব্যবসায় যেকোনো ঝুঁকি কভার করার জন্য বীমা (Insurance) আছে, কিন্তু কমার্স স্টুডেন্টের মানসিক ট্রমা কভার করার কোনো ইন্স্যুরেন্স নাই!",
+
+    "কুটির শিল্প মানে ঘরে বসে পাটি বা নকশি কাঁথা বানানো, আর কমার্স পড়া মানে ঘরে বসে নিজের মাথার চুল টানা!",
+
+    "ট্রেড লাইসেন্স পাওয়া সহজ, কিন্তু ব্যবসায় উদ্যোগের সৃজনশীল প্রশ্নে 'গ' ও 'ঘ' এর পারফেক্ট ও গোছানো উত্তর বের হওয়া কঠিন!!!"
+
+  ]
+
+};
+
+/* =========================================================
+   TROLL RENDERING
+========================================================= */
+
+function renderTrolls(category){
+
+  const grid=
+    document.getElementById(
+      category+"Grid"
+    );
+
+  const list=trolls[category];
+
+  grid.innerHTML="";
+
+  list.forEach((text,index)=>{
+
+    const key=
+      category+"-"+index;
+
+    const votes=
+      state.votes[key] || {
+        like:0,
+        dislike:0
+      };
+
+    const card=
+      document.createElement("article");
+
+    card.className=
+      "troll glass reveal";
+
+    card.dataset.text=
+      text.toLowerCase();
+
+    card.innerHTML=`
+
+      <div class="troll-number">
+        ${String(index+1).padStart(2,"0")}
+        / 10
+      </div>
+
+      <div class="troll-text">
+        ${escapeHTML(text)}
+      </div>
+
+      <div class="vote-row">
+
+        <button class="vote-btn"
+                data-vote="like"
+                data-category="${category}"
+                data-index="${index}">
+          👍 ${votes.like}
+        </button>
+
+        <button class="vote-btn"
+                data-vote="dislike"
+                data-category="${category}"
+                data-index="${index}">
+          👎 ${votes.dislike}
+        </button>
+
+      </div>
+
+    `;
+
+    grid.appendChild(card);
+
+  });
+
+  grid
+    .querySelectorAll(".reveal")
+    .forEach(card=>{
+      setTimeout(()=>{
+        card.classList.add("visible");
+      },30);
+    });
+
+}
+
+renderTrolls("accounting");
+renderTrolls("finance");
+renderTrolls("business");
+
+/* =========================================================
+   TROLL SEARCH
+========================================================= */
+
+document
+  .querySelectorAll("[data-search]")
+  .forEach(input=>{
+
+    input.addEventListener("input",()=>{
+
+      const category=
+        input.dataset.search;
+
+      const grid=
+        document.getElementById(
+          category+"Grid"
+        );
+
+      const query=
+        input.value
+          .toLowerCase()
+          .trim();
+
+      let visible=0;
+
+      grid
+        .querySelectorAll(".troll")
+        .forEach(card=>{
+
+          const match=
+            !query ||
+            card.dataset.text.includes(query);
+
+          card.style.display=
+            match ? "" : "none";
+
+          if(match){
+            visible++;
+          }
+
+        });
+
+      let empty=
+        grid.querySelector(".no-results");
+
+      if(visible===0){
+
+        if(!empty){
+
+          empty=
+            document.createElement("div");
+
+          empty.className=
+            "no-results glass";
+
+          empty.textContent=
+            "কিছু পাওয়া যায়নি। Suspense A/C-এ পাঠিয়ে দিন। 😭";
+
+          grid.appendChild(empty);
+        }
+
+      }else if(empty){
+
+        empty.remove();
+      }
+
+    });
+
+  });
+
+/* =========================================================
+   TROLL VOTING
+========================================================= */
+
+document.addEventListener("click",event=>{
+
+  const button=
+    event.target.closest(
+      "[data-vote]"
+    );
+
+  if(!button){
+    return;
+  }
+
+  const category=
+    button.dataset.category;
+
+  const index=
+    Number(button.dataset.index);
+
+  const type=
+    button.dataset.vote;
+
+  const key=
+    category+"-"+index;
+
+  if(!state.votes[key]){
+
+    state.votes[key]={
+      like:0,
+      dislike:0
+    };
+
+  }
+
+  state.votes[key][type]++;
+
+  saveState();
+
+  renderTrolls(category);
+
+  toast(
+    type==="like"
+    ? "👍 Vote recorded"
+    : "👎 Vote recorded"
+  );
+
+});
+
+/* =========================================================
+   SHUFFLE
+========================================================= */
+
+function shuffleTrolls(category){
+
+  trolls[category].sort(
+    ()=>Math.random()-.5
+  );
+
+  renderTrolls(category);
+
+  toast("Troll order shuffled 🔀");
+}
+
+/* =========================================================
+   STRESS METER
+========================================================= */
+
+const stressRange=
+  document.getElementById(
+    "stressRange"
+  );
+
+const stressValue=
+  document.getElementById(
+    "stressValue"
+  );
+
+const stressBar=
+  document.getElementById(
+    "stressBar"
+  );
+
+const stressMessage=
+  document.getElementById(
+    "stressMessage"
+  );
+
+const heroStress=
+  document.getElementById(
+    "heroStress"
+  );
+
+function updateStress(value){
+
+  const number=
+    Math.max(
+      0,
+      Math.min(
+        100,
+        Number(value)||0
+      )
+    );
+
+  stressRange.value=number;
+  stressValue.textContent=
+    number+"%";
+
+  stressBar.style.width=
+    number+"%";
+
+  heroStress.textContent=
+    "Commerce Trauma: "+number+"%";
+
+  let message;
+
+  if(number<20){
+    message=
+      "আপনার brain surprisingly stable. suspicious.";
+  }else if(number<40){
+    message=
+      "হালকা commerce pressure. এক কাপ চা যথেষ্ট।";
+  }else if(number<60){
+    message=
+      "Ledger আপনাকে লক্ষ্য করছে।";
+  }else if(number<80){
+    message=
+      "রেওয়ামিল মেলেনি। পানি খান।";
+  }else{
+    message=
+      "CRITICAL: Calculator-ও এখন আপনাকে বিশ্বাস করছে না!";
+  }
+
+  stressMessage.textContent=
+    "“"+message+"”";
+}
+
+stressRange.addEventListener(
+  "input",
+  ()=>{
+    updateStress(
+      stressRange.value
+    );
+  }
+);
+
+updateStress(72);
+
+/* =========================================================
+   BREATHING
+========================================================= */
+
+let breathTimer=null;
+let breathRunning=false;
+let breathPhase=0;
+
+const phases=[
+  {
+    name:"Inhale",
+    seconds:4,
+    className:"inhale"
+  },
+  {
+    name:"Hold",
+    seconds:4,
+    className:"inhale"
+  },
+  {
+    name:"Exhale",
+    seconds:4,
+    className:"exhale"
+  },
+  {
+    name:"Hold",
+    seconds:4,
+    className:"exhale"
+  }
+];
+
+function startBreathing(){
+
+  if(breathRunning){
+    return;
+  }
+
+  breathRunning=true;
+  breathPhase=0;
+
+  runBreathPhase();
+}
+
+function runBreathPhase(){
+
+  if(!breathRunning){
+    return;
+  }
+
+  const phase=
+    phases[breathPhase];
+
+  const circle=
+    document.getElementById(
+      "breathCircle"
+    );
+
+  const text=
+    document.getElementById(
+      "breathText"
+    );
+
+  const count=
+    document.getElementById(
+      "breathCount"
+    );
+
+  circle.classList.remove(
+    "inhale",
+    "exhale"
+  );
+
+  if(phase.className){
+    circle.classList.add(
+      phase.className
+    );
+  }
+
+  text.textContent=
+    phase.name;
+
+  let remaining=
+    phase.seconds;
+
+  count.textContent=
+    remaining+" sec";
+
+  breathTimer=
+    setInterval(()=>{
+
+      remaining--;
+
+      count.textContent=
+        Math.max(remaining,0)+" sec";
+
+      if(remaining<=0){
+
+        clearInterval(
+          breathTimer
+        );
+
+        breathPhase=
+          (breathPhase+1)%phases.length;
+
+        runBreathPhase();
+      }
+
+    },1000);
+
+}
+
+function stopBreathing(){
+
+  breathRunning=false;
+
+  clearInterval(
+    breathTimer
+  );
+
+  document
+    .getElementById("breathCircle")
+    .classList.remove(
+      "inhale",
+      "exhale"
+    );
+
+  document
+    .getElementById("breathText")
+    .textContent="Ready?";
+
+  document
+    .getElementById("breathCount")
+    .textContent="4 • 4 • 4 • 4";
+}
+
+document
+  .getElementById("breathStart")
+  .addEventListener(
+    "click",
+    startBreathing
+  );
+
+document
+  .getElementById("breathStop")
+  .addEventListener(
+    "click",
+    stopBreathing
+  );
+
+/* =========================================================
+   CHAT BOT
+========================================================= */
+
+const botResponses=[
+
+  {
+    keywords:[
+      "balance",
+      "ব্যালেন্স",
+      "মিলছে না",
+      "মিলে না",
+      "রেওয়ামিল"
+    ],
+    response:
+      "ব্যালেন্স শিট মিলছে না? Suspense A/C-কে ডাকুন। ওকে সবসময় দোষ দেওয়া যায়। 😭"
+  },
+
+  {
+    keywords:[
+      "debit",
+      "ডেবিট"
+    ],
+    response:
+      "ডেবিট দেখলে ভয় পাবেন না। ও শুধু আপনার confidence পরীক্ষা করছে।"
+  },
+
+  {
+    keywords:[
+      "credit",
+      "ক্রেডিট"
+    ],
+    response:
+      "Credit-এর দিকে তাকিয়ে শান্ত থাকুন। আপনার pocket কিন্তু এত শান্ত নেই।"
+  },
+
+  {
+    keywords:[
+      "জাবেদা",
+      "journal"
+    ],
+    response:
+      "জাবেদা করতে করতে যদি জীবন নিয়ে journal লিখে ফেলেন, সেটাও এক ধরনের creative accounting।"
+  },
+
+  {
+    keywords:[
+      "cash",
+      "ক্যাশ"
+    ],
+    response:
+      "Cash book-এ cash আছে। আপনার wallet-এ আছে কিনা সেটা আলাদা audit-এর বিষয়।"
+  },
+
+  {
+    keywords:[
+      "depreciation",
+      "ডেপ্রিসিয়েশন"
+    ],
+    response:
+      "আপনার calculator-এর battery-ও আজ depreciation-এর শিকার।"
+  },
+
+  {
+    keywords:[
+      "finance",
+      "ফিন্যান্স"
+    ],
+    response:
+      "Finance-এর মূল শিক্ষা: risk বুঝুন। আর exam-এর আগের রাতে নতুন chapter খোলা সেই risk-এর textbook example।"
+  },
+
+  {
+    keywords:[
+      "npv",
+      "net present"
+    ],
+    response:
+      "NPV negative? Congratulations, আপনি এখন officially investment analyst of your own bad decisions."
+  },
+
+  {
+    keywords:[
+      "bank",
+      "ব্যাংক"
+    ],
+    response:
+      "ব্যাংক balance জানতে চায়। RCTB জানতে চায় আপনি আজ কতটা commerce সহ্য করেছেন।"
+  },
+
+  {
+    keywords:[
+      "business",
+      "ব্যবসা"
+    ],
+    response:
+      "Business plan: Step 1 — idea. Step 2 — confidence. Step 3 — exam question দেখে সব ভুলে যাওয়া।"
+  },
+
+  {
+    keywords:[
+      "entrepreneur",
+      "উদ্যোক্তা"
+    ],
+    response:
+      "Successful entrepreneur হওয়ার আগে successful answer sheet entrepreneur হতে হবে।"
+  },
+
+  {
+    keywords:[
+      "exam",
+      "পরীক্ষা"
+    ],
+    response:
+      "Exam hall-এ brain: “আমি সব জানি।” Question paper: “প্রমাণ করো।”"
+  },
+
+  {
+    keywords:[
+      "calculator",
+      "ক্যালকুলেটর"
+    ],
+    response:
+      "Calculator-এর ওপর অতিরিক্ত নির্ভরতা accounting-এর নয়, emotional support-এর বিষয়।"
+  },
+
+  {
+    keywords:[
+      "profit",
+      "লাভ"
+    ],
+    response:
+      "Profit খুঁজছেন? আপনার snacks-এর bill-এ লাভ নেই, কিন্তু memories আছে।"
+  },
+
+  {
+    keywords:[
+      "loss",
+      "লস"
+    ],
+    response:
+      "Business loss হলে analysis করুন। Exam marks loss হলে আগে পানি খান, তারপর analysis করুন।"
+  }
+
+];
+
+const genericBotResponses=[
+
+  "এই problem-এর জন্য RCTB officially বলছে: পানি খান, তারপর আবার ledger খুলুন।",
+
+  "আমি AI। কিন্তু আপনার accounting-এর এই রহস্য দেখে আমিও একটু calculator খুঁজছি।",
+
+  "Problem detected. Solution temporarily unavailable because commerce.",
+
+  "এটা দেখে আমার imaginary auditor চুপচাপ resignation letter লিখেছে।",
+
+  "এই বিষয়টি Suspense A/C-তে পাঠানো হয়েছে। উত্তর আসার সম্ভাবনা কম।",
+
+  "আপনার problem-এর severity: calculator প্রয়োজন, কিন্তু calculator-ও nervous।",
+
+  "RCTB diagnosis: আরেকবার question পড়ুন। এবারও না বুঝলে tea break।",
+
+  "এই প্রশ্নের উত্তর textbook-এ আছে। আপনার memory-তে নেই।",
+
+  "System message: আপনার ledger এবং brain-এর মধ্যে synchronization failed।",
+
+  "আপনি পারবেন। তবে প্রথমে debit-credit-এর সাথে peace treaty করতে হবে।",
+
+  "এই problem-এর জন্য একটি universal solution আছে: calm down and reconcile."
+
+];
+
+function findBotResponse(input){
+
+  const text=
+    input.toLowerCase();
+
+  for(const item of botResponses){
+
+    if(
+      item.keywords.some(
+        keyword=>
+          text.includes(
+            keyword.toLowerCase()
+          )
+      )
+    ){
+      return item.response;
+    }
+
+  }
+
+  return genericBotResponses[
+    Math.floor(
+      Math.random()*
+      genericBotResponses.length
+    )
+  ];
+}
+
+function addChatMessage(
+  text,
+  type
+){
+
+  const messages=
+    document.getElementById(
+      "chatMessages"
+    );
+
+  const div=
+    document.createElement("div");
+
+  div.className=
+    "msg "+type;
+
+  div.textContent=text;
+
+  messages.appendChild(div);
+
+  messages.scrollTop=
+    messages.scrollHeight;
+}
+
+function addTyping(){
+
+  const messages=
+    document.getElementById(
+      "chatMessages"
+    );
+
+  const div=
+    document.createElement("div");
+
+  div.className=
+    "msg bot";
+  div.id="typingMessage";
+
+  div.innerHTML=`
+
+    <div class="typing">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+  `;
+
+  messages.appendChild(div);
+
+  messages.scrollTop=
+    messages.scrollHeight;
+}
+
+document
+  .getElementById("chatForm")
+  .addEventListener("submit",event=>{
+
+    event.preventDefault();
+
+    const input=
+      document.getElementById(
+        "chatInput"
+      );
+
+    const value=
+      input.value.trim();
+
+    if(!value){
+      return;
+    }
+
+    addChatMessage(
+      value.slice(0,500),
+      "user"
+    );
+
+    input.value="";
+
+    addTyping();
+
+    const response=
+      findBotResponse(value);
+
+    setTimeout(()=>{
+
+      const typing=
+        document.getElementById(
+          "typingMessage"
+        );
+
+      if(typing){
+        typing.remove();
+      }
+
+      addChatMessage(
+        response,
+        "bot"
+      );
+
+    },800+Math.random()*800);
+
+  });
+
+document
+  .getElementById("clearChat")
+  .addEventListener("click",()=>{
+
+    document
+      .getElementById("chatMessages")
+      .innerHTML=`
+
+      <div class="msg bot">
+        Chat cleared. Ledger-এর মতো আমিও আবার fresh.
+      </div>
+
+    `;
+
+  });
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+const quizQuestions=[
+
+  {
+    question:
+      "Accounting-এ Debit-এর বিপরীত side কোনটি?",
+
+    options:[
+      "Credit",
+      "Profit",
+      "Capital",
+      "Balance"
+    ],
+
+    answer:0
+  },
+
+  {
+    question:
+      "Balance Sheet-এর দুই side equal না হলে সাধারণত কী করতে হবে?",
+
+    options:[
+      "চোখ বন্ধ করতে হবে",
+      "ভুল খুঁজতে হবে",
+      "Calculator বন্ধ করতে হবে",
+      "সবগুলো"
+    ],
+
+    answer:1
+  },
+
+  {
+    question:
+      "Liquidity বলতে মূলত কী বোঝায়?",
+
+    options:[
+      "Asset দ্রুত cash-এ convert করার সক্ষমতা",
+      "Profit-এর পরিমাণ",
+      "Business-এর বয়স",
+      "Employee সংখ্যা"
+    ],
+
+    answer:0
+  },
+
+  {
+    question:
+      "Entrepreneurship-এর সঙ্গে কোনটি সবচেয়ে বেশি সম্পর্কিত?",
+
+    options:[
+      "Risk taking",
+      "Sleeping",
+      "Random guessing",
+      "Nothing"
+    ],
+
+    answer:0
+  },
+
+  {
+    question:
+      "Exam hall-এ calculator ৫ বার একই হিসাব করার সবচেয়ে common কারণ কী?",
+
+    options:[
+      "Math বদলে গেছে",
+      "Confidence নেই",
+      "Calculator bored",
+      "Question paper ভুল"
+    ],
+
+    answer:1
+  },
+
+  {
+    question:
+      "NPV-এর পূর্ণরূপ কী?",
+
+    options:[
+      "Net Present Value",
+      "New Profit Variable",
+      "National Payment Value",
+      "Net Product Volume"
+    ],
+
+    answer:0
+  }
+
+];
+
+let quizIndex=0;
+let quizScore=0;
+let quizAnswered=false;
+
+function renderQuiz(){
+
+  const box=
+    document.getElementById(
+      "quizBox"
+    );
+
+  if(quizIndex>=quizQuestions.length){
+
+    finishQuiz();
+    return;
+  }
+
+  const q=
+    quizQuestions[quizIndex];
+
+  box.innerHTML=`
+
+    <div class="quiz-progress">
+      Question ${quizIndex+1}
+      / ${quizQuestions.length}
+    </div>
+
+    <div class="quiz-question">
+      ${escapeHTML(q.question)}
+    </div>
+
+    <div class="options">
+
+      ${q.options.map(
+        (option,index)=>`
+
+          <button
+            class="option"
+            data-option="${index}">
+            ${escapeHTML(option)}
+          </button>
+
+        `
+      ).join("")}
+
+    </div>
+
+  `;
+
+  quizAnswered=false;
+
+  box
+    .querySelectorAll("[data-option]")
+    .forEach(button=>{
+
+      button.addEventListener(
+        "click",
+        ()=>answerQuiz(
+          Number(
+            button.dataset.option
+          )
+        )
+      );
+
+    });
+
+}
+
+function answerQuiz(selected){
+
+  if(quizAnswered){
+    return;
+  }
+
+  quizAnswered=true;
+
+  const q=
+    quizQuestions[quizIndex];
+
+  const buttons=
+    document.querySelectorAll(
+      "#quizBox .option"
+    );
+
+  buttons.forEach((button,index)=>{
+
+    button.disabled=true;
+
+    if(index===q.answer){
+      button.classList.add(
+        "correct"
+      );
+    }
+
+    if(index===selected &&
+       selected!==q.answer){
+
+      button.classList.add(
+        "wrong"
+      );
+    }
+
+  });
+
+  if(selected===q.answer){
+
+    quizScore++;
+
+    successSound();
+
+  }else{
+
+    errorSound();
+
+  }
+
+  setTimeout(()=>{
+
+    quizIndex++;
+
+    renderQuiz();
+
+  },800);
+
+}
+
+function getQuizTitle(score){
+
+  if(score===quizQuestions.length){
+    return "Certified Ledger Wizard 🧙";
+  }
+
+  if(score>=4){
+    return "Professional Commerce Survivor 🏆";
+  }
+
+  if(score>=2){
+    return "Part-Time Ledger Survivor 📒";
+  }
+
+  return "Calculator Dependent Intern 🧮";
+}
+
+function finishQuiz(){
+
+  const title=
+    getQuizTitle(quizScore);
+
+  const box=
+    document.getElementById(
+      "quizBox"
+    );
+
+  box.innerHTML=`
+
+    <div style="text-align:center;">
+
+      <div style="font-size:55px;">
+        ${
+          quizScore>=4
+          ? "🏆"
+          : quizScore>=2
+          ? "😎"
+          : "🧮"
+        }
+      </div>
+
+      <h2>
+        Quiz Complete!
+      </h2>
+
+      <div class="big-number"
+           style="margin:12px 0;">
+        ${quizScore}/${quizQuestions.length}
+      </div>
+
+      <p style="color:var(--muted);">
+        ${escapeHTML(title)}
+      </p>
+
+      <button class="btn btn-primary"
+              id="restartQuiz"
+              style="margin-top:16px;">
+        Try Again
+      </button>
+
+    </div>
+
+  `;
+
+  const name=
+    prompt(
+      "Leaderboard-এ আপনার নাম দিন:",
+      "Anonymous"
+    );
+
+  if(name!==null){
+
+    const cleanName=
+      name.trim().slice(0,30) ||
+      "Anonymous";
+
+    state.leaderboard.push({
+
+      name:cleanName,
+
+      score:quizScore,
+
+      title:title,
+
+      time:Date.now()
+
+    });
+
+    state.leaderboard=
+      state.leaderboard
+        .sort((a,b)=>b.score-a.score)
+        .slice(0,10);
+
+    state.highScore=
+      Math.max(
+        state.highScore,
+        quizScore
+      );
+
+    saveState();
+
+    renderLeaderboard();
+
+  }
+
+  document
+    .getElementById("restartQuiz")
+    .addEventListener(
+      "click",
+      restartQuiz
+    );
+
+}
+
+function restartQuiz(){
+
+  quizIndex=0;
+  quizScore=0;
+  quizAnswered=false;
+
+  renderQuiz();
+}
+
+function renderLeaderboard(){
+
+  const box=
+    document.getElementById(
+      "leaderboard"
+    );
+
+  if(
+    !state.leaderboard ||
+    state.leaderboard.length===0
+  ){
+
+    box.innerHTML=
+      `<div style="color:var(--muted);">
+        এখনো কোনো score নেই।
+      </div>`;
+
+    return;
+  }
+
+  box.innerHTML=
+    state.leaderboard
+      .map((item,index)=>`
+
+        <div class="leader-item">
+
+          <span>
+            ${index+1}. ${escapeHTML(item.name)}
+          </span>
+
+          <strong>
+            ${item.score}/${quizQuestions.length}
+          </strong>
+
+        </div>
+
+      `)
+      .join("");
+
+}
+
+renderQuiz();
+renderLeaderboard();
+
+/* =========================================================
+   GPA CERTIFICATE
+========================================================= */
+
+document
+  .getElementById("generateCert")
+  .addEventListener("click",()=>{
+
+    const name=
+      document
+        .getElementById("certName")
+        .value
+        .trim();
+
+    const school=
+      document
+        .getElementById("certSchool")
+        .value
+        .trim();
+
+    const year=
+      document
+        .getElementById("certYear")
+        .value
+        .trim();
+
+    if(!name || !school || !year){
+
+      toast(
+        "Name, institution এবং year দিন."
+      );
+
+      return;
+    }
+
+    document
+      .getElementById("printArea")
+      .innerHTML=`
+
+      <div class="certificate">
+
+        <div class="cert-logo">
+          RCTB
+          <br>
+          RELIEF FOR COMMERCE TRAUMATIZED BRAINS
+        </div>
+
+        <h3>
+          Certificate of GPA-5
+        </h3>
+
+        <p class="cert-small">
+          This is a fictional prank certificate
+        </p>
+
+        <div class="cert-name">
+          ${safeText(name,80)}
+        </div>
+
+        <p style="margin-top:9px;">
+          has successfully survived
+        </p>
+
+        <h3 style="color:var(--secondary);">
+          COMMERCE TRAUMA
+        </h3>
+
+        <p>
+          Institution:
+          <strong>
+            ${safeText(school,150)}
+          </strong>
+        </p>
+
+        <p>
+          Year:
+          <strong>
+            ${safeText(year,20)}
+          </strong>
+        </p>
+
+        <p style="margin-top:17px;">
+          Accounting: Survived ✓
+          <br>
+          Finance: Questionable ✓
+          <br>
+          Business: Still Processing ✓
+        </p>
+
+        <div style="margin-top:20px;">
+          <span class="fake-stamp">
+            NOT OFFICIAL
+          </span>
+        </div>
+
+      </div>
+
+      <button
+        class="btn btn-soft"
+        style="margin-top:10px;"
+        onclick="window.print()">
+        🖨️ Print / Save PDF
+      </button>
+
+    `;
+
+    successSound();
+
+    toast(
+      "Fake certificate generated 🎓"
+    );
+
+  });
+
+/* =========================================================
+   FAKE BANK SLIP
+========================================================= */
+
+document
+  .getElementById("generateSlip")
+  .addEventListener("click",()=>{
+
+    const name=
+      document
+        .getElementById("slipName")
+        .value
+        .trim();
+
+    const amount=
+      Number(
+        document
+          .getElementById("slipAmount")
+          .value
+      );
+
+    if(!name || !Number.isFinite(amount)){
+
+      toast(
+        "Name এবং valid amount দিন."
+      );
+
+      return;
+    }
+
+    const transaction=
+      "RCTB-"+Math.random()
+        .toString(36)
+        .slice(2,9)
+        .toUpperCase();
+
+    document
+      .getElementById("slipArea")
+      .innerHTML=`
+
+      <div class="slip">
+
+        <div class="slip-header">
+
+          <strong>
+            RCTB FICTIONAL BANK
+          </strong>
+
+          <span class="fake-stamp">
+            PRANK
+          </span>
+
+        </div>
+
+        <div class="slip-row">
+          <span>Name</span>
+          <strong>
+            ${safeText(name,80)}
+          </strong>
+        </div>
+
+        <div class="slip-row">
+          <span>Amount</span>
+          <strong>
+            ৳ ${amount.toLocaleString("en-BD")}
+          </strong>
+        </div>
+
+        <div class="slip-row">
+          <span>Transaction</span>
+          <strong>
+            ${transaction}
+          </strong>
+        </div>
+
+        <div class="slip-row">
+          <span>Status</span>
+          <strong style="color:var(--green);">
+            FICTIONAL SUCCESS
+          </strong>
+        </div>
+
+        <p style="margin-top:13px;color:var(--muted);font-size:11px;">
+          This is not a real bank receipt,
+          payment confirmation or financial document.
+        </p>
+
+      </div>
+
+    `;
+
+    successSound();
+
+    toast(
+      "Fake bank slip generated 🏦"
+    );
+
+  });
+
+/* =========================================================
+   TEA TIMER
+========================================================= */
+
+let teaSeconds=300;
+let teaInterval=null;
+
+const teaDisplay=
+  document.getElementById(
+    "teaDisplay"
+  );
+
+function formatTime(seconds){
+
+  const min=
+    Math.floor(seconds/60)
+      .toString()
+      .padStart(2,"0");
+
+  const sec=
+    (seconds%60)
+      .toString()
+      .padStart(2,"0");
+
+  return min+":"+sec;
+}
+
+function updateTeaDisplay(){
+
+  teaDisplay.textContent=
+    formatTime(teaSeconds);
+}
+
+document
+  .getElementById("teaStart")
+  .addEventListener("click",()=>{
+
+    if(teaInterval){
+      return;
+    }
+
+    toast("Tea break started 🍵");
+
+    teaInterval=
+      setInterval(()=>{
+
+        teaSeconds--;
+
+        updateTeaDisplay();
+
+        if(teaSeconds<=0){
+
+          clearInterval(
+            teaInterval
+          );
+
+          teaInterval=null;
+          teaSeconds=300;
+
+          updateTeaDisplay();
+
+          successSound();
+
+          toast(
+            "Tea break শেষ! Ledger আপনাকে খুঁজছে. 📒"
+          );
+
+        }
+
+      },1000);
+
+  });
+
+document
+  .getElementById("teaReset")
+  .addEventListener("click",()=>{
+
+    clearInterval(
+      teaInterval
+    );
+
+    teaInterval=null;
+    teaSeconds=300;
+
+    updateTeaDisplay();
+
+  });
+
+updateTeaDisplay();
+
+/* =========================================================
+   COUNTDOWN
+========================================================= */
+
+const targetDateInput=
+  document.getElementById(
+    "targetDate"
+  );
+
+function setDefaultTarget(){
+
+  const target=
+    new Date();
+
+  target.setHours(
+    target.getHours()+24
+  );
+
+  const local=
+    new Date(
+      target.getTime() -
+      target.getTimezoneOffset()*60000
+    )
+      .toISOString()
+      .slice(0,16);
+
+  targetDateInput.value=
+    local;
+}
+
+setDefaultTarget();
+
+function updateCountdown(){
+
+  const target=
+    new Date(
+      targetDateInput.value
+    ).getTime();
+
+  if(!Number.isFinite(target)){
+    return;
+  }
+
+  const difference=
+    target-Date.now();
+
+  if(difference<=0){
+
+    document.getElementById(
+      "cdDays"
+    ).textContent="00";
+
+    document.getElementById(
+      "cdHours"
+    ).textContent="00";
+
+    document.getElementById(
+      "cdMinutes"
+    ).textContent="00";
+
+    document.getElementById(
+      "cdSeconds"
+    ).textContent="00";
+
+    return;
+  }
+
+  const totalSeconds=
+    Math.floor(
+      difference/1000
+    );
+
+  const days=
+    Math.floor(
+      totalSeconds/86400
+    );
+
+  const hours=
+    Math.floor(
+      (totalSeconds%86400)/3600
+    );
+
+  const minutes=
+    Math.floor(
+      (totalSeconds%3600)/60
+    );
+
+  const seconds=
+    totalSeconds%60;
+
+  document.getElementById(
+    "cdDays"
+  ).textContent=
+    String(days).padStart(2,"0");
+
+  document.getElementById(
+    "cdHours"
+  ).textContent=
+    String(hours).padStart(2,"0");
+
+  document.getElementById(
+    "cdMinutes"
+  ).textContent=
+    String(minutes).padStart(2,"0");
+
+  document.getElementById(
+    "cdSeconds"
+  ).textContent=
+    String(seconds).padStart(2,"0");
+
+}
+
+targetDateInput.addEventListener(
+  "change",
+  updateCountdown
+);
+
+setInterval(
+  updateCountdown,
+  1000
+);
+
+updateCountdown();
+
+/* =========================================================
+   RECONCILIATION GENERATOR
+========================================================= */
+
+document
+  .getElementById("reconcileBtn")
+  .addEventListener("click",()=>{
+
+    const debit=
+      Number(
+        document.getElementById(
+          "amountA"
+        ).value
+      );
+
+    const credit=
+      Number(
+        document.getElementById(
+          "amountB"
+        ).value
+      );
+
+    if(
+      !Number.isFinite(debit) ||
+      !Number.isFinite(credit)
+    ){
+
+      toast(
+        "দুইটা valid amount দিন."
+      );
+
+      return;
+    }
+
+    const difference=
+      Math.abs(
+        debit-credit
+      );
+
+    const suspense=
+      difference===0
+      ? 0
+      : difference;
+
+    document
+      .getElementById(
+        "reconcileResult"
+      )
+      .innerHTML=`
+
+      <strong>
+        ✅ RECONCILED
+      </strong>
+
+      <br>
+
+      Debit:
+      ৳ ${debit.toLocaleString("en-BD")}
+
+      <br>
+
+      Credit:
+      ৳ ${credit.toLocaleString("en-BD")}
+
+      <br><br>
+
+      Difference:
+      ৳ ${difference.toLocaleString("en-BD")}
+
+      <br>
+
+      ${
+        difference===0
+        ?
+        "দুই পাশ আগেই মিলে গেছে। আজ আপনার lucky day."
+        :
+        "Difference magically moved to Suspense A/C. Don't ask questions."
+      }
+
+    `;
+
+    successSound();
+
+  });
+
+/* =========================================================
+   LOST PEN TRACKER
+========================================================= */
+
+document
+  .getElementById("penTrackBtn")
+  .addEventListener("click",()=>{
+
+    const friend=
+      document
+        .getElementById(
+          "friendName"
+        )
+        .value
+        .trim();
+
+    const brand=
+      document
+        .getElementById(
+          "penBrand"
+        )
+        .value
+        .trim();
+
+    if(!friend || !brand){
+
+      toast(
+        "Friend name এবং pen brand দিন."
+      );
+
+      return;
+    }
+
+    const locations=[
+
+      "তার ব্যাগের side pocket",
+
+      "তার ডেস্কের নিচে",
+
+      "অন্য কারও pencil box",
+
+      "যে জায়গায় সবাই already ৩ বার খুঁজেছে",
+
+      "Suspense A/C-এর কাছে"
+
+    ];
+
+    const result=
+      locations[
+        Math.floor(
+          Math.random()*locations.length
+        )
+      ];
+
+    document
+      .getElementById("penResult")
+      .innerHTML=`
+
+      🔎 <strong>Investigation Complete</strong>
+
+      <br><br>
+
+      Suspect:
+      <strong>${safeText(friend,60)}</strong>
+
+      <br>
+
+      Pen:
+      <strong>${safeText(brand,60)}</strong>
+
+      <br><br>
+
+      📍 Most likely location:
+      <strong>${result}</strong>
+
+      <br><br>
+
+      Confidence:
+      <strong>${55+Math.floor(Math.random()*40)}%</strong>
+
+    `;
+
+  });
+
+/* =========================================================
+   PANIC BUTTON
+========================================================= */
+
+document
+  .getElementById("panicBtn")
+  .addEventListener("click",()=>{
+
+    const messages=[
+
+      "🚨 EMERGENCY CHILL: Calculator নামিয়ে রাখুন।",
+
+      "🧘 Deep breath. Balance Sheet এখনো আপনাকে খুঁজে পায়নি।",
+
+      "🍵 Emergency tea break authorized.",
+
+      "📒 Ledger temporarily muted.",
+
+      "✨ Suspense A/C has accepted your problems.",
+
+      "😂 Panic successfully converted into laughter."
+
+    ];
+
+    const message=
+      messages[
+        Math.floor(
+          Math.random()*messages.length
+        )
+      ];
+
+    toast(message);
+
+    updateStress(
+      Math.max(
+        5,
+        Number(stressRange.value)-8
+      )
+    );
+
+  });
+
+/* =========================================================
+   HOTLINE
+========================================================= */
+
+document
+  .getElementById("hotlineBtn")
+  .addEventListener("click",()=>{
+
+    beep(180,.12,"square",.018);
+
+    setTimeout(()=>{
+      beep(240,.12,"square",.018);
+    },150);
+
+    toast(
+      "☎️ RCTB Operator: “আপনার ledger আমাদের jurisdiction-এর বাইরে।”"
+    );
+
+  });
+
+/* =========================================================
+   YEAR
+========================================================= */
+
+document
+  .getElementById("year")
+  .textContent=
+    new Date().getFullYear();
+
+/* =========================================================
+   KEYBOARD SHORTCUTS
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event=>{
+
+    if(
+      event.key==="Escape" &&
+      adminModal.classList.contains("show")
+    ){
+
+      adminModal.classList.remove(
+        "show"
+      );
+
+    }
+
+  }
+);
+
+/* =========================================================
+   RIGHT CLICK / SELECTION DETERRENCE
+   Cosmetic only — NOT real security.
+========================================================= */
+
+document.addEventListener(
+  "contextmenu",
+  event=>{
+    event.preventDefault();
+
+    toast(
+      "😏 Right-click cancelled by the Commerce Department."
+    );
+  }
+);
+
+/* Keep inputs and text areas usable. */
+document.addEventListener(
+  "selectstart",
+  event=>{
+
+    const tag=
+      event.target.tagName;
+
+    if(
+      tag!=="INPUT" &&
+      tag!=="TEXTAREA"
+    ){
+      event.preventDefault();
+    }
+
+  }
+);
+
+/* =========================================================
+   DEVTOOLS / F12 DETERRENCE
+   This cannot actually secure a website.
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event=>{
+
+    if(
+      event.key==="F12" ||
+      (
+        event.ctrlKey &&
+        event.shiftKey &&
+        ["I","J","C"].includes(
+          event.key.toUpperCase()
+        )
+      )
+    ){
+
+      event.preventDefault();
+
+      toast(
+        "🕵️ Nice try. RCTB says: inspect the ledger instead."
+      );
+
+    }
+
+  }
+);
+
+/* =========================================================
+   CONSOLE NOTICE
+========================================================= */
+
+console.log(
+  "%cRCTB%c — Relief for Commerce Traumatized Brains",
+  "color:#e37eac;font-size:20px;font-weight:bold;",
+  "color:#9c82df;font-size:14px;font-weight:bold;"
+);
+
+console.log(
+  "This is a fictional prank project. Front-end admin protection is not real security."
+);
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+renderNotices();
+renderLeaderboard();
+updateStress(72);
+updateCountdown();
+
+</script>
+
+</body>
+</html>
